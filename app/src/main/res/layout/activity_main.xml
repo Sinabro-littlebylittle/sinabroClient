@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cons_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
@@ -12,25 +13,39 @@
         android:layout_height="match_parent"
         >
 
-        <!-- 검색창 추가 예정 -->
-<!--        <EditText-->
-<!--            android:id="@+id/search"-->
-<!--            android:layout_width="280dp"-->
-<!--            android:layout_height="45dp"-->
-<!--            android:layout_alignParentTop="true"-->
-<!--            android:layout_centerInParent="true"-->
-<!--            android:layout_marginTop="30dp"-->
-<!--            android:background="#FFFFFF"-->
-<!--            android:elevation="10dp"-->
-<!--            android:paddingStart="10dp"-->
-<!--            app:cornerRadius="50dp" />-->
+        <!-- 검색 란 -->
+        <EditText
+            android:id="@+id/search_edt"
+            android:layout_width="315dp"
+            android:layout_height="45dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/radius"
+            android:elevation="10dp"
+            android:hint="장소, 주소 검색"
+            android:paddingStart="40dp"
+            android:textColorHint="#D4D4D4">
+        </EditText>
 
+        <!-- 검색 란 내부 좌측의 햄버거 버튼 -->
+        <ImageButton
+            android:layout_width="42.5dp"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/search_edt"
+            android:layout_alignTop="@+id/search_edt"
+            android:backgroundTint="#FFFFFF"
+            android:src="@drawable/hamburger"
+            android:translationZ="10dp"
+            app:tint="@color/black" />
+
+        <!-- 현재 위치 불러오기 버튼 -->
         <Button
             android:id="@+id/currentLocation_btn"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
+            android:layout_width="52.5dp"
+            android:layout_height="52.5dp"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="12.5dp"
+            android:layout_marginStart="13dp"
             android:layout_marginBottom="70dp"
             android:backgroundTint="#FFFFFF"
             android:insetTop="0dp"
@@ -42,15 +57,15 @@
             app:iconPadding="0dp"
             app:iconTint="#696969" />
 
+        <!-- 지도 확대 버튼 -->
         <Button
             android:id="@+id/mapZoomIn_btn"
-            android:layout_width="37.5dp"
-            android:layout_height="37.5dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
+            android:layout_centerVertical="true"
             android:layout_marginEnd="12.5dp"
             android:layout_marginRight="12dp"
-            android:layout_marginBottom="192.5dp"
             android:backgroundTint="#FFFFFF"
             android:insetTop="0dp"
             android:insetBottom="0dp"
@@ -61,14 +76,15 @@
             app:iconPadding="0dp"
             app:iconTint="#696969" />
 
+        <!-- 지도 축소 버튼 -->
         <Button
             android:id="@+id/mapZoomOut_btn"
-            android:layout_width="37.5dp"
-            android:layout_height="37.5dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
+            android:layout_alignTop="@+id/mapZoomIn_btn"
             android:layout_marginEnd="12.5dp"
-            android:layout_marginBottom="154.5dp"
+            android:layout_marginTop="51.5dp"
             android:backgroundTint="#FFFFFF"
             android:insetTop="0dp"
             android:insetBottom="0dp"
@@ -78,8 +94,6 @@
             app:iconGravity="textStart"
             app:iconPadding="0dp"
             app:iconTint="#696969" />
-
     </RelativeLayout>
 
-
-</LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
