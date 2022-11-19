@@ -2,7 +2,7 @@
     <!-- Base application theme. -->
     <style name="Theme.Sinabro" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">#FF9D9D</item>
+        <item name="colorPrimary">#F5F5F5</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
