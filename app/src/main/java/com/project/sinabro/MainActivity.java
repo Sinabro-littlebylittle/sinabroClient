@@ -1,5 +1,7 @@
 package com.project.sinabro;
 
+import static java.security.AccessController.getContext;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -11,7 +13,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -19,13 +20,15 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -39,14 +42,16 @@ import com.google.android.gms.location.LocationSettingsResponse;
 import com.google.android.gms.location.SettingsClient;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
+import net.daum.android.map.MapViewTouchEventListener;
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapView;
 
-public class MainActivity extends AppCompatActivity implements MapView.CurrentLocationEventListener {
+public class MainActivity extends AppCompatActivity implements MapView.CurrentLocationEventListener, MapView.MapViewEventListener {
 
-    // 위치 권한 요청 코드의 상숫값
+    /** 위치 권한 요청 코드의 상숫값 */
     private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 1981;
     private static final int REQUEST_CODE_LOCATION_SETTINGS = 2981;
 
@@ -63,11 +68,14 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
     private MapView mapView;
     private ViewGroup mapViewContainer;
     private MapPoint currPoint;
+    private MapPOIItem marker;
 
     private LocationCallback mLocationCallback;
     private LocationSettingsRequest mLocationSettingsRequest;
     private Location mLastLocation;
-    private Button currentLocation_btn, mapZoomIn_btn, mapZoomOut_btn;
+    private Button currentLocation_btn, mapZoomIn_btn, mapZoomOut_btn, peopleCount_btn, editLocation_btn, bookmarkEmpty_btn;;
+
+    private BottomSheetBehavior bottomSheetBehavior;
 
     /** 현재 MainActivity의 context, activity값을
      * 다른 클래스로 보내주기 위해 변수로도 저장함 */
@@ -83,11 +91,12 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // 다음 카카오맵 지도를 띄우는 코드
+        /** 다음 카카오맵 지도를 띄우는 코드 */
         mapView = new MapView(this);
         mapViewContainer = (ViewGroup) findViewById(R.id.map_view);
         mapViewContainer.addView(mapView);
-        // 현재 나의 위치에 점을 갱신하며 찍어줌
+        /** 현재 나의 위치에 점을 갱신하며 찍어줌 */
+        mapView.setMapViewEventListener(this);
         mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeadingWithoutMapMoving);
 
         /** 앱 초기 실행 시 위치 권한 동의 여부에 따라서
@@ -96,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
             checkLocation();
         } else {
             locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-            //사용자의 현재 위치
+            /** 사용자의 현재 위치 */
             GetMyLocation getMyLocation = new GetMyLocation(this, this);
             Location userLocation = getMyLocation.getMyLocation();
             if (userLocation != null) {
@@ -105,15 +114,15 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
                 System.out.println("////////////현재 내 위치값 : " + latitude + "," + longitude);
                 currPoint = MapPoint.mapPointWithGeoCoord(latitude, longitude);
 
-                // 중심점 변경
+                /** 중심점 변경 */
                 mapView.setMapCenterPoint(currPoint, true);
             }
         }
 
-        // 위치 설정 기능 수행
+        /** 위치 설정 기능 수행 */
         init();
 
-        // 현재 위치 갱신 정의 및 이벤트 리스너 추가
+        /** 현재 위치 갱신 정의 및 이벤트 리스너 추가 */
         currentLocation_btn = (Button) findViewById(R.id.currentLocation_btn);
         currentLocation_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -135,6 +144,49 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
             @Override
             public void onClick(View v) {
                 mapView.zoomOut(true);
+            }
+        });
+
+        /** ----------------------- bottom sheet 레이아웃 ----------------------- */
+//        bottomSheet_layout = (FrameLayout) findViewById(R.id.bottomSheet_layout);
+        bottomSheetBehavior = BottomSheetBehavior.from(findViewById(R.id.bottomSheet_layout));
+//        bottomSheetBehavior.setPeekHeight(200);
+//        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+//        bottomSheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+//            @Override
+//            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+//            }
+//
+//            @Override
+//            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+//            }
+//        });
+
+        /** 카메라 촬영 버튼 */
+        peopleCount_btn = findViewById(R.id.peopleCount_btn);
+        peopleCount_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // 이곳에 카메라 촬영으로 이어지는 코드가 추가하면 됩니다.
+                Log.d("테스트", "/////////들어옴//////////");
+            }
+        });
+
+        /** 장소 등록/수정 버튼 */
+        editLocation_btn = findViewById(R.id.editLocation_btn);
+        editLocation_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // 이곳에 장소 등록 액티비티로 이어지는 코드를 추가하면 됩니다.
+            }
+        });
+
+        /** 북마크 등록/제거 버튼 */
+        bookmarkEmpty_btn = findViewById(R.id.bookmarkEmpty_btn);
+        bookmarkEmpty_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // 이곳에 북마크 등록 액티비티로 이어지는 코드를 추가하면 됩니다.
             }
         });
     }
@@ -200,7 +252,7 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
             @Override
             public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
                 locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-                //사용자의 현재 위치
+                /** 사용자의 현재 위치 */
                 GetMyLocation getMyLocation = new GetMyLocation(context, activity);
                 Location userLocation = getMyLocation.getMyLocation();
                 if (userLocation != null) {
@@ -209,7 +261,7 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
                     System.out.println("////////////현재 내 위치값 : " + latitude + "," + longitude);
                     currPoint = MapPoint.mapPointWithGeoCoord(latitude, longitude);
 
-                    // 중심점 변경
+                    /** 중심점 변경 */
                     mapView.setMapCenterPoint(currPoint, true);
                     mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeadingWithoutMapMoving);
                 }
@@ -253,7 +305,7 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
                         builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int id) {
-                                // 위치 정보 설정창에서 '설정으로 이동' 클릭 시
+                                /** 위치 정보 설정창에서 '설정으로 이동' 클릭 시 */
                                 Intent intent = new Intent();
                                 intent.setAction(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
                                 intent.setData(Uri.fromParts("package", getPackageName(), null));
@@ -263,7 +315,7 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
                         builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int id) {
-                                // 위치 정보 설정창에서 '취소' 클릭 시
+                                /** 위치 정보 설정창에서 '취소' 클릭 시 */
 //                                Toast.makeText(MainActivity.this, "Cancel Click", Toast.LENGTH_SHORT).show();
                             }
                         });
@@ -282,22 +334,70 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         }
     }
 
+    /** 카카오맵 이벤트 리스너 */
     @Override
     public void onCurrentLocationUpdate(MapView mapView, MapPoint mapPoint, float v) {
     }
 
     @Override
     public void onCurrentLocationDeviceHeadingUpdate(MapView mapView, float v) {
-
     }
 
     @Override
     public void onCurrentLocationUpdateFailed(MapView mapView) {
-
     }
 
     @Override
     public void onCurrentLocationUpdateCancelled(MapView mapView) {
+    }
 
+    @Override
+    public void onMapViewInitialized(MapView mapView) {
+    }
+
+    @Override
+    public void onMapViewCenterPointMoved(MapView mapView, MapPoint mapPoint) {
+    }
+
+    @Override
+    public void onMapViewZoomLevelChanged(MapView mapView, int i) {
+    }
+
+    /** 지도 한 번 클릭 시 */
+    @Override
+    public void onMapViewSingleTapped(MapView mapView, MapPoint mapPoint) {
+        marker = new MapPOIItem();
+        mapView.removePOIItem(marker);
+        marker.setItemName("새로운 장소");
+        marker.setTag(0);
+        marker.setMapPoint(mapPoint);
+        marker.setMarkerType(MapPOIItem.MarkerType.YellowPin); // 기본으로 제공하는 BluePin 마커 모양.
+        marker.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin); // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
+        mapView.addPOIItem(marker);
+
+        bottomSheetBehavior.setPeekHeight(85);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+    }
+
+    /** 지도 두 번 클릭 시 */
+    @Override
+    public void onMapViewDoubleTapped(MapView mapView, MapPoint mapPoint) {
+        mapView.zoomIn(true);
+    }
+
+    @Override
+    public void onMapViewLongPressed(MapView mapView, MapPoint mapPoint) {
+    }
+
+    @Override
+    public void onMapViewDragStarted(MapView mapView, MapPoint mapPoint) {
+    }
+
+    @Override
+    public void onMapViewDragEnded(MapView mapView, MapPoint mapPoint) {
+    }
+
+    @Override
+    public void onMapViewMoveFinished(MapView mapView, MapPoint mapPoint) {
     }
 }
