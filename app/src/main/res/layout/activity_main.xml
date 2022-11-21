@@ -1,107 +1,132 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/cons_layout"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <RelativeLayout
-        android:id="@+id/map_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <!-- bottom sheet 레이아웃 사용으로 인한 Coordinator 레이아웃 적용 -->
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
-        <!-- 검색 란 -->
-        <EditText
-            android:id="@+id/search_edt"
-            android:layout_width="315dp"
-            android:layout_height="45dp"
-            android:layout_alignParentTop="true"
-            android:layout_centerInParent="true"
-            android:layout_marginTop="30dp"
-            android:background="@drawable/radius"
-            android:elevation="10dp"
-            android:hint="장소, 주소 검색"
-            android:paddingStart="40dp"
-            android:textColorHint="#D4D4D4"></EditText>
+        <RelativeLayout
+            android:id="@+id/map_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <!-- 검색 란 내부 좌측의 햄버거 버튼 -->
-        <ImageButton
-            android:id="@+id/hamburger_ibtn"
-            android:layout_width="42.5dp"
-            android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/search_edt"
-            android:layout_alignTop="@+id/search_edt"
-            android:backgroundTint="#FFFFFF"
-            android:src="@drawable/hamburger"
-            android:translationZ="10dp"
-            app:tint="@color/black" />
+            <!-- 검색 란 -->
+            <EditText
+                android:id="@+id/search_edt"
+                android:layout_width="315dp"
+                android:layout_height="45dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/radius"
+                android:elevation="10dp"
+                android:hint="장소, 주소 검색"
+                android:paddingStart="40dp"
+                android:textColorHint="#D4D4D4"></EditText>
 
-        <!-- 현재 위치 불러오기 버튼 -->
-        <Button
-            android:id="@+id/currentLocation_btn"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="13dp"
-            android:backgroundTint="#FFFFFF"
-            android:insetTop="0dp"
-            android:insetBottom="0dp"
-            android:onClick="onCurrentLocation"
-            app:cornerRadius="3dp"
-            app:icon="@drawable/my_location"
-            app:iconGravity="textStart"
-            app:iconPadding="0dp"
-            app:iconTint="#696969"
-            android:stateListAnimator="@null"
-            android:elevation="5dp"
-            />
+            <!-- 검색 란 내부 좌측의 햄버거 버튼 -->
+            <ImageButton
+                android:id="@+id/hamburger_ibtn"
+                android:layout_width="42.5dp"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/search_edt"
+                android:layout_alignTop="@+id/search_edt"
+                android:backgroundTint="#FFFFFF"
+                android:src="@drawable/hamburger"
+                android:translationZ="10dp"
+                app:tint="@color/black" />
 
-        <!-- 지도 확대 버튼 -->
-        <Button
-            android:id="@+id/mapZoomIn_btn"
-            android:layout_width="41.5dp"
-            android:layout_height="41.5dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="12.5dp"
-            android:backgroundTint="#FFFFFF"
-            android:insetTop="0dp"
-            android:insetBottom="0dp"
-            android:onClick="onMapZoomIn"
-            app:cornerRadius="3dp"
-            app:icon="@drawable/plus"
-            app:iconGravity="textStart"
-            app:iconPadding="0dp"
-            app:iconTint="#696969"
-            android:stateListAnimator="@null"
-            android:elevation="5dp" />
+            <!-- 현재 위치 불러오기 버튼 -->
+            <Button
+                android:id="@+id/currentLocation_btn"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="13dp"
+                android:backgroundTint="#FFFFFF"
+                android:elevation="5dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:onClick="onCurrentLocation"
+                android:stateListAnimator="@null"
+                app:cornerRadius="3dp"
+                app:icon="@drawable/my_location"
+                app:iconGravity="textStart"
+                app:iconPadding="0dp"
+                app:iconTint="#696969" />
 
-        <!-- 지도 축소 버튼 -->
-        <Button
-            android:id="@+id/mapZoomOut_btn"
-            android:layout_width="41.5dp"
-            android:layout_height="41.5dp"
-            android:layout_below="@+id/mapZoomIn_btn"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="1dp"
-            android:layout_marginEnd="12.5dp"
-            android:backgroundTint="#FFFFFF"
-            android:insetTop="0dp"
-            android:insetBottom="0dp"
-            android:onClick="onMapZoomOut"
-            app:cornerRadius="3dp"
-            app:icon="@drawable/minus"
-            app:iconGravity="textStart"
-            app:iconPadding="0dp"
-            app:iconTint="#696969"
-            android:stateListAnimator="@null"
-            android:elevation="5dp" />
-    </RelativeLayout>
+            <!-- 지도 확대 버튼 -->
+            <Button
+                android:id="@+id/mapZoomIn_btn"
+                android:layout_width="41.5dp"
+                android:layout_height="41.5dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="12.5dp"
+                android:backgroundTint="#FFFFFF"
+                android:elevation="5dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:onClick="onMapZoomIn"
+                android:stateListAnimator="@null"
+                app:cornerRadius="3dp"
+                app:icon="@drawable/plus"
+                app:iconGravity="textStart"
+                app:iconPadding="0dp"
+                app:iconTint="#696969" />
 
-    <!-- bottom sheet 레이아웃 -->
-    <include layout="@layout/bottom_sheet" />
+            <!-- 지도 축소 버튼 -->
+            <Button
+                android:id="@+id/mapZoomOut_btn"
+                android:layout_width="41.5dp"
+                android:layout_height="41.5dp"
+                android:layout_below="@+id/mapZoomIn_btn"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="1dp"
+                android:layout_marginEnd="12.5dp"
+                android:backgroundTint="#FFFFFF"
+                android:elevation="5dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:onClick="onMapZoomOut"
+                android:stateListAnimator="@null"
+                app:cornerRadius="3dp"
+                app:icon="@drawable/minus"
+                app:iconGravity="textStart"
+                app:iconPadding="0dp"
+                app:iconTint="#696969" />
+        </RelativeLayout>
 
+        <!-- side navigation 내의 menu item(메뉴) 클릭 시 나타나는 -->
+        <!-- 액티비티를 담아줄 액자 역할은 하는 요소 -->
+        <fragment
+            android:id="@+id/navHostFragment"
+            android:name="androidx.navigation.fragment.NavHostFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:defaultNavHost="true"
+            app:navGraph="@navigation/main" />
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+        <!-- bottom sheet 레이아웃 -->
+        <include layout="@layout/bottom_sheet" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <!-- 햄버거 버튼 클릭 시 side navigation이 나타날 수 있도록 하는 요소 -->
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navigationView"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:headerLayout="@layout/layout_navigation_header"
+        app:menu="@menu/navigation_menu" />
+
+</androidx.drawerlayout.widget.DrawerLayout>

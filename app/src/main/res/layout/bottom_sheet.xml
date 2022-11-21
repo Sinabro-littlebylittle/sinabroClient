@@ -17,7 +17,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerInParent="true"
         android:scaleType="centerCrop"
-        android:src="@drawable/minus"
+        android:src="@drawable/bottom_sheet_minus_bar"
         app:tint="#BDBDBD" />
 
     <!-- 장소명 -->
