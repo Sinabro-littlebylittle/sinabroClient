@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="20dp"
+    android:paddingTop="50dp"
+    android:layout_marginBottom="20dp">
+
+    <!-- 프로필 이미지 -->
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/userImage"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/user_image"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:riv_oval="true" />
+
+    <!-- 시점 포인트 조정 -->
+    <View
+        android:id="@+id/viewSupporter"
+        android:layout_width="1dp"
+        android:layout_height="1dp"
+        app:layout_constraintBottom_toBottomOf="@id/userImage"
+        app:layout_constraintEnd_toEndOf="@id/userImage"
+        app:layout_constraintStart_toStartOf="@id/userImage"
+        app:layout_constraintTop_toTopOf="@id/userImage" />
+
+    <!-- 닉네임 -->
+    <TextView
+        android:id="@+id/userName_tv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="@string/nickname"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toTopOf="@id/viewSupporter"
+        app:layout_constraintStart_toEndOf="@id/userImage" />
+
+    <!-- 유저 ID -->
+    <TextView
+        android:id="@+id/nickname_tv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="@string/userID"
+        android:textColor="#696969"
+        android:textSize="13sp"
+        app:layout_constraintStart_toEndOf="@id/userImage"
+        app:layout_constraintTop_toBottomOf="@id/viewSupporter" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
