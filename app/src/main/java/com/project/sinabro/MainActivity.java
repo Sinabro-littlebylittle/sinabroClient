@@ -57,6 +57,8 @@ import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapView;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity implements MapView.CurrentLocationEventListener, MapView.MapViewEventListener {
 
     /**
@@ -85,10 +87,14 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
 
     private MapView mapView;
     private ViewGroup mapViewContainer;
-    private MapPoint currPoint;
+    private MapPoint currPoint, prevPoint;
     private MapPOIItem marker;
 
+    private ArrayList<MapPOIItem> markers = new ArrayList<>();
+
+    private LocationCallback mLocationCallback;
     private LocationSettingsRequest mLocationSettingsRequest;
+    private Location mLastLocation;
     private Button currentLocation_btn, mapZoomIn_btn, mapZoomOut_btn, peopleCount_btn, editLocation_btn, bookmarkEmpty_btn;
 
     private ImageButton hamburger_ibtn;
@@ -122,6 +128,22 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         /** 현재 나의 위치에 점을 갱신하며 찍어줌 */
         mapView.setMapViewEventListener(this);
         mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeadingWithoutMapMoving);
+
+        /** 기존에 저장되어 있던 마커들을 다시 표시해 줌 */
+//        for (int k = 0; k < markers.size(); k++) {
+//            marker = new MapPOIItem();
+//            marker.setItemName("임시 장소(" + (k + 1) + ")");
+//            marker.setTag(k);
+//            /** DB에서 불러온 해당 마커의 위도 경도 값을 받아와서 설정해야 함 */
+//            // prevPoint = MapPoint.mapPointWithGeoCoord(36.628986, 127.456355);
+//            // marker.setMapPoint(prevPoint);
+//            marker.setMarkerType(MapPOIItem.MarkerType.RedPin);
+//            // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
+//            marker.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin);
+//
+//            mapView.addPOIItem(marker);
+//            markers.add(marker);
+//        }
 
         /** 앱 초기 실행 시 위치 권한 동의 여부에 따라서
          * (권한 획득 요청) 및 (현재 위치 표시)를 수행 */
@@ -417,14 +439,23 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
      */
     @Override
     public void onMapViewSingleTapped(MapView mapView, MapPoint mapPoint) {
+        /** 현재는 DB와 연동되어 있지 않은 상태이기 때문에
+         *  장소 등록이 이뤄지지 않았을 때를 가정하여 코드를
+         *  작성하였습니다. 추후에 장소 등록 기능이 완성되면
+         *  해당 코드는 수정이 필요합니다. */
         marker = new MapPOIItem();
-        mapView.removePOIItem(marker);
-        marker.setItemName("새로운 장소");
-        marker.setTag(0);
+        if (markers.size() == 1) {
+            mapView.removePOIItem(markers.get(markers.size() - 1));
+            markers.remove(markers.size() - 1);
+        }
+        marker.setItemName("새로운 장소(" + (markers.size() + 1) + ")");
+        marker.setTag(markers.size());
         marker.setMapPoint(mapPoint);
         marker.setMarkerType(MapPOIItem.MarkerType.YellowPin); // 기본으로 제공하는 BluePin 마커 모양.
         marker.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin); // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
+
         mapView.addPOIItem(marker);
+        markers.add(marker);
 
         bottomSheetBehavior.setPeekHeight(85);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
