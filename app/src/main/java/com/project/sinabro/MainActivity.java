@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -31,6 +32,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -43,6 +50,7 @@ import com.google.android.gms.location.SettingsClient;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.navigation.NavigationView;
 
 import net.daum.android.map.MapViewTouchEventListener;
 import net.daum.mf.map.api.MapPOIItem;
@@ -88,7 +96,10 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
     private LocationSettingsRequest mLocationSettingsRequest;
     private Location mLastLocation;
     private Button currentLocation_btn, mapZoomIn_btn, mapZoomOut_btn, peopleCount_btn, editLocation_btn, bookmarkEmpty_btn;
-    ;
+
+    private ImageButton hamburger_ibtn;
+
+    private DrawerLayout drawerlayout;
 
     private BottomSheetBehavior bottomSheetBehavior;
 
@@ -166,6 +177,7 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
             }
         });
 
+        /** 지도 확대 버튼 클릭 시 기능 수행 */
         mapZoomIn_btn = (Button) findViewById(R.id.mapZoomIn_btn);
         mapZoomIn_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -174,6 +186,7 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
             }
         });
 
+        /** 지도 축소 버튼 클릭 시 기능 수행 */
         mapZoomOut_btn = (Button) findViewById(R.id.mapZoomOut_btn);
         mapZoomOut_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -182,7 +195,28 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
             }
         });
 
-        /** ----------------------- bottom sheet 레이아웃 ----------------------- */
+        /** ========================= Sidebar Navigation Drawer(사이드 메뉴바) ========================= */
+        drawerlayout = findViewById(R.id.drawer_layout);
+        /** 햄버거 버튼 클릭 시 sidebar navigation을 나타나도록 하는 코드 */
+        hamburger_ibtn = (ImageButton) findViewById(R.id.hamburger_ibtn);
+        hamburger_ibtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // sidebar navigation을 보여줌
+                drawerlayout.openDrawer(GravityCompat.START);
+                // bottom sheet layout을 사라지게 함
+                bottomSheetBehavior.setPeekHeight(0);
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            }
+        });
+
+        /** sidebar navigation 내의 menu item(메뉴) 클릭 시 해당 액티비티로
+         *  넘어갈 수 있도록 하는 코드 */
+        NavigationView navigationView = findViewById(R.id.navigationView);
+        NavController navController = Navigation.findNavController(this, R.id.navHostFragment);
+        NavigationUI.setupWithNavController(navigationView, navController);
+
+        /** ========================= bottom sheet 레이아웃 ========================= */
 //        bottomSheet_layout = (FrameLayout) findViewById(R.id.bottomSheet_layout);
         bottomSheetBehavior = BottomSheetBehavior.from(findViewById(R.id.bottomSheet_layout));
 //        bottomSheetBehavior.setPeekHeight(200);
