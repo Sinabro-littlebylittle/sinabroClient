@@ -49,40 +49,59 @@ import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapView;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity implements MapView.CurrentLocationEventListener, MapView.MapViewEventListener {
 
-    /** 위치 권한 요청 코드의 상숫값 */
+    /**
+     * 위치 권한 요청 코드의 상숫값
+     */
     private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 1981;
     private static final int REQUEST_CODE_LOCATION_SETTINGS = 2981;
 
     private static final String[] PERMISSIONS = new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
 
-    /** Provides access to the Fused Location Provider API. */
+    /**
+     * Provides access to the Fused Location Provider API.
+     */
     private FusedLocationProviderClient mFusedLocationClient;
-    /** Provides access to the Location Settings API. */
+    /**
+     * Provides access to the Location Settings API.
+     */
     private SettingsClient mSettingsClient;
-    /** Stores parameters for requests to the FusedLocationProviderApi. */
+    /**
+     * Stores parameters for requests to the FusedLocationProviderApi.
+     */
     private LocationRequest mLocationRequest;
-    /** Callback for Location events. */
+    /**
+     * Callback for Location events.
+     */
 
     private MapView mapView;
     private ViewGroup mapViewContainer;
-    private MapPoint currPoint;
+    private MapPoint currPoint, prevPoint;
     private MapPOIItem marker;
+
+    private ArrayList<MapPOIItem> markers = new ArrayList<>();
 
     private LocationCallback mLocationCallback;
     private LocationSettingsRequest mLocationSettingsRequest;
     private Location mLastLocation;
-    private Button currentLocation_btn, mapZoomIn_btn, mapZoomOut_btn, peopleCount_btn, editLocation_btn, bookmarkEmpty_btn;;
+    private Button currentLocation_btn, mapZoomIn_btn, mapZoomOut_btn, peopleCount_btn, editLocation_btn, bookmarkEmpty_btn;
+    ;
 
     private BottomSheetBehavior bottomSheetBehavior;
 
-    /** 현재 MainActivity의 context, activity값을
-     * 다른 클래스로 보내주기 위해 변수로도 저장함 */
+    /**
+     * 현재 MainActivity의 context, activity값을
+     * 다른 클래스로 보내주기 위해 변수로도 저장함
+     */
     private Context context = this;
     private Activity activity = this;
 
-    /** 위치 설정에 대한 객체 변수 */
+    /**
+     * 위치 설정에 대한 객체 변수
+     */
     private LocationManager locationManager;
     private static final int REQUEST_CODE_LOCATION = 2;
 
@@ -99,12 +118,28 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         mapView.setMapViewEventListener(this);
         mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeadingWithoutMapMoving);
 
+        /** 기존에 저장되어 있던 마커들을 다시 표시해 줌 */
+//        for (int k = 0; k < markers.size(); k++) {
+//            marker = new MapPOIItem();
+//            marker.setItemName("임시 장소(" + (k + 1) + ")");
+//            marker.setTag(k);
+//            /** DB에서 불러온 해당 마커의 위도 경도 값을 받아와서 설정해야 함 */
+//            // prevPoint = MapPoint.mapPointWithGeoCoord(36.628986, 127.456355);
+//            // marker.setMapPoint(prevPoint);
+//            marker.setMarkerType(MapPOIItem.MarkerType.RedPin);
+//            // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
+//            marker.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin);
+//
+//            mapView.addPOIItem(marker);
+//            markers.add(marker);
+//        }
+
         /** 앱 초기 실행 시 위치 권한 동의 여부에 따라서
          * (권한 획득 요청) 및 (현재 위치 표시)를 수행 */
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             checkLocation();
         } else {
-            locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+            locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
             /** 사용자의 현재 위치 */
             GetMyLocation getMyLocation = new GetMyLocation(this, this);
             Location userLocation = getMyLocation.getMyLocation();
@@ -251,7 +286,7 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
             @SuppressLint("MissingPermission")
             @Override
             public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
-                locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+                locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
                 /** 사용자의 현재 위치 */
                 GetMyLocation getMyLocation = new GetMyLocation(context, activity);
                 Location userLocation = getMyLocation.getMyLocation();
@@ -334,7 +369,9 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         }
     }
 
-    /** 카카오맵 이벤트 리스너 */
+    /**
+     * 카카오맵 이벤트 리스너
+     */
     @Override
     public void onCurrentLocationUpdate(MapView mapView, MapPoint mapPoint, float v) {
     }
@@ -363,23 +400,36 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
     public void onMapViewZoomLevelChanged(MapView mapView, int i) {
     }
 
-    /** 지도 한 번 클릭 시 */
+    /**
+     * 지도 한 번 클릭 시
+     */
     @Override
     public void onMapViewSingleTapped(MapView mapView, MapPoint mapPoint) {
+        /** 현재는 DB와 연동되어 있지 않은 상태이기 때문에
+         *  장소 등록이 이뤄지지 않았을 때를 가정하여 코드를
+         *  작성하였습니다. 추후에 장소 등록 기능이 완성되면
+         *  해당 코드는 수정이 필요합니다. */
         marker = new MapPOIItem();
-        mapView.removePOIItem(marker);
-        marker.setItemName("새로운 장소");
-        marker.setTag(0);
+        if (markers.size() == 1) {
+            mapView.removePOIItem(markers.get(markers.size() - 1));
+            markers.remove(markers.size() - 1);
+        }
+        marker.setItemName("새로운 장소(" + (markers.size() + 1) + ")");
+        marker.setTag(markers.size());
         marker.setMapPoint(mapPoint);
         marker.setMarkerType(MapPOIItem.MarkerType.YellowPin); // 기본으로 제공하는 BluePin 마커 모양.
         marker.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin); // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
+
         mapView.addPOIItem(marker);
+        markers.add(marker);
 
         bottomSheetBehavior.setPeekHeight(85);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
     }
 
-    /** 지도 두 번 클릭 시 */
+    /**
+     * 지도 두 번 클릭 시
+     */
     @Override
     public void onMapViewDoubleTapped(MapView mapView, MapPoint mapPoint) {
         mapView.zoomIn(true);
