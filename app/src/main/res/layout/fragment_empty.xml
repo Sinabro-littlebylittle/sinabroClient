@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".EmptyFragment">
+    <!-- 빈 화면 -->
+    <!-- 빈 화면을 추가하는 이유는 sidebar navigation 사용 시 앱 초기 실행 이후 반드시 -->
+    <!-- fragment를 실행하도록 되어 있는데 현재 activity_main 파일은 fragment 구조로 -->
+    <!-- 되어 있지 않고, 지도 및 bottom sheet 레이아웃이 적용되어 있기 때문에 기존 코드의 -->
+    <!-- 구조가 크게 바뀌어야 해서 현재는 이런 방법을 사용하였습니다. 추후에 큰 기능 개발이 -->
+    <!-- 마무리 되면 해당 부분에 대해서 refactoring을 고려하고 있습니다. -->
+</FrameLayout>

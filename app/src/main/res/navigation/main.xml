@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    app:startDestination="@id/emptyFragment">
+
+    <!-- 마이페이지 액티비티 연결 -->
+    <fragment
+        android:id="@+id/mypage_menu"
+        android:name="com.project.sinabro.MyPageActivity"
+        android:label="fragment_my_page_activity"
+        tools:layout="@layout/fragment_my_page_activity" />
+
+    <!-- 즐겨찾기 액티비티 연결 -->
+    <fragment
+        android:id="@+id/bookmark_menu"
+        android:name="com.project.sinabro.BookmarkActivity"
+        android:label="fragment_bookmark_activity"
+        tools:layout="@layout/fragment_bookmark_activity" />
+
+    <!-- 설정 액티비티 연결 -->
+    <fragment
+        android:id="@+id/settings_menu"
+        android:name="com.project.sinabro.SettingsActivity"
+        android:label="fragment_settings_activity"
+        tools:layout="@layout/fragment_settings_activity" />
+
+    <!-- 문의 액티비티 연결 -->
+    <fragment
+        android:id="@+id/support_menu"
+        android:name="com.project.sinabro.SupportActivity"
+        android:label="fragment_support_activity"
+        tools:layout="@layout/fragment_support_activity" />
+
+    <!-- 개발 문의 액티비티 연결 -->
+    <fragment
+        android:id="@+id/aboutUs_menu"
+        android:name="com.project.sinabro.AboutUsActivity"
+        android:label="fragment_about_us_activity"
+        tools:layout="@layout/fragment_about_us_activity" />
+
+    <!-- 빈 화면 액티비티 연결 -->
+    <!-- 빈 화면을 추가하는 이유는 sidebar navigation 사용 시 앱 초기 실행 이후 반드시 -->
+    <!-- fragment를 실행하도록 되어 있는데 현재 activity_main 파일은 fragment 구조로 -->
+    <!-- 되어 있지 않고, 지도 및 bottom sheet 레이아웃이 적용되어 있기 때문에 기존 코드의 -->
+    <!-- 구조가 크게 바뀌어야 해서 현재는 이런 방법을 사용하였습니다. 추후에 큰 기능 개발이 -->
+    <!-- 마무리 되면 해당 부분에 대해서 refactoring을 고려하고 있습니다. -->
+    <fragment
+        android:id="@+id/emptyFragment"
+        android:name="com.project.sinabro.EmptyFragment"
+        android:label="fragment_empty"
+        tools:layout="@layout/fragment_empty" />
+</navigation>
