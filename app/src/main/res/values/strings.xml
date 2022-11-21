@@ -1,3 +1,10 @@
 <resources>
-    <string name="app_name">sinabro</string>
+    <string name="app_name">Sinabro</string>
+    <string name="mypage">마이페이지</string>
+    <string name="bookmark">즐겨찾기</string>
+    <string name="settings">설정</string>
+    <string name="support">문의</string>
+    <string name="aboutUs">개발 정보</string>
+    <string name="nickname">Benedict Cumberbatch</string>
+    <string name="userID">bravekid56</string>
 </resources>

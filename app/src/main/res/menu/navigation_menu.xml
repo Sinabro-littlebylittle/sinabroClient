@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <!-- 기능 담당 메뉴 그룹 -->
+    <group android:id="@+id/feature_group">
+        <item
+            android:id="@+id/mypage_menu"
+            android:title="@string/mypage" />
+        <item
+            android:id="@+id/bookmark_menu"
+            android:title="@string/bookmark" />
+    </group>
+
+    <!-- 이외의 메뉴 그룹 -->
+    <group android:id="@+id/others_group">
+        <item
+            android:id="@+id/settings_menu"
+            android:title="@string/settings" />
+        <item
+            android:id="@+id/support_menu"
+            android:title="@string/support" />
+        <item
+            android:id="@+id/aboutUs_menu"
+            android:title="@string/aboutUs" />
+    </group>
+
+</menu>
