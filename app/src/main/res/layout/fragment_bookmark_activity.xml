@@ -15,14 +15,14 @@
             android:id="@+id/imageButton2"
             android:layout_width="55dp"
             android:layout_height="51dp"
-            android:layout_above="@+id/null"
+
             android:layout_alignParentStart="true"
             android:layout_marginStart="68dp"
             android:layout_marginTop="94dp"
             android:layout_marginEnd="87dp"
             android:layout_marginBottom="106dp"
-            android:layout_toStartOf="@+id/null"
-            android:background="@drawable/button_round"
+
+
             android:src="@drawable/plus"
             tools:ignore="SpeakableTextPresentCheck" />
 
@@ -30,7 +30,6 @@
             android:id="@+id/textView"
             android:layout_width="136dp"
             android:layout_height="56dp"
-            android:layout_above="@+id/null"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
