@@ -1,22 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".BookmarkActivity">
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:background="@color/white">
 
+        <ImageButton
+            android:id="@+id/imageButton2"
+            android:layout_width="55dp"
+            android:layout_height="51dp"
+            android:layout_alignBottom="@+id/null"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="67dp"
+            android:layout_marginTop="163dp"
+            android:layout_marginEnd="87dp"
+            android:layout_marginBottom="500dp"
+            android:layout_toStartOf="@+id/null"
+            android:background="@drawable/button_round"
+            android:src="@drawable/plus"
+            tools:ignore="SpeakableTextPresentCheck" />
+
         <TextView
+            android:id="@+id/textView"
+            android:layout_width="188dp"
+            android:layout_height="38dp"
+            android:layout_above="@+id/null"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="259dp"
+            android:layout_marginTop="186dp"
+            android:layout_marginEnd="33dp"
+            android:layout_marginBottom="-472dp"
+            android:text="새로운 즐겨찾기 추가" />
+
+        <LinearLayout
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Bookmark Activity"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:textSize="20sp"/>
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="344dp"
+            android:layout_marginEnd="-1dp"
+            android:layout_marginBottom="-93dp"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+            <Switch
+                android:id="@+id/switch1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="264dp"
+                android:layout_marginTop="283dp"
+                android:layout_marginEnd="43dp"
+                android:layout_marginBottom="497dp"
+                android:text="즐겨찾기 활성화" />
+
+        </LinearLayout>
+
+
     </RelativeLayout>
 
 </FrameLayout>
