@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clickable="true"
     tools:context=".SupportActivity">
 
     <RelativeLayout
@@ -10,13 +11,37 @@
         android:layout_height="match_parent"
         android:background="@color/white">
 
+        <!-- 뒤로가기 버튼 -->
+        <ImageButton
+            android:id="@+id/back_ibtn"
+            android:layout_width="42.5dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="22dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="15dp"
+            android:backgroundTint="#FFFFFF"
+            android:src="@drawable/back" />
+
+        <!-- 문의 메뉴명 -->
         <TextView
+            android:id="@+id/menuTitle_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Support Activity"
             android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:textSize="20sp"/>
+            android:layout_marginTop="39dp"
+            android:textStyle="bold"
+            android:text="문의"
+            android:textColor="@color/black"
+            android:textSize="23sp" />
+
+        <!-- 가로 구분선 -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignBottom="@+id/menuTitle_tv"
+            android:layout_marginBottom="-18dp"
+            android:background="#BCBCBC" />
     </RelativeLayout>
 
 </FrameLayout>
