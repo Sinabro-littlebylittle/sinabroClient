@@ -1,12 +1,20 @@
 package com.project.sinabro;
 
+import android.media.Image;
 import android.os.Bundle;
 
+import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.ImageButton;
+
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -19,6 +27,8 @@ public class MyPageActivity extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
+    private ImageButton back_ibtn;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -49,6 +59,7 @@ public class MyPageActivity extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -59,6 +70,17 @@ public class MyPageActivity extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_my_page_activity, container, false);
+        View view = inflater.inflate(R.layout.fragment_my_page_activity, container, false);
+
+        // 뒤로가기 버튼 기능
+        back_ibtn = (ImageButton) view.findViewById(R.id.back_ibtn);
+        back_ibtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity().onBackPressed();
+            }
+        });
+
+        return view;
     }
 }
