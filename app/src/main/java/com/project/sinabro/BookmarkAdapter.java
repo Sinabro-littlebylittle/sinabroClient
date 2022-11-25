@@ -24,7 +24,7 @@ public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkAdapter.Custom
 
         public CustomViewHolder(View view) {
             super(view);
-            this.name = (TextView) view.findViewById(R.id.id_listitem);
+            this.name = (TextView) view.findViewById(R.id.name_favorite_place);
 
         }
     }

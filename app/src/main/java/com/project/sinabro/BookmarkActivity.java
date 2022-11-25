@@ -51,7 +51,7 @@ public class BookmarkActivity extends Fragment{
 
     private ArrayList<Dictionary> mArrayList;
     private BookmarkAdapter mAdapter;
-    private int count = -1;
+    private int count = 0;
     AppCompatActivity app = new AppCompatActivity();
     ViewGroup viewGroup;
 
@@ -77,7 +77,6 @@ public class BookmarkActivity extends Fragment{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -100,7 +99,7 @@ public class BookmarkActivity extends Fragment{
                                                                        // 크기 고정
         LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(getActivity());                  // !-- 중요- Fragment 클래스를 상속 받은 경우 this 사용이 어려워 getActivity()로 받기
         mRecyclerView.setLayoutManager(mLinearLayoutManager);                                               // 레이어 설정
-        mAdapter = new BookmarkAdapter( mArrayList);                                                        // 설정한 어뎁터 연동 -> 어뎁터는 데이터 값을 맵핑하여 생성시 데이터를 입력하는 역활
+        mAdapter = new BookmarkAdapter(mArrayList);                                                        // 설정한 어뎁터 연동 -> 어뎁터는 데이터 값을 맵핑하여 생성시 데이터를 입력하는 역활
 
         mArrayList = new ArrayList<>();
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -128,8 +127,8 @@ public class BookmarkActivity extends Fragment{
                 count++;
                 Dictionary data = new Dictionary(count+"번째 즐겨찾기 목록입니다.");
                 mArrayList.add(data); // RecyclerView의 마지막 줄에 삽입
-
                 mAdapter.notifyDataSetChanged();
+
                 Log.d("test", "onClick: 테스트중입니다.");
             }
         });
