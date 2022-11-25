@@ -3,38 +3,22 @@ package com.project.sinabro;
 public class Dictionary {
 
 
-
-    private String id;
-    private String English;
-    private String Korean;
-
-    public String getId() {
-        return id;
+    public String getName() {
+        return name;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getEnglish() {
-        return English;
+    public Dictionary(String name) {
+        this.name = name;
     }
 
-    public void setEnglish(String english) {
-        English = english;
-    }
+    private String name;
+   // private String English;
+    //private String Korean;
 
-    public String getKorean() {
-        return Korean;
-    }
 
-    public void setKorean(String korean) {
-        Korean = korean;
-    }
-    public Dictionary(String id, String english, String korean) {
-        this.id = id;
-        English = english;
-        Korean = korean;
-    }
 
 }

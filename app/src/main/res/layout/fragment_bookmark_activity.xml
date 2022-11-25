@@ -45,7 +45,7 @@
             android:layout_alignBottom="@+id/menuTitle_tv"
             android:layout_marginBottom="-18dp"
             android:background="#BCBCBC" />
-
+        <!-- 추가  -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:id="@+id/bookmark_add"
@@ -58,7 +58,7 @@
             android:layout_marginEnd="0dp">
 
             <ImageButton
-                android:id="@+id/add_favorite"
+                android:id="@+id/add_ibtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/plus"
@@ -90,6 +90,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview_main_list"
             android:layout_width="match_parent"
             android:layout_height="513dp"
             android:layout_below="@+id/bookmark_add"
