@@ -48,6 +48,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
+            android:id="@+id/bookmark_add"
             android:layout_height="60dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
@@ -88,11 +89,15 @@
             <!-- 가로 구분선 -->
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <view class="androidx.appcompat.app.AlertController$RecycleListView"
+        <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="513dp"
+            android:layout_below="@+id/bookmark_add"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="0dp">
 
-        </view>
+        </androidx.recyclerview.widget.RecyclerView>
 
     </RelativeLayout>
 
