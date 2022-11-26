@@ -104,7 +104,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView2"
                 app:layout_constraintVertical_bias="0.0" />
 
-            <!-- first name 입력 -->
 
             <TextView
                 android:id="@+id/textView5"
@@ -119,8 +118,8 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageButton"
                 app:layout_constraintVertical_bias="0.482" />
-
-            <TextView
+            <!-- first name 입력 -->
+            <EditText
                 android:id="@+id/Mypage_input_first_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -139,7 +138,7 @@
             <!-- last name 입력 -->
 
             <!-- Account name 표시-->
-            <!-- 줄나누기 -->
+
 
             <TextView
                 android:id="@+id/textView7"
@@ -155,7 +154,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/Mypage_input_first_name"
                 app:layout_constraintVertical_bias="0.0" />
 
-            <TextView
+            <EditText
                 android:id="@+id/Mypage_input_lastname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -199,6 +198,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/Mypage_input_first_name"
                 app:layout_constraintVertical_bias="0.0" />
+            <!-- 줄나누기 -->
 
             <View
                 android:id="@+id/under_Tline"
@@ -207,12 +207,25 @@
                 android:layout_gravity="center"
                 android:background="#BCBCBC"
                 android:gravity="center"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/textView6"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.491"
+                app:layout_constraintHorizontal_bias="0.394"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.43" />
+                app:layout_constraintVertical_bias="0.962" />
+            <!--Logininfo -->
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.121"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.658" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </RelativeLayout>
