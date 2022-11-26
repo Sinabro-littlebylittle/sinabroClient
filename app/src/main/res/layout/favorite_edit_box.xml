@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:layout_marginTop="100dp"
-        android:hint="즐겨찾기 명 변경"
+        android:hint="리스트명"
         android:inputType="text"
         app:layout_constraintBottom_toTopOf="@+id/button_bookmark_submit"
         app:layout_constraintHorizontal_bias="0.49"
