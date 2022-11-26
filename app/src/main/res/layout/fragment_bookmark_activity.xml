@@ -59,8 +59,10 @@
 
             <ImageButton
                 android:id="@+id/add_ibtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="44dp"
+
+                android:layout_height="42dp"
+                android:background="@drawable/shape_for_circle_button"
                 android:src="@drawable/plus"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/textView"
@@ -70,9 +72,11 @@
 
             <TextView
                 android:id="@+id/textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="140dp"
+                android:layout_height="29dp"
                 android:text="새로운 즐겨찾기 추가"
+                android:textAlignment="center"
+                android:gravity="center"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.501"
