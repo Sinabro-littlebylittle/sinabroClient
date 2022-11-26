@@ -10,10 +10,11 @@
         android:id="@+id/switch1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Switch"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:track="@drawable/switch_track_selector"
+        android:thumb="@drawable/switch_thumb"
         tools:ignore="MissingConstraints,UseSwitchCompatOrMaterialXml" />
 
     <!-- 가로 구분선 -->

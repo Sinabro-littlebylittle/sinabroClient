@@ -3,12 +3,15 @@ package com.project.sinabro;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 
 // Bookmark 추가를 위한 라이브러리
@@ -131,8 +134,40 @@ public class BookmarkActivity extends Fragment{
                 mArrayList.add(data); // RecyclerView의 마지막 줄에 삽입
                 mAdapter.notifyDataSetChanged();
 
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                View v = LayoutInflater.from(getActivity()).inflate(R.layout.favorite_edit_box,null,false);
+                builder.setView(v);
+
+                final Button ButtonSubmit = (Button) v.findViewById(R.id.button_bookmark_submit);
+                final EditText editTextNAME = (EditText) v.findViewById(R.id.edittext_bookmark_name);
+                //final EditText editTextEnglish = (EditText) view.findViewById(R.id.edittext_dialog_endlish);
+                //final EditText editTextKorean = (EditText) view.findViewById(R.id.edittext_dialog_korean);
+
+                ButtonSubmit.setText("삽입");
+
+
+                final AlertDialog dialog = builder.create();
+                ButtonSubmit.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {                                   // 변경
+                        String strNAME = editTextNAME.getText().toString();
+                        //String strEnglish = editTextEnglish.getText().toString();
+                        //String strKorean = editTextKorean.getText().toString();
+
+                        Dictionary dict = new Dictionary(strNAME);
+
+                        mArrayList.add(0, dict); //첫 줄에 삽입
+                        //mArrayList.add(dict); //마지막 줄에 삽입
+                        mAdapter.notifyDataSetChanged(); //변경된 데이터를 화면에 반영
+
+                        dialog.dismiss();
+                    }
+                });
+
+                dialog.show();
                 Log.d("test", "onClick: 테스트중입니다.");
             }
+
+
         });
 
         return view;
