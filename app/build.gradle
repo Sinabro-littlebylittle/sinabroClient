@@ -37,6 +37,7 @@ dependencies {
 
     // Bottom Sheet Layout 사용을 위한 coordinatorlayout 외부 라이브러리 추가
     implementation "androidx.coordinatorlayout:coordinatorlayout:1.1.0"
+    implementation 'androidx.navigation:navigation-runtime:2.5.3'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
