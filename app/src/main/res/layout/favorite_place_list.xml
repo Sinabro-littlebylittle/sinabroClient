@@ -41,15 +41,15 @@
 
     <TextView
         android:id="@+id/name_favorite_place"
-        android:layout_width="101dp"
-        android:layout_height="32dp"
+        android:layout_width="184dp"
+        android:layout_height="52dp"
         android:gravity="center"
         android:text="TextView"
         android:textAlignment="center"
         android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/switch1"
-        app:layout_constraintHorizontal_bias="0.395"
+        app:layout_constraintHorizontal_bias="0.18"
         app:layout_constraintStart_toEndOf="@+id/imageView2"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
