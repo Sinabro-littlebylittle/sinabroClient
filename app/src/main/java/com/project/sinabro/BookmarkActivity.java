@@ -49,11 +49,12 @@ public class BookmarkActivity extends Fragment{
      * 이부분은 북마크 추가 부분 코드 입니다.
      */
 
-    private ArrayList<Dictionary> mArrayList;
+    // 리사이클러뷰에 필요한 변수 선언
+    private ArrayList<Dictionary> mArrayList = new ArrayList<>();
     private BookmarkAdapter mAdapter;
-    private int count = 0;
-    AppCompatActivity app = new AppCompatActivity();
-    ViewGroup viewGroup;
+    private int count = 0;                                  // n번째 즐겨찾기 이름을 부여할 count 변수
+    private RecyclerView mRecyclerView;
+
 
     /**
      * Use this factory method to create a new instance of
@@ -76,37 +77,38 @@ public class BookmarkActivity extends Fragment{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
-    @SuppressLint("MissingInflatedId")
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        viewGroup =(ViewGroup)inflater.inflate(R.layout.fragment_bookmark_activity, container, false);
-        /**
-         * view는 단일 객체를 표한하기 위한 것이고
-         * viewGroup은 여러 view들을 묶어서 표현 view 와 viewgroup들을 표현할때 사용
-         * */
+        View view =inflater.inflate(R.layout.fragment_bookmark_activity, container, false);
 
         // 리사이클 뷰 생성
-        RecyclerView mRecyclerView = (RecyclerView)viewGroup.findViewById(R.id.recyclerview_main_list);     //리사이클 뷰에 넣어줄 뷰어 생성
-                                                                       // 크기 고정
-        LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(getActivity());                  // !-- 중요- Fragment 클래스를 상속 받은 경우 this 사용이 어려워 getActivity()로 받기
-        mRecyclerView.setLayoutManager(mLinearLayoutManager);                                               // 레이어 설정
+        mRecyclerView = (RecyclerView)view.findViewById(R.id.recyclerview_bookmark);     //리사이클 뷰에 넣어줄 뷰어 생성
+        mRecyclerView.setHasFixedSize(true);                           // 크기 고정
+
         mAdapter = new BookmarkAdapter(mArrayList);                                                        // 설정한 어뎁터 연동 -> 어뎁터는 데이터 값을 맵핑하여 생성시 데이터를 입력하는 역활
 
-        mArrayList = new ArrayList<>();
+        // !-- 중요- Fragment 클래스를 상속 받은 경우 this 사용이 어려워 getActivity()로 받기
+        RecyclerView.LayoutManager mLinearLayoutManager = new LinearLayoutManager(getActivity());
+
+
+        //LinearLayoutManager  =
+        mRecyclerView.setLayoutManager(mLinearLayoutManager);                                               // 레이어 설정
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setAdapter(mAdapter);                                                                  // 어뎁터 맵핑핑
 
+
+
         // 뒤로가기 버튼 기능
-        back_ibtn = (ImageButton) viewGroup.findViewById(R.id.back_ibtn);
+        back_ibtn = (ImageButton) view.findViewById(R.id.back_ibtn);
         back_ibtn.setOnClickListener(new ViewGroup.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -116,11 +118,11 @@ public class BookmarkActivity extends Fragment{
 
 
         /*객체 별로 떨어트리는 코드 */
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(), mLinearLayoutManager.getOrientation());
-        mRecyclerView.addItemDecoration(dividerItemDecoration);
+       // DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(), mLinearLayoutManager.getOrientation());
+        //mRecyclerView.addItemDecoration(dividerItemDecoration);
 
         /*장소 추가*/
-        add_ibtn = (ImageButton) viewGroup.findViewById(R.id.add_ibtn);
+        add_ibtn = (ImageButton) view.findViewById(R.id.add_ibtn);
         add_ibtn.setOnClickListener(new ViewGroup.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -133,6 +135,11 @@ public class BookmarkActivity extends Fragment{
             }
         });
 
-        return viewGroup;
+        return view;
+    }
+
+    private void preparDate(){
+        mArrayList.add(new Dictionary("MY PLACE"));
+        mArrayList.add(new Dictionary("Good"));
     }
 }

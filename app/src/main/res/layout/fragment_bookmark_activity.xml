@@ -89,8 +89,9 @@
             <!-- 가로 구분선 -->
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <!-- 리사클러뷰 -->
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerview_main_list"
+            android:id="@+id/recyclerview_bookmark"
             android:layout_width="match_parent"
             android:layout_height="513dp"
             android:layout_below="@+id/bookmark_add"
@@ -98,9 +99,8 @@
             android:layout_marginTop="0dp"
             android:layout_marginBottom="0dp"
             android:visibility="visible"
-            tools:visibility="visible">
-
-        </androidx.recyclerview.widget.RecyclerView>
+            android:scrollbars="vertical"
+            tools:visibility="visible"/>
 
     </RelativeLayout>
 
