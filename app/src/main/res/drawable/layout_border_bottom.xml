@@ -13,7 +13,7 @@
 
     </item>
 
-    <item android:top="5dp" android:bottom="5dp">
+    <item android:bottom="4dp">
 
         <shape android:shape="rectangle">
 
