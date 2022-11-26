@@ -142,7 +142,7 @@ public class BookmarkActivity extends Fragment{
                 final EditText editTextNAME = (EditText) v.findViewById(R.id.edittext_bookmark_name);
                 //final EditText editTextEnglish = (EditText) view.findViewById(R.id.edittext_dialog_endlish);
                 //final EditText editTextKorean = (EditText) view.findViewById(R.id.edittext_dialog_korean);
-                ButtonSubmit.setText("삽입");
+                ButtonSubmit.setText("추가");
 
                 final AlertDialog dialog = builder.create();
                 ButtonSubmit.setOnClickListener(new View.OnClickListener() {
