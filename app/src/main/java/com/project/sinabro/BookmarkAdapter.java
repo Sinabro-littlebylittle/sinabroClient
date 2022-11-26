@@ -25,7 +25,7 @@ import java.util.ArrayList;
 public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkAdapter.BookmarkViewHolder> {
 
     private ArrayList<Dictionary> mList;
-    private Context mContext;
+    private Context mContext ;
 /*뷰 홀더 어뎁터*/
     public class BookmarkViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
         /*변수 선언*/
@@ -38,39 +38,41 @@ public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkAdapter.Bookma
         public BookmarkViewHolder(View view) {
             super(view);
             this.name = (TextView) view.findViewById(R.id.name_favorite_place);
-            view.setOnCreateContextMenuListener(this);
+            view.setOnCreateContextMenuListener(this::onCreateContextMenu);
         }
-
+    @NonNull
     @Override
-    public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
+    public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
         MenuItem Edit = menu.add(Menu.NONE, 1001, 1, "편집");
         MenuItem Delete = menu.add(Menu.NONE, 1002, 2, "삭제");
         Edit.setOnMenuItemClickListener(onEditMenu);
         Delete.setOnMenuItemClickListener(onEditMenu);
     }
+
     private final MenuItem.OnMenuItemClickListener onEditMenu = new MenuItem.OnMenuItemClickListener(){
+        @NonNull
         @Override
         public boolean onMenuItemClick(MenuItem item) {
             switch (item.getItemId()) {
-                case 1001:  // 5. 편집 항목을 선택시
 
+                case 1001:  // 수정
 
-                    AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(mContext.getApplicationContext());
 
                     // 다이얼로그를 보여주기 위해 edit_box.xml 파일을 사용합니다.
 
-                    View view = LayoutInflater.from(mContext)
+                    View v = LayoutInflater.from(mContext.getApplicationContext())
                             .inflate(R.layout.favorite_edit_box, null, false);
-                    builder.setView(view);
-                    final Button ButtonSubmit = (Button) view.findViewById(R.id.button_bookmark_submit);
-                    final EditText editTextID = (EditText) view.findViewById(R.id.edittext_bookmark_name);
+                    builder.setView(v);
+                    final Button ButtonSubmit = (Button) v.findViewById(R.id.button_bookmark_submit);
+                    final EditText editTextName = (EditText) v.findViewById(R.id.edittext_bookmark_name);
                     //final EditText editTextEnglish = (EditText) view.findViewById(R.id.edittext_dialog_endlish);
                     //final EditText editTextKorean = (EditText) view.findViewById(R.id.edittext_dialog_korean);
 
 
 
                     // 6. 해당 줄에 입력되어 있던 데이터를 불러와서 다이얼로그에 보여줍니다.
-                    editTextID.setText(mList.get(getAdapterPosition()).getName());
+                    editTextName.setText(mList.get(getAdapterPosition()).getName());
                    // editTextEnglish.setText(mList.get(getAdapterPosition()).getEnglish());
                    // editTextKorean.setText(mList.get(getAdapterPosition()).getKorean());
 
@@ -83,7 +85,7 @@ public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkAdapter.Bookma
                         // 7. 수정 버튼을 클릭하면 현재 UI에 입력되어 있는 내용으로
 
                         public void onClick(View v) {
-                            String strNAME = editTextID.getText().toString();
+                            String strNAME = editTextName.getText().toString();
                             //String strEnglish = editTextEnglish.getText().toString();
                             //String strKorean = editTextKorean.getText().toString();
 
@@ -136,9 +138,6 @@ public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkAdapter.Bookma
 
         return viewHolder;
     }
-
-
-
     @Override
     public void onBindViewHolder(@NonNull BookmarkAdapter.BookmarkViewHolder viewholder, int position) {
 
@@ -148,22 +147,8 @@ public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkAdapter.Bookma
         viewholder.name.setText(mList.get(position).getName());                 // get 형식으로 텍스트를 받아옴
 
 
-        /*추후 뷰홀더 클릭시 여기서 소스코드 구현 하면 됨 */
-        viewholder.name.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // 뷰홀더 클릭 기능
-
-                Log.d("ViewHolder", "onClick: 테스트 중입니다.");
-
-            }
-        });
-
-
-
 
     }
-
     @Override
     public int getItemCount() {
         return mList.size();                //(null != mList ? mList.size() : 0)
