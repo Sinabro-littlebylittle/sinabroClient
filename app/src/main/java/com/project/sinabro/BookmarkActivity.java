@@ -129,10 +129,10 @@ public class BookmarkActivity extends Fragment{
         add_ibtn.setOnClickListener(new ViewGroup.OnClickListener() {
             @Override
             public void onClick(View view) {
-                count++;
-                Dictionary data = new Dictionary(count+"번째 즐겨찾기 목록입니다.");
-                mArrayList.add(data); // RecyclerView의 마지막 줄에 삽입
-                mAdapter.notifyDataSetChanged();
+              //  count++;
+               // Dictionary data = new Dictionary(count+"번째 즐겨찾기 목록입니다.");
+              //  mArrayList.add(data); // RecyclerView의 마지막 줄에 삽입
+               // mAdapter.notifyDataSetChanged();
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 View v = LayoutInflater.from(getActivity()).inflate(R.layout.favorite_edit_box,null,false);
@@ -142,9 +142,7 @@ public class BookmarkActivity extends Fragment{
                 final EditText editTextNAME = (EditText) v.findViewById(R.id.edittext_bookmark_name);
                 //final EditText editTextEnglish = (EditText) view.findViewById(R.id.edittext_dialog_endlish);
                 //final EditText editTextKorean = (EditText) view.findViewById(R.id.edittext_dialog_korean);
-
                 ButtonSubmit.setText("삽입");
-
 
                 final AlertDialog dialog = builder.create();
                 ButtonSubmit.setOnClickListener(new View.OnClickListener() {
