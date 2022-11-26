@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.ContextMenu;
 import android.view.Gravity;
@@ -56,12 +55,11 @@ public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkAdapter.Bookma
             switch (item.getItemId()) {
 
                 case 1001:  // 수정
-
-                    AlertDialog.Builder builder = new AlertDialog.Builder(mContext.getApplicationContext());
+                    AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
 
                     // 다이얼로그를 보여주기 위해 edit_box.xml 파일을 사용합니다.
 
-                    View v = LayoutInflater.from(mContext.getApplicationContext())
+                    View v = LayoutInflater.from(mContext)
                             .inflate(R.layout.favorite_edit_box, null, false);
                     builder.setView(v);
                     final Button ButtonSubmit = (Button) v.findViewById(R.id.button_bookmark_submit);
@@ -123,8 +121,9 @@ public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkAdapter.Bookma
 }
 
 
-    public BookmarkAdapter(ArrayList<Dictionary> list) {
-        this.mList = list;
+    public BookmarkAdapter(Context context, ArrayList<Dictionary> list) {
+        mList = list;
+        mContext = context;
     }
 
     @NonNull

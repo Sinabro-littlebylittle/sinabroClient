@@ -97,7 +97,7 @@ public class BookmarkActivity extends Fragment{
         mRecyclerView = (RecyclerView)view.findViewById(R.id.recyclerview_bookmark);     //리사이클 뷰에 넣어줄 뷰어 생성
         mRecyclerView.setHasFixedSize(true);                           // 크기 고정
 
-        mAdapter = new BookmarkAdapter(mArrayList);                                                        // 설정한 어뎁터 연동 -> 어뎁터는 데이터 값을 맵핑하여 생성시 데이터를 입력하는 역활
+        mAdapter = new BookmarkAdapter(getActivity(),mArrayList);                                                        // 설정한 어뎁터 연동 -> 어뎁터는 데이터 값을 맵핑하여 생성시 데이터를 입력하는 역활
 
         // !-- 중요- Fragment 클래스를 상속 받은 경우 this 사용이 어려워 getActivity()로 받기
         RecyclerView.LayoutManager mLinearLayoutManager = new LinearLayoutManager(getActivity());
