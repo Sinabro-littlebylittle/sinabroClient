@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.ContextMenu;
 import android.view.Gravity;
@@ -145,7 +146,16 @@ public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkAdapter.Bookma
 
         viewholder.name.setText(mList.get(position).getName());                 // get 형식으로 텍스트를 받아옴
 
+        /*추후 뷰홀더 클릭시 여기서 소스코드 구현 하면 됨 */
+        viewholder.name.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // 뷰홀더 클릭 기능
 
+                Log.d("ViewHolder", "onClick: 테스트 중입니다.");
+
+            }
+        });
 
     }
     @Override
