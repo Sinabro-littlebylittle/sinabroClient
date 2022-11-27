@@ -88,7 +88,7 @@ public class SettingsActivity extends Fragment {
             public void onClick(View view) {
                 Log.d("Notification", "onClick: 테스트 중입니다.");
                 Intent notification_intent = new Intent(getActivity(),NotificationActivity.class);
-                notification_intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                //notification_intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(notification_intent);
             }
         });
