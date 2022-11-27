@@ -71,9 +71,9 @@
                 android:layout_weight="1"
                 android:text="Notifications"
                 android:textColor="@color/black"
-                android:textSize="40dp"
+                android:textSize="33dp"
                 android:layout_marginLeft="15dp"
-                android:textStyle="bold" />
+                android:textStyle="normal" />
 
             <Space
                 android:layout_width="41dp"
@@ -114,14 +114,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Notifications"
+                android:text="TextSize"
                 android:textColor="@color/black"
-                android:textSize="40dp"
+                android:textSize="33dp"
                 android:layout_marginLeft="15dp"
-                android:textStyle="bold" />
+                android:textStyle="normal" />
 
             <Space
-                android:layout_width="41dp"
+                android:layout_width="111dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />
 
@@ -149,24 +149,30 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Notifications"
+                android:text="Language"
                 android:textColor="@color/black"
-                android:textSize="40dp"
+                android:textSize="30dp"
                 android:layout_marginLeft="15dp"
-                android:textStyle="bold" />
+                android:textStyle="normal" />
 
-            <Space
-                android:layout_width="41dp"
+            <TextView
+                android:id="@+id/textView19"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:gravity="right"
+                android:textColor="#0584FE"
+                android:text="Default" />
 
             <ImageButton
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="15dp"
                 android:layout_weight="1"
                 android:background="@color/white"
-                android:src="@drawable/arrow" />
+                android:src="@drawable/arrow"
+                android:text="Terms of Use & Policy" />
+
         </LinearLayout>
 
         <!-- 가운데 선 구분-->
@@ -193,16 +199,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Notifications"
+            android:text="Delete app usage history"
             android:textColor="@color/black"
-            android:textSize="40dp"
+            android:textSize="26dp"
             android:layout_marginLeft="15dp"
-            android:textStyle="bold" />
-
-            <Space
-                android:layout_width="41dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
+            android:textStyle="normal" />
 
             <ImageButton
                 android:layout_width="wrap_content"
@@ -229,16 +230,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Notifications"
+                android:text="Terms of Use & Policy"
                 android:textColor="@color/black"
-                android:textSize="40dp"
+                android:textSize="28dp"
                 android:layout_marginLeft="15dp"
-                android:textStyle="bold" />
-
-            <Space
-                android:layout_width="41dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:textStyle="normal" />
 
             <ImageButton
                 android:layout_width="wrap_content"
