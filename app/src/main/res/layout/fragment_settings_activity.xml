@@ -68,11 +68,11 @@
                 android:id="@+id/Notice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
                 android:layout_weight="1"
-                android:text="Notifications"
+                android:text="공지사항"
                 android:textColor="@color/black"
                 android:textSize="33dp"
-                android:layout_marginLeft="15dp"
                 android:textStyle="normal" />
 
             <Space
@@ -113,11 +113,11 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
                 android:layout_weight="1"
-                android:text="TextSize"
+                android:text="글자 크기"
                 android:textColor="@color/black"
                 android:textSize="33dp"
-                android:layout_marginLeft="15dp"
                 android:textStyle="normal" />
 
             <Space
@@ -149,11 +149,11 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
                 android:layout_weight="1"
-                android:text="Language"
+                android:text="언어 설정"
                 android:textColor="@color/black"
                 android:textSize="30dp"
-                android:layout_marginLeft="15dp"
                 android:textStyle="normal" />
 
             <TextView
@@ -198,14 +198,14 @@
 
             <!-- 레이아웃 안에 버튼과 글-->
             <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Delete app usage history"
-            android:textColor="@color/black"
-            android:textSize="26dp"
-            android:layout_marginLeft="15dp"
-            android:textStyle="normal" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_weight="1"
+                android:text="사용 기록 전체 삭제"
+                android:textColor="@color/black"
+                android:textSize="26dp"
+                android:textStyle="normal" />
 
             <ImageButton
                 android:id="@+id/Delete_histoty_imgbtn"
@@ -232,11 +232,11 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
                 android:layout_weight="1"
-                android:text="Terms of Use &amp; Policy"
+                android:text="이용 약관 및 정책"
                 android:textColor="@color/black"
                 android:textSize="28dp"
-                android:layout_marginLeft="15dp"
                 android:textStyle="normal" />
 
             <ImageButton
@@ -271,10 +271,10 @@
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="10dp"
-                android:text="  Version"
+                android:text="  버전"
+                android:textColor="@color/black"
                 android:textSize="25dp"
-                android:textStyle="bold"
-                android:textColor="@color/black"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/Version_lastest_view"
@@ -286,7 +286,7 @@
                 android:layout_marginTop="7dp"
                 android:layout_marginEnd="193dp"
                 android:layout_marginBottom="8dp"
-                android:text="Lastest 1.0.0" />
+                android:text="최신 1.0.0" />
 
             <TextView
                 android:id="@+id/Version_current_view"
@@ -298,7 +298,7 @@
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="7dp"
                 android:layout_marginBottom="8dp"
-                android:text="Current 1.0.0" />
+                android:text="현재 1.0.0" />
 
             <TextView
                 android:id="@+id/textView18"
