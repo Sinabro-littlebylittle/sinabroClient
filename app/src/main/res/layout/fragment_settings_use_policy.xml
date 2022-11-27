@@ -38,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="41dp"
-                android:text="Terms of Use &amp; Policy"
+                android:text="이용 약관 및 정책"
                 android:textColor="@color/black"
                 android:textSize="21sp"
                 android:textStyle="bold" />
@@ -69,7 +69,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:layout_weight="1"
-                android:text="Terms of Use of Location-based"
+                android:text="위치기반서비스 이용약관"
                 android:textColor="@color/black"
                 android:textSize="20dp"
                 android:textStyle="normal" />
@@ -107,13 +107,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:layout_weight="1"
-                android:text="Privacy Policy"
+                android:text="개인정보처리방침"
                 android:textColor="@color/black"
                 android:textSize="20dp"
                 android:textStyle="normal" />
 
             <Space
-                android:layout_width="137dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />
 
@@ -146,11 +146,11 @@
 
             <!-- 레이아웃 안에 버튼과 글-->
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="183dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:layout_weight="1"
-                android:text="Legal Notice / Info Providers"
+                android:text="법적 공지 / 정보 제공처"
                 android:textColor="@color/black"
                 android:textSize="20dp"
                 android:textStyle="normal" />
@@ -189,11 +189,11 @@
 
             <!-- 레이아웃 안에 버튼과 글-->
             <TextView
-                android:layout_width="291dp"
+                android:layout_width="221dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:layout_weight="1"
-                android:text="Open Source Licenses"
+                android:text="오픈소스 라이선스"
                 android:textColor="@color/black"
                 android:textSize="20dp"
                 android:textStyle="normal" />
@@ -227,11 +227,11 @@
 
             <!-- 레이아웃 안에 버튼과 글-->
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="223dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:layout_weight="1"
-                android:text="Limitations of Responsibilities of"
+                android:text="지적편집도 제공의 한계 및 책임"
                 android:textColor="@color/black"
                 android:textSize="20dp"
                 android:textStyle="normal" />
