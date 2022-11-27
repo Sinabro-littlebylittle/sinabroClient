@@ -86,7 +86,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="28dp"
                 android:layout_marginEnd="20dp"
-                android:text="Switch" />
+                android:background="@drawable/switch_track_selector" />
 
             <TextView
                 android:id="@+id/textView19"
@@ -145,7 +145,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="28dp"
                 android:layout_marginEnd="20dp"
-                android:text="Switch" />
+                android:background="@drawable/switch_track_selector" />
 
             <TextView
                 android:id="@+id/textView21"
@@ -204,7 +204,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="28dp"
                 android:layout_marginEnd="20dp"
-                android:text="Switch" />
+                android:background="@drawable/switch_track_selector" />
 
             <TextView
                 android:id="@+id/textView23"
@@ -266,7 +266,8 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="28dp"
                 android:layout_marginEnd="20dp"
-                android:text="Switch" />
+                android:background="@drawable/switch_track_selector"
+                 />
 
             <TextView
                 android:id="@+id/textVie25"
