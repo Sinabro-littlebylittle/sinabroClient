@@ -54,9 +54,10 @@
         </RelativeLayout>
 
         <LinearLayout
+            android:id="@+id/Setting_page_Notifications"
             android:layout_width="match_parent"
             android:layout_height="80dp"
-            android:orientation="horizontal"/>
+            android:orientation="horizontal" />
         <!-- 가운데 선 구분-->
         <View
             android:layout_width="match_parent"
@@ -67,6 +68,7 @@
             android:background="#BCBCBC" />
 
         <LinearLayout
+            android:id="@+id/Setting_page_TextSize"
             android:layout_width="match_parent"
             android:layout_height="80dp"
             android:background="@drawable/layout_border_bottom"
@@ -75,6 +77,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="80dp"
+            android:id="@+id/Setting_page_Language"
             android:background="@drawable/layout_border_top"
             android:orientation="horizontal"></LinearLayout>
 
@@ -89,12 +92,14 @@
 
 
         <LinearLayout
+            android:id="@+id/Setting_page_Delete_histoty"
             android:layout_width="match_parent"
             android:layout_height="80dp"
             android:background="@drawable/layout_border_bottom"
             android:orientation="horizontal"></LinearLayout>
 
         <LinearLayout
+            android:id="@+id/Setting_page_UserPolicy"
             android:layout_width="match_parent"
             android:layout_height="80dp"
             android:background="@drawable/layout_border_top"
@@ -109,6 +114,7 @@
             android:background="#BCBCBC" />
 
         <LinearLayout
+            android:id="@+id/Setting_page_Version"
             android:layout_width="match_parent"
             android:layout_height="80dp"
             android:orientation="horizontal"></LinearLayout>
