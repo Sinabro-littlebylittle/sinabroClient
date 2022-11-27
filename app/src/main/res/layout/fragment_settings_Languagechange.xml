@@ -182,6 +182,7 @@
             android:orientation="horizontal">
 
             <!-- 레이아웃 안에 버튼과 글-->
+
             <TextView
                 android:layout_width="55dp"
                 android:layout_height="wrap_content"
@@ -211,14 +212,23 @@
             android:layout_gravity="center"
             android:background="#BCBCBC" />
 
-        <Button
-            android:id="@+id/button_Cancel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:background="@drawable/radius"
-            android:gravity="center"
-            android:text="Cancel" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/button_Cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:background="@drawable/radius"
+                android:gravity="center"
+                android:text="Cancel" />
+        </LinearLayout>
 
     </LinearLayout>
 
