@@ -72,7 +72,7 @@
                 android:layout_weight="1"
                 android:text="알림 설정"
                 android:textColor="@color/black"
-                android:textSize="33dp"
+                android:textSize="30dp"
                 android:textStyle="normal" />
 
             <Space
@@ -117,7 +117,7 @@
                 android:layout_weight="1"
                 android:text="글자 크기"
                 android:textColor="@color/black"
-                android:textSize="33dp"
+                android:textSize="30dp"
                 android:textStyle="normal" />
 
             <Space
@@ -146,6 +146,7 @@
             android:orientation="horizontal">
 
             <!-- 레이아웃 안에 버튼과 글-->
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
