@@ -81,7 +81,7 @@
                 android:layout_weight="1" />
 
             <ImageButton
-                android:id="@+id/imageButton2"
+                android:id="@+id/Notifications_imgbtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="15dp"
@@ -126,6 +126,7 @@
                 android:layout_weight="1" />
 
             <ImageButton
+                android:id="@+id/TextSize_imgbtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="15dp"
@@ -156,7 +157,7 @@
                 android:textStyle="normal" />
 
             <TextView
-                android:id="@+id/textView19"
+                android:id="@+id/Language_state_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -165,13 +166,14 @@
                 android:text="Default" />
 
             <ImageButton
+                android:id="@+id/Language_imgbtn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="15dp"
                 android:layout_weight="1"
                 android:background="@color/white"
                 android:src="@drawable/arrow"
-                android:text="Terms of Use & Policy" />
+                android:text="Terms of Use &amp; Policy" />
 
         </LinearLayout>
 
@@ -206,6 +208,7 @@
             android:textStyle="normal" />
 
             <ImageButton
+                android:id="@+id/Delete_histoty_imgbtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="15dp"
@@ -230,13 +233,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Terms of Use & Policy"
+                android:text="Terms of Use &amp; Policy"
                 android:textColor="@color/black"
                 android:textSize="28dp"
                 android:layout_marginLeft="15dp"
                 android:textStyle="normal" />
 
             <ImageButton
+                android:id="@+id/Userpolicy_imgbtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="15dp"
@@ -273,7 +277,7 @@
                 android:textColor="@color/black"/>
 
             <TextView
-                android:id="@+id/textView16"
+                android:id="@+id/Version_lastest_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/textView15"
@@ -285,13 +289,13 @@
                 android:text="Lastest 1.0.0" />
 
             <TextView
-                android:id="@+id/textView17"
+                android:id="@+id/Version_current_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/textView15"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentBottom="true"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="12dp"
                 android:layout_marginTop="7dp"
                 android:layout_marginBottom="8dp"
                 android:text="Current 1.0.0" />
@@ -306,8 +310,8 @@
                 android:layout_marginTop="42dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="7dp"
-                android:layout_toStartOf="@+id/textView16"
-                android:layout_toEndOf="@+id/textView17"
+                android:layout_toStartOf="@+id/Version_lastest_view"
+                android:layout_toEndOf="@+id/Version_current_view"
                 android:gravity="center"
                 android:textSize="15dp"
                 android:text="/" />
