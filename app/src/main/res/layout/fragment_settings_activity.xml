@@ -121,8 +121,8 @@
                 android:textStyle="normal" />
 
             <Space
-                android:layout_width="111dp"
-                android:layout_height="wrap_content"
+                android:layout_width="57dp"
+                android:layout_height="15dp"
                 android:layout_weight="1" />
 
             <ImageButton
@@ -158,12 +158,12 @@
 
             <TextView
                 android:id="@+id/Language_state_view"
-                android:layout_width="wrap_content"
+                android:layout_width="9dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="right"
-                android:textColor="#0584FE"
-                android:text="Default" />
+                android:text="시스템 기본값"
+                android:textColor="#0584FE" />
 
             <ImageButton
                 android:id="@+id/Language_imgbtn"
@@ -198,7 +198,7 @@
 
             <!-- 레이아웃 안에 버튼과 글-->
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:layout_weight="1"
@@ -230,7 +230,7 @@
 
             <!-- 레이아웃 안에 버튼과 글-->
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="259dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:layout_weight="1"
