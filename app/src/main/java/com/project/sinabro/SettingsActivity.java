@@ -1,5 +1,6 @@
 package com.project.sinabro;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -86,6 +87,9 @@ public class SettingsActivity extends Fragment {
             @Override
             public void onClick(View view) {
                 Log.d("Notification", "onClick: 테스트 중입니다.");
+                Intent notification_intent = new Intent(getActivity(),NotificationActivity.class);
+                notification_intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(notification_intent);
             }
         });
         // use policy 페이지로 넘어가기
