@@ -10,19 +10,26 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -57,9 +64,23 @@ import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapView;
 
-import java.util.ArrayList;
+import org.pytorch.IValue;
+import org.pytorch.LiteModuleLoader;
+import org.pytorch.Module;
+import org.pytorch.Tensor;
+import org.pytorch.torchvision.TensorImageUtils;
 
-public class MainActivity extends AppCompatActivity implements MapView.CurrentLocationEventListener, MapView.MapViewEventListener {
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity implements MapView.CurrentLocationEventListener, MapView.MapViewEventListener,Runnable {
 
     /**
      * 위치 권한 요청 코드의 상숫값
@@ -116,9 +137,43 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
     private LocationManager locationManager;
     private static final int REQUEST_CODE_LOCATION = 2;
 
+    //모델관련 변수 선언
+    private ResultView mResultView;
+    private Bitmap mBitmap = null;
+    private Module mModule = null;
+    private float mImgScaleX, mImgScaleY, mIvScaleX, mIvScaleY, mStartX, mStartY;
+
+    //모델 에셋 경로 설정 함수
+    public static String assetFilePath(Context context, String assetName) throws IOException {
+        File file = new File(context.getFilesDir(), assetName);
+        if (file.exists() && file.length() > 0) {
+            return file.getAbsolutePath();
+        }
+
+        try (InputStream is = context.getAssets().open(assetName)) {
+            try (OutputStream os = new FileOutputStream(file)) {
+                byte[] buffer = new byte[4 * 1024];
+                int read;
+                while ((read = is.read(buffer)) != -1) {
+                    os.write(buffer, 0, read);
+                }
+                os.flush();
+            }
+            return file.getAbsolutePath();
+        }
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //카메라 권한
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+        }
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 1);
+        }
+
         setContentView(R.layout.activity_main);
 
         /** 다음 카카오맵 지도를 띄우는 코드 */
@@ -231,6 +286,8 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
 //            }
 //        });
 
+        mResultView = findViewById(R.id.resultView);
+//        mResultView.setVisibility(View.INVISIBLE);
         /** 카메라 촬영 버튼 */
         peopleCount_btn = findViewById(R.id.peopleCount_btn);
         peopleCount_btn.setOnClickListener(new View.OnClickListener() {
@@ -238,6 +295,8 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
             public void onClick(View view) {
                 // 이곳에 카메라 촬영으로 이어지는 코드가 추가하면 됩니다.
                 Log.d("테스트", "/////////들어옴//////////");
+                final Intent intent = new Intent(MainActivity.this, ObjectDetectionActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -258,23 +317,83 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
                 // 이곳에 북마크 등록 액티비티로 이어지는 코드를 추가하면 됩니다.
             }
         });
-    }
 
+
+
+        //모델 로드..
+        try {
+            mModule = LiteModuleLoader.load(MainActivity.assetFilePath(getApplicationContext(), "yolov5s.torchscript.ptl"));
+            BufferedReader br = new BufferedReader(new InputStreamReader(getAssets().open("classes.txt")));
+            String line;
+            List<String> classes = new ArrayList<>();
+            while ((line = br.readLine()) != null) {
+                classes.add(line);
+            }
+            PrePostProcessor.mClasses = new String[classes.size()];
+            classes.toArray(PrePostProcessor.mClasses);
+        } catch (IOException e) {
+            Log.e("Object Detection", "Error reading assets", e);
+            finish();
+        }
+
+    }
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        System.out.println("\n\nre"+requestCode);
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_LOCATION_SETTINGS) {
-            switch (resultCode) {
-                case Activity.RESULT_OK:
-                    Toast.makeText(MainActivity.this, "Result OK", Toast.LENGTH_SHORT).show();
+        if (resultCode != RESULT_CANCELED) {
+            switch (requestCode) {
+                case 0:
+                    if (resultCode == RESULT_OK && data != null) {
+                        mBitmap = (Bitmap) data.getExtras().get("data");
+                        Matrix matrix = new Matrix();
+                        matrix.postRotate(90.0f);
+                        mBitmap = Bitmap.createBitmap(mBitmap, 0, 0, mBitmap.getWidth(), mBitmap.getHeight(), matrix, true);
+                        //mImageView.setImageBitmap(mBitmap);
+                    }
                     break;
-                case Activity.RESULT_CANCELED:
-                    Toast.makeText(MainActivity.this, "Result Cancel", Toast.LENGTH_SHORT).show();
-                    break;
-                default:
+                case 1:
+                    if (resultCode == RESULT_OK && data != null) {
+                        Uri selectedImage = data.getData();
+                        String[] filePathColumn = {MediaStore.Images.Media.DATA};
+                        if (selectedImage != null) {
+                            Cursor cursor = getContentResolver().query(selectedImage,
+                                    filePathColumn, null, null, null);
+                            if (cursor != null) {
+                                cursor.moveToFirst();
+                                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                                String picturePath = cursor.getString(columnIndex);
+                                mBitmap = BitmapFactory.decodeFile(picturePath);
+                                Matrix matrix = new Matrix();
+                                matrix.postRotate(90.0f);
+                                mBitmap = Bitmap.createBitmap(mBitmap, 0, 0, mBitmap.getWidth(), mBitmap.getHeight(), matrix, true);
+                                //mImageView.setImageBitmap(mBitmap);
+                                cursor.close();
+                            }
+                        }
+                    }
                     break;
             }
         }
+    }
+
+    @Override
+    public void run() {
+        Bitmap resizedBitmap = Bitmap.createScaledBitmap(mBitmap, PrePostProcessor.mInputWidth, PrePostProcessor.mInputHeight, true);
+        final Tensor inputTensor = TensorImageUtils.bitmapToFloat32Tensor(resizedBitmap, PrePostProcessor.NO_MEAN_RGB, PrePostProcessor.NO_STD_RGB);
+        IValue[] outputTuple = mModule.forward(IValue.from(inputTensor)).toTuple();
+        final Tensor outputTensor = outputTuple[0].toTensor();
+        final float[] outputs = outputTensor.getDataAsFloatArray();
+        final ArrayList<Result> results =  PrePostProcessor.outputsToNMSPredictions(outputs, mImgScaleX, mImgScaleY, mIvScaleX, mIvScaleY, mStartX, mStartY);
+
+        runOnUiThread(() -> {
+            //mButtonDetect.setEnabled(true);
+            //mButtonDetect.setText(getString(R.string.detect));
+            //mProgressBar.setVisibility(ProgressBar.INVISIBLE);
+            mResultView.setResults(results);
+            mResultView.invalidate();
+            mResultView.setVisibility(View.VISIBLE);
+        });
     }
 
     private void init() {
@@ -484,4 +603,5 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
     @Override
     public void onMapViewMoveFinished(MapView mapView, MapPoint mapPoint) {
     }
+
 }
