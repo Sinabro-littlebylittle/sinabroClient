@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clickable="true"
+    android:scrollbarFadeDuration="0"
+    android:scrollbarSize="5dp"
     tools:context=".BookmarkActivity">
 
     <RelativeLayout
@@ -29,11 +32,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="39dp"
-            android:textStyle="bold"
+            android:layout_marginTop="40dp"
             android:text="즐겨찾기"
             android:textColor="@color/black"
-            android:textSize="23sp" />
+            android:textSize="21sp"
+            android:textStyle="bold" />
 
         <!-- 가로 구분선 -->
         <View
@@ -42,6 +45,64 @@
             android:layout_alignBottom="@+id/menuTitle_tv"
             android:layout_marginBottom="-18dp"
             android:background="#BCBCBC" />
+
+        <!-- 추가  -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:id="@+id/bookmark_add"
+            android:layout_height="60dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="87dp"
+            android:layout_marginEnd="0dp">
+
+            <ImageButton
+                android:id="@+id/add_ibtn"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/shape_for_circle_button"
+                android:src="@drawable/plus_2"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/textView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginStart="27.5dp"/>
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="새 리스트"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/add_ibtn"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginStart="12dp"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#BCBCBC"
+                app:layout_constraintBottom_toBottomOf="parent"
+                tools:layout_editor_absoluteX="-6dp" />
+
+            <!-- 가로 구분선 -->
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- 리사클러뷰 -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview_bookmark"
+            android:layout_width="match_parent"
+            android:layout_height="513dp"
+            android:layout_below="@+id/bookmark_add"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="0dp"
+            android:visibility="visible"
+            android:scrollbars="vertical"
+            tools:visibility="visible"/>
 
     </RelativeLayout>
 

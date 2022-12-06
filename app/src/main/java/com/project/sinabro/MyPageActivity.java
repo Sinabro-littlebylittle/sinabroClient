@@ -65,7 +65,7 @@ public class MyPageActivity extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
-
+/*뒤로가기*/
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
