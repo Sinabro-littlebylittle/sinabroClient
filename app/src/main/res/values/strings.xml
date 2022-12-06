@@ -7,4 +7,9 @@
     <string name="aboutUs">개발 정보</string>
     <string name="nickname">Benedict Cumberbatch</string>
     <string name="userID">bravekid56</string>
+
+    <string name="image_view">Image View</string>
+    <string name="run_model">Running the model...</string>
+    <string name="restart">Restart</string>
+    <string name="live">Live</string>
 </resources>
