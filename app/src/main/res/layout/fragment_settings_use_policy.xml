@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clickable="true"
-    tools:context=".SettingsActivity">
+    tools:context=".UsePolicyActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -38,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="41dp"
-                android:text="설정"
+                android:text="이용 약관 및 정책"
                 android:textColor="@color/black"
                 android:textSize="21sp"
                 android:textStyle="bold" />
@@ -54,34 +54,28 @@
 
         </RelativeLayout>
 
-        <!--Notifications 레이아웃-->
+        <!--레이아웃-->
         <LinearLayout
-            android:id="@+id/Setting_page_Notifications"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
+            android:layout_height="50dp"
             android:layout_gravity="center_horizontal"
             android:gravity="center"
             android:orientation="horizontal">
 
-        <!-- 레이아웃 안에 버튼과 글-->
+            <!-- 레이아웃 안에 버튼과 글-->
             <TextView
                 android:id="@+id/Notice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:layout_weight="1"
-                android:text="알림 설정"
+                android:text="위치기반서비스 이용약관"
                 android:textColor="@color/black"
-                android:textSize="30dp"
+                android:textSize="20dp"
                 android:textStyle="normal" />
 
-            <Space
-                android:layout_width="41dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
-
             <ImageButton
-                android:id="@+id/Notifications_imgbtn"
+                android:id="@+id/Policy_Lacation_imgbtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="15dp"
@@ -99,12 +93,10 @@
             android:layout_gravity="center"
             android:background="#BCBCBC" />
 
-        <!-- textSize 레이아웃-->
+        <!--  레이아웃-->
         <LinearLayout
-            android:id="@+id/Setting_page_TextSize"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:background="@drawable/layout_border_bottom"
+            android:layout_height="50dp"
             android:layout_gravity="center_horizontal"
             android:gravity="center"
             android:orientation="horizontal">
@@ -115,18 +107,18 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:layout_weight="1"
-                android:text="글자 크기"
+                android:text="개인정보처리방침"
                 android:textColor="@color/black"
-                android:textSize="30dp"
+                android:textSize="20dp"
                 android:textStyle="normal" />
 
             <Space
-                android:layout_width="57dp"
-                android:layout_height="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_weight="1" />
 
             <ImageButton
-                android:id="@+id/TextSize_imgbtn"
+                android:id="@+id/Policy_policy_imgbtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="15dp"
@@ -135,40 +127,37 @@
                 android:src="@drawable/arrow" />
         </LinearLayout>
 
-        <!-- Language 레이아웃 -->
+        <!-- 가운데 선 구분-->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="23dp"
+            android:layout_marginRight="23dp"
+            android:layout_gravity="center"
+            android:background="#BCBCBC" />
+
+        <!--  레이아웃 -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:id="@+id/Setting_page_Language"
-            android:background="@drawable/layout_border_top"
+            android:layout_height="50dp"
             android:layout_gravity="center_horizontal"
             android:gravity="center"
             android:orientation="horizontal">
 
             <!-- 레이아웃 안에 버튼과 글-->
-
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="183dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:layout_weight="1"
-                android:text="언어 설정"
+                android:text="법적 공지 / 정보 제공처"
                 android:textColor="@color/black"
-                android:textSize="30dp"
+                android:textSize="20dp"
                 android:textStyle="normal" />
 
-            <TextView
-                android:id="@+id/Language_state_view"
-                android:layout_width="9dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="right"
-                android:text="시스템 기본값"
-                android:textColor="#0584FE" />
-
             <ImageButton
-                android:id="@+id/Language_imgbtn"
-                android:layout_width="0dp"
+                android:id="@+id/Policy_Legal_imgbtn"
+                android:layout_width="1dp"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="15dp"
                 android:layout_weight="1"
@@ -187,61 +176,30 @@
             android:layout_gravity="center"
             android:background="#BCBCBC" />
 
-        <!-- Delete_history-->
+
+
+        <!--레이아웃-->
         <LinearLayout
             android:id="@+id/Setting_page_Delete_histoty"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:background="@drawable/layout_border_bottom"
+            android:layout_height="50dp"
             android:layout_gravity="center_horizontal"
             android:gravity="center"
             android:orientation="horizontal">
 
             <!-- 레이아웃 안에 버튼과 글-->
             <TextView
-                android:layout_width="250dp"
+                android:layout_width="221dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:layout_weight="1"
-                android:text="사용 기록 전체 삭제"
+                android:text="오픈소스 라이선스"
                 android:textColor="@color/black"
-                android:textSize="26dp"
+                android:textSize="20dp"
                 android:textStyle="normal" />
 
             <ImageButton
-                android:id="@+id/Delete_histoty_imgbtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="15dp"
-                android:layout_weight="1"
-                android:background="@color/white"
-                android:src="@drawable/arrow" />
-        </LinearLayout>
-
-
-        <!-- UserPolicy 레이아웃 -->
-        <LinearLayout
-            android:id="@+id/Setting_page_UserPolicy"
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:background="@drawable/layout_border_top"
-            android:layout_gravity="center_horizontal"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <!-- 레이아웃 안에 버튼과 글-->
-            <TextView
-                android:layout_width="259dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_weight="1"
-                android:text="이용 약관 및 정책"
-                android:textColor="@color/black"
-                android:textSize="28dp"
-                android:textStyle="normal" />
-
-            <ImageButton
-                android:id="@+id/Userpolicy_imgbtn"
+                android:id="@+id/Policy_opensource_imgbtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="15dp"
@@ -259,64 +217,45 @@
             android:layout_gravity="center"
             android:background="#BCBCBC" />
 
-        <!-- Version 레이아웃-->
-        <RelativeLayout
-            android:id="@+id/Setting_page_Version"
+        <!-- 레이아웃 -->
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="80dp">
+            android:layout_height="50dp"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:orientation="horizontal">
 
+            <!-- 레이아웃 안에 버튼과 글-->
             <TextView
-                android:id="@+id/textView15"
-                android:layout_width="match_parent"
+                android:layout_width="223dp"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginTop="10dp"
-                android:text="  버전"
+                android:layout_marginLeft="15dp"
+                android:layout_weight="1"
+                android:text="지적편집도 제공의 한계 및 책임"
                 android:textColor="@color/black"
-                android:textSize="25dp"
-                android:textStyle="bold" />
+                android:textSize="20dp"
+                android:textStyle="normal" />
 
-            <TextView
-                android:id="@+id/Version_lastest_view"
+            <ImageButton
+                android:id="@+id/Policy_Limit_imgbtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/textView15"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentBottom="true"
-                android:layout_marginTop="7dp"
-                android:layout_marginEnd="193dp"
-                android:layout_marginBottom="8dp"
-                android:text="최신 1.0.0" />
+                android:layout_marginRight="15dp"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:src="@drawable/arrow" />
+        </LinearLayout>
 
-            <TextView
-                android:id="@+id/Version_current_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/textView15"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentBottom="true"
-                android:layout_marginStart="12dp"
-                android:layout_marginTop="7dp"
-                android:layout_marginBottom="8dp"
-                android:text="현재 1.0.0" />
+        <!-- 가운데 선 구분-->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="23dp"
+            android:layout_marginRight="23dp"
+            android:layout_gravity="center"
+            android:background="#BCBCBC" />
 
-            <TextView
-                android:id="@+id/textView18"
-                android:layout_width="10dp"
-                android:layout_height="21dp"
-                android:layout_alignTop="@+id/textView15"
-                android:layout_alignParentBottom="true"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="42dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="7dp"
-                android:layout_toStartOf="@+id/Version_lastest_view"
-                android:layout_toEndOf="@+id/Version_current_view"
-                android:gravity="center"
-                android:textSize="15dp"
-                android:text="/" />
-        </RelativeLayout>
+
 
     </LinearLayout>
 
