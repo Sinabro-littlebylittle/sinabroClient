@@ -1,28 +1,36 @@
 package com.project.sinabro;
+
 import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.view.TextureView;
-import android.widget.Toast;
-
-import androidx.camera.core.ImageAnalysisConfig;
-import androidx.camera.core.Preview;
-import androidx.camera.core.PreviewConfig;
-import androidx.core.app.ActivityCompat;
 import android.os.SystemClock;
 import android.util.Size;
+import android.view.TextureView;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
+
 import androidx.annotation.Nullable;
 import androidx.annotation.UiThread;
 import androidx.annotation.WorkerThread;
 import androidx.camera.core.CameraX;
 import androidx.camera.core.ImageAnalysis;
+import androidx.camera.core.ImageAnalysisConfig;
 import androidx.camera.core.ImageProxy;
+import androidx.camera.core.Preview;
+import androidx.camera.core.PreviewConfig;
+import androidx.core.app.ActivityCompat;
 
 public abstract class AbstractCameraXActivity<R> extends BaseModuleActivity {
     private static final int REQUEST_CODE_CAMERA_PERMISSION = 200;
     private static final String[] PERMISSIONS = {Manifest.permission.CAMERA};
 
     private long mLastAnalysisResultTime;
+    private Button scanbtn;
+
 
     protected abstract int getContentViewLayoutId();
 
@@ -44,6 +52,36 @@ public abstract class AbstractCameraXActivity<R> extends BaseModuleActivity {
         } else {
             setupCameraX();
         }
+
+        scanbtn=findViewById(com.project.sinabro.R.id.scanbutton);
+        scanbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //카메라 화면에서 완료버튼 클릭시
+                int temp = ResultView.countP();
+                AlertDialog.Builder builder=new AlertDialog.Builder(AbstractCameraXActivity.this);
+                builder.setTitle("Detection Result").setMessage(String.valueOf(temp)+" is detected");
+                builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(AbstractCameraXActivity.this, "확인", Toast.LENGTH_SHORT).show();
+//                            AbstractCameraXActivity.super.onBackPressed();
+//                            AbstractCameraXActivity.this.finish();
+                        finish();
+                        Intent intent = new Intent(AbstractCameraXActivity.this, MainActivity.class);
+                        startActivity(intent);
+                        ResultView.sum=0;
+//                            String headcount=String.valueOf(temp);
+
+                    }
+                });
+
+
+//                Toast.makeText(getBaseContext(), "test scanbtn.", Toast.LENGTH_LONG).show();
+                AlertDialog alertDialog= builder.create();
+                alertDialog.show();
+            }
+        });
     }
 
     @Override
@@ -61,6 +99,7 @@ public abstract class AbstractCameraXActivity<R> extends BaseModuleActivity {
                 setupCameraX();
             }
         }
+
     }
 
     private void setupCameraX() {
@@ -98,4 +137,3 @@ public abstract class AbstractCameraXActivity<R> extends BaseModuleActivity {
     @UiThread
     protected abstract void applyToUiAnalyzeImageResult(R result);
 }
-

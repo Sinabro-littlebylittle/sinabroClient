@@ -39,12 +39,11 @@ public class ResultView extends View {
         mPaintRectangle.setColor(Color.YELLOW);
         mPaintText = new Paint();
     }
-    int sum=0;
 
+    public static int sum=0;
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-
         if (mResults == null) return;
         for (Result result : mResults) {
 
@@ -71,6 +70,9 @@ public class ResultView extends View {
         }
     }
 
+    public static int countP(){
+        return sum;
+    }
     public void setResults(ArrayList<Result> results) {
         mResults = results;
     }
