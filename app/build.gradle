@@ -70,4 +70,11 @@ dependencies {
     implementation 'org.pytorch:pytorch_android_torchvision_lite:1.12.2'
     implementation 'org.pytorch:pytorch_android_lite:1.12.2'
 
+    // 안드로이드 앱과 서버 통신을 위한 Retrofit 라이브러리 추가
+    // https://mvnrepository.com/artifact/com.squareup.retrofit2/retrofit
+    implementation group: 'com.squareup.retrofit2', name: 'retrofit', version: '2.9.0'
+
+    // Gson 변환기 라이브러리
+    // https://mvnrepository.com/artifact/com.squareup.retrofit2/converter-gson
+    implementation group: 'com.squareup.retrofit2', name: 'converter-gson', version: '2.9.0'
 }

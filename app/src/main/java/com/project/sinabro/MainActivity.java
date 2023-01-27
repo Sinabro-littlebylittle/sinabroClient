@@ -24,6 +24,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -48,6 +49,9 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.navigation.NavigationView;
+import com.project.sinabro.model.Places;
+import com.project.sinabro.retrofit.PlacesAPI;
+import com.project.sinabro.retrofit.RetrofitService;
 
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
@@ -68,6 +72,12 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements MapView.CurrentLocationEventListener, MapView.MapViewEventListener,Runnable {
 
@@ -125,6 +135,7 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
      */
     private LocationManager locationManager;
     private static final int REQUEST_CODE_LOCATION = 2;
+    private double selectedLatitude, selectedLongitude;
 
     //모델관련 변수 선언
     private ResultView mResultView;
@@ -286,6 +297,28 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         editLocation_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                RetrofitService retrofitService = new RetrofitService();
+                PlacesAPI placesAPI = retrofitService.getRetrofit().create(PlacesAPI.class);
+
+                Log.d(null, "위도: " + selectedLatitude + ", 경도: " + selectedLongitude);
+                Places place = new Places();
+                place.setPlace_name("테스트 장소명");
+                place.setAddress("주소주소주소...");
+                place.setLatitude(selectedLatitude);
+                place.setLongitude(selectedLongitude);
+
+                placesAPI.save(place).enqueue(new Callback<Places>() {
+                    @Override
+                    public void onResponse(Call<Places> call, Response<Places> response) {
+                        Toast.makeText(MainActivity.this, "save success!!", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onFailure(Call<Places> call, Throwable t) {
+                        Toast.makeText(MainActivity.this, "save failed..", Toast.LENGTH_SHORT).show();
+                        Logger.getLogger(MainActivity.class.getName()).log(Level.SEVERE, "Error occured", t);
+                    }
+                });
                 // 이곳에 장소 등록 액티비티로 이어지는 코드를 추가하면 됩니다.
             }
         });
@@ -551,6 +584,8 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         marker.setItemName("새로운 장소(" + (markers.size() + 1) + ")");
         marker.setTag(markers.size());
         marker.setMapPoint(mapPoint);
+        selectedLatitude = mapPoint.getMapPointGeoCoord().latitude;
+        selectedLongitude = mapPoint.getMapPointGeoCoord().longitude;
         marker.setMarkerType(MapPOIItem.MarkerType.YellowPin); // 기본으로 제공하는 BluePin 마커 모양.
         marker.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin); // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
 
