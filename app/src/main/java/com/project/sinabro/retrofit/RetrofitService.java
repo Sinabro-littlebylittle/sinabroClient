@@ -14,7 +14,7 @@ public class RetrofitService {
 
     private void initializeRetrofit() {
         retrofit = new Retrofit.Builder()
-                .baseUrl("http://개인의 공인IP:9000")
+                .baseUrl("http://sinabro-developersung13.koyeb.app")
                 .addConverterFactory(GsonConverterFactory.create(new Gson()))
                 .build();
     }
