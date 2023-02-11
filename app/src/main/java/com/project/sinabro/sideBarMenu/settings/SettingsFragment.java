@@ -1,6 +1,5 @@
-package com.project.sinabro;
+package com.project.sinabro.sideBarMenu.settings;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
@@ -11,16 +10,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.project.sinabro.R;
+
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link SettingsActivity#newInstance} factory method to
+ * Use the {@link SettingsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SettingsActivity extends Fragment {
+public class SettingsFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -39,7 +39,7 @@ public class SettingsActivity extends Fragment {
     private ImageButton TextSize_imgbtn;                // TextSize 버튼
 
 
-    public SettingsActivity() {
+    public SettingsFragment() {
         // Required empty public constructor
     }
 
@@ -52,8 +52,8 @@ public class SettingsActivity extends Fragment {
      * @return A new instance of fragment SettingsActivity.
      */
     // TODO: Rename and change types and number of parameters
-    public static SettingsActivity newInstance(String param1, String param2) {
-        SettingsActivity fragment = new SettingsActivity();
+    public static SettingsFragment newInstance(String param1, String param2) {
+        SettingsFragment fragment = new SettingsFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
