@@ -1,4 +1,4 @@
-package com.project.sinabro;
+package com.project.sinabro.sideBarMenu.aboutUs;
 
 import android.os.Bundle;
 
@@ -9,12 +9,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
+import com.project.sinabro.R;
+
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link AboutUsActivity#newInstance} factory method to
+ * Use the {@link AboutUsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AboutUsActivity extends Fragment {
+public class AboutUsFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -27,7 +29,7 @@ public class AboutUsActivity extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public AboutUsActivity() {
+    public AboutUsFragment() {
         // Required empty public constructor
     }
 
@@ -40,8 +42,8 @@ public class AboutUsActivity extends Fragment {
      * @return A new instance of fragment AboutUsActivity.
      */
     // TODO: Rename and change types and number of parameters
-    public static AboutUsActivity newInstance(String param1, String param2) {
-        AboutUsActivity fragment = new AboutUsActivity();
+    public static AboutUsFragment newInstance(String param1, String param2) {
+        AboutUsFragment fragment = new AboutUsFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
