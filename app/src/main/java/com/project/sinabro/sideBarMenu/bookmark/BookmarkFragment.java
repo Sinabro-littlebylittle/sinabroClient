@@ -1,6 +1,5 @@
-package com.project.sinabro;
+package com.project.sinabro.sideBarMenu.bookmark;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
@@ -15,22 +14,21 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 
 // Bookmark 추가를 위한 라이브러리
-import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.project.sinabro.R;
 
 import java.util.ArrayList;
 
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link BookmarkActivity#newInstance} factory method to
+ * Use the {@link BookmarkFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class BookmarkActivity extends Fragment{
+public class BookmarkFragment extends Fragment{
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -45,7 +43,7 @@ public class BookmarkActivity extends Fragment{
     private String mParam1;
     private String mParam2;
 
-    public BookmarkActivity() {
+    public BookmarkFragment() {
         // Required empty public constructor
     }
     /**
@@ -68,8 +66,8 @@ public class BookmarkActivity extends Fragment{
      * @return A new instance of fragment BookmarkActivity.
      */
     // TODO: Rename and change types and number of parameters
-    public static BookmarkActivity newInstance(String param1, String param2) {
-        BookmarkActivity fragment = new BookmarkActivity();
+    public static BookmarkFragment newInstance(String param1, String param2) {
+        BookmarkFragment fragment = new BookmarkFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);

@@ -7,36 +7,36 @@
 
     <!-- 마이페이지 액티비티 연결 -->
     <fragment
-        android:id="@+id/mypage_menu"
-        android:name="com.project.sinabro.MyPageActivity"
+        android:id="@+id/myPage_menu"
+        android:name="com.project.sinabro.sideBarMenu.myPage.MyPageFragment"
         android:label="fragment_my_page_activity"
         tools:layout="@layout/fragment_my_page_activity" />
 
     <!-- 즐겨찾기 액티비티 연결 -->
     <fragment
         android:id="@+id/bookmark_menu"
-        android:name="com.project.sinabro.BookmarkActivity"
+        android:name="com.project.sinabro.sideBarMenu.bookmark.BookmarkFragment"
         android:label="fragment_bookmark_activity"
         tools:layout="@layout/fragment_bookmark_activity" />
 
     <!-- 설정 액티비티 연결 -->
     <fragment
         android:id="@+id/settings_menu"
-        android:name="com.project.sinabro.SettingsActivity"
+        android:name="com.project.sinabro.sideBarMenu.settings.SettingsFragment"
         android:label="fragment_settings_activity"
         tools:layout="@layout/fragment_settings_activity" />
 
     <!-- 문의 액티비티 연결 -->
     <fragment
         android:id="@+id/support_menu"
-        android:name="com.project.sinabro.SupportActivity"
+        android:name="com.project.sinabro.sideBarMenu.support.SupportFragment"
         android:label="fragment_support_activity"
         tools:layout="@layout/fragment_support_activity" />
 
     <!-- 개발 문의 액티비티 연결 -->
     <fragment
         android:id="@+id/aboutUs_menu"
-        android:name="com.project.sinabro.AboutUsActivity"
+        android:name="com.project.sinabro.sideBarMenu.aboutUs.AboutUsFragment"
         android:label="fragment_about_us_activity"
         tools:layout="@layout/fragment_about_us_activity" />
 

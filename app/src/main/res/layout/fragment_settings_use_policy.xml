@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clickable="true"
-    tools:context=".UsePolicyActivity">
+    tools:context=".sideBarMenu.settings.UsePolicyFragment">
 
     <LinearLayout
         android:layout_width="match_parent"

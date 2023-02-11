@@ -1,4 +1,4 @@
-package com.project.sinabro;
+package com.project.sinabro.sideBarMenu.settings;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,7 +8,9 @@ import android.widget.ImageButton;
 
 import androidx.fragment.app.Fragment;
 
-public class UsePolicyActivity extends Fragment {
+import com.project.sinabro.R;
+
+public class UsePolicyFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -20,7 +22,7 @@ public class UsePolicyActivity extends Fragment {
 
     private ImageButton back_ibtn;
 
-    public UsePolicyActivity() {
+    public UsePolicyFragment() {
         // Required empty public constructor
     }
 
@@ -33,8 +35,8 @@ public class UsePolicyActivity extends Fragment {
      * @return A new instance of fragment SettingsActivity.
      */
     // TODO: Rename and change types and number of parameters
-    public static SettingsActivity newInstance(String param1, String param2) {
-        SettingsActivity fragment = new SettingsActivity();
+    public static SettingsFragment newInstance(String param1, String param2) {
+        SettingsFragment fragment = new SettingsFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);

@@ -7,7 +7,7 @@
     android:clickable="true"
     android:scrollbarFadeDuration="0"
     android:scrollbarSize="5dp"
-    tools:context=".MyPageActivity">
+    tools:context=".sideBarMenu.myPage.MyPageFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <RelativeLayout

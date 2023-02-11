@@ -1,4 +1,4 @@
-package com.project.sinabro;
+package com.project.sinabro.sideBarMenu.support;
 
 import android.os.Bundle;
 
@@ -9,12 +9,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
+import com.project.sinabro.R;
+
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link AboutUsActivity#newInstance} factory method to
+ * Use the {@link SupportFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AboutUsActivity extends Fragment {
+public class SupportFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -27,7 +29,7 @@ public class AboutUsActivity extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public AboutUsActivity() {
+    public SupportFragment() {
         // Required empty public constructor
     }
 
@@ -37,11 +39,11 @@ public class AboutUsActivity extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment AboutUsActivity.
+     * @return A new instance of fragment SupportActivity.
      */
     // TODO: Rename and change types and number of parameters
-    public static AboutUsActivity newInstance(String param1, String param2) {
-        AboutUsActivity fragment = new AboutUsActivity();
+    public static SupportFragment newInstance(String param1, String param2) {
+        SupportFragment fragment = new SupportFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -62,7 +64,7 @@ public class AboutUsActivity extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_about_us_activity, container, false);
+        View view = inflater.inflate(R.layout.fragment_support_activity, container, false);
 
         // 뒤로가기 버튼 기능
         back_ibtn = (ImageButton) view.findViewById(R.id.back_ibtn);

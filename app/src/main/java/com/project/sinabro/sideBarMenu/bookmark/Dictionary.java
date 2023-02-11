@@ -1,4 +1,4 @@
-package com.project.sinabro;
+package com.project.sinabro.sideBarMenu.bookmark;
 //RecyclerView의 한 줄에 보여줄 데이터를 클래스
 public class Dictionary {
 

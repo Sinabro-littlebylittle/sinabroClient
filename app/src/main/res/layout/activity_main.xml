@@ -113,7 +113,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             app:defaultNavHost="true"
-            app:navGraph="@navigation/main" />
+            app:navGraph="@navigation/sidebar" />
 
         <!-- bottom sheet 레이아웃 -->
         <include layout="@layout/bottom_sheet" />

@@ -7,7 +7,7 @@
     android:clickable="true"
     android:scrollbarFadeDuration="0"
     android:scrollbarSize="5dp"
-    tools:context=".BookmarkActivity">
+    tools:context=".sideBarMenu.bookmark.BookmarkFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"

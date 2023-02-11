@@ -1,26 +1,35 @@
-package com.project.sinabro;
+package com.project.sinabro.sideBarMenu.aboutUs;
 
 import android.os.Bundle;
+
+import androidx.fragment.app.Fragment;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
-import androidx.fragment.app.Fragment;
+import com.project.sinabro.R;
 
-public class NotificationActivity extends Fragment {
+/**
+ * A simple {@link Fragment} subclass.
+ * Use the {@link AboutUsFragment#newInstance} factory method to
+ * create an instance of this fragment.
+ */
+public class AboutUsFragment extends Fragment {
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+    private ImageButton back_ibtn;
+
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
-    private ImageButton back_ibtn;
-
-    public NotificationActivity() {
+    public AboutUsFragment() {
         // Required empty public constructor
     }
 
@@ -30,11 +39,11 @@ public class NotificationActivity extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment SettingsActivity.
+     * @return A new instance of fragment AboutUsActivity.
      */
     // TODO: Rename and change types and number of parameters
-    public static NotificationActivity newInstance(String param1, String param2) {
-        NotificationActivity fragment = new NotificationActivity();
+    public static AboutUsFragment newInstance(String param1, String param2) {
+        AboutUsFragment fragment = new AboutUsFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -55,7 +64,7 @@ public class NotificationActivity extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_settings_notification, container, false);
+        View view = inflater.inflate(R.layout.fragment_about_us_activity, container, false);
 
         // 뒤로가기 버튼 기능
         back_ibtn = (ImageButton) view.findViewById(R.id.back_ibtn);
