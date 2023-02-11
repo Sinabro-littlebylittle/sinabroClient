@@ -1,27 +1,22 @@
-package com.project.sinabro;
+package com.project.sinabro.sideBarMenu.myPage;
 
-import android.media.Image;
 import android.os.Bundle;
 
-import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ImageButton;
 
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.project.sinabro.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link MyPageActivity#newInstance} factory method to
+ * Use the {@link MyPageFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MyPageActivity extends Fragment {
+public class MyPageFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -34,7 +29,7 @@ public class MyPageActivity extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public MyPageActivity() {
+    public MyPageFragment() {
         // Required empty public constructor
     }
 
@@ -47,8 +42,8 @@ public class MyPageActivity extends Fragment {
      * @return A new instance of fragment MyPageActivity.
      */
     // TODO: Rename and change types and number of parameters
-    public static MyPageActivity newInstance(String param1, String param2) {
-        MyPageActivity fragment = new MyPageActivity();
+    public static MyPageFragment newInstance(String param1, String param2) {
+        MyPageFragment fragment = new MyPageFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
