@@ -1,4 +1,4 @@
-package com.project.sinabro;
+package com.project.sinabro.sideBarMenu.support;
 
 import android.os.Bundle;
 
@@ -9,12 +9,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
+import com.project.sinabro.R;
+
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link SupportActivity#newInstance} factory method to
+ * Use the {@link SupportFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SupportActivity extends Fragment {
+public class SupportFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -27,7 +29,7 @@ public class SupportActivity extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public SupportActivity() {
+    public SupportFragment() {
         // Required empty public constructor
     }
 
@@ -40,8 +42,8 @@ public class SupportActivity extends Fragment {
      * @return A new instance of fragment SupportActivity.
      */
     // TODO: Rename and change types and number of parameters
-    public static SupportActivity newInstance(String param1, String param2) {
-        SupportActivity fragment = new SupportActivity();
+    public static SupportFragment newInstance(String param1, String param2) {
+        SupportFragment fragment = new SupportFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
