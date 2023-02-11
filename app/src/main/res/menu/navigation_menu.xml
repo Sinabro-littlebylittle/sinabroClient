@@ -4,8 +4,8 @@
     <!-- 기능 담당 메뉴 그룹 -->
     <group android:id="@+id/feature_group">
         <item
-            android:id="@+id/mypage_menu"
-            android:title="@string/mypage" />
+            android:id="@+id/myPage_menu"
+            android:title="@string/myPage" />
         <item
             android:id="@+id/bookmark_menu"
             android:title="@string/bookmark" />
