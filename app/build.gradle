@@ -77,4 +77,7 @@ dependencies {
     // Gson 변환기 라이브러리
     // https://mvnrepository.com/artifact/com.squareup.retrofit2/converter-gson
     implementation group: 'com.squareup.retrofit2', name: 'converter-gson', version: '2.9.0'
+
+    // TextInputEditText 요소 사용을 위한 라이브러리 추가
+    implementation 'com.google.android.material:material:1.8.0'
 }
