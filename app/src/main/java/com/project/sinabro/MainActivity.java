@@ -119,7 +119,7 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
     private ArrayList<MapPOIItem> markers = new ArrayList<>();
 
     private LocationSettingsRequest mLocationSettingsRequest;
-    private Button currentLocation_btn, mapZoomIn_btn, mapZoomOut_btn, peopleScan_btn, editLocation_btn, bookmarkEmpty_btn, goAddPlace_btn;
+    private Button currentLocation_btn, mapZoomIn_btn, mapZoomOut_btn, peopleScan_btn, editLocation_btn, bookmarkEmpty_btn, placeList_btn;
 
     private ImageButton hamburger_ibtn;
 
@@ -250,8 +250,8 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         });
 
         /** 장소 리스트 버튼 클릭 시 기능 수행 */
-        goAddPlace_btn = findViewById(R.id.goAddPlace_btn);
-        goAddPlace_btn.setOnClickListener(new View.OnClickListener() {
+        placeList_btn = findViewById(R.id.placeList_btn);
+        placeList_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final Intent intent = new Intent (getApplicationContext(), PlaceListActivity.class);
