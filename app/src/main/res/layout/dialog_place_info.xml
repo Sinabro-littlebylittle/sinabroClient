@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="350dp"
+    android:layout_height="wrap_content"
+    android:layout_centerVertical="true"
+    android:layout_gravity="center"
+    android:background="@drawable/dialog_radius"
+    android:minHeight="260dp">
+
+    <!-- 등록된 장소명 -->
+    <TextView
+        android:id="@+id/placeName_tv_inDialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="29dp"
+        android:layout_marginTop="22.5dp"
+        android:maxWidth="250dp"
+        android:text="턱스(TUX)"
+        android:textColor="@color/black"
+        android:textSize="23.5sp" />
+
+    <!-- Dialog 종료 버튼 -->
+    <ImageButton
+        android:id="@+id/dialogClose_iBtn"
+        android:layout_width="42.5dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="2.5dp"
+        android:layout_marginEnd="2.5dp"
+        android:backgroundTint="@color/transparent"
+        android:src="@drawable/close" />
+
+    <RelativeLayout
+        android:id="@+id/peopleCount_relativeLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:layout_below="@+id/placeName_tv_inDialog"
+        android:layout_marginStart="27.5dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="30dp"
+        android:background="@drawable/people_count_list_view_item_background"
+        android:elevation="5dp"
+        android:minWidth="50dp">
+
+        <ImageView
+            android:id="@+id/person_icon_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="9dp"
+            android:background="@drawable/person" />
+
+        <TextView
+            android:id="@+id/peopleCount_tv_inDialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="4.5dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginRight="15dp"
+            android:layout_toRightOf="@+id/person_icon_iv"
+            android:elevation="5dp"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:maxWidth="110dp"
+            android:text="12"
+            android:textColor="@color/white"
+            android:textSize="17.5sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/detailAddress_RelativeLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="70dp"
+        android:layout_below="@+id/peopleCount_relativeLayout"
+        android:layout_marginTop="12.5dp">
+
+        <ImageView
+            android:id="@+id/location_pin_icon_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginStart="27.5dp"
+            android:background="@drawable/location_pin" />
+
+        <!-- (위도, 경도) 기반 도로명 주소 -->
+        <TextView
+            android:id="@+id/roadNameAddress_tv_inDialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="7.5dp"
+            android:layout_toRightOf="@+id/location_pin_icon_iv"
+            android:letterSpacing="-0.05"
+            android:maxWidth="255dp"
+            android:text="충청북도 청주시 서원구"
+            android:textColor="@color/dark_grey"
+            android:textSize="15sp" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/roadNameAddress_tv_inDialog"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp">
+
+            <ImageView
+                android:id="@+id/info_icon_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerInParent="true"
+                android:layout_marginStart="27.5dp"
+                android:background="@drawable/info" />
+
+            <!-- (위도, 경도) 기반 도로명 주소 -->
+            <TextView
+                android:id="@+id/detailAddress_tv_inDialog"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="7.5dp"
+                android:layout_toRightOf="@+id/info_icon_iv"
+                android:letterSpacing="-0.05"
+                android:maxWidth="255dp"
+                android:text="1층 108호"
+                android:textColor="@color/dark_grey"
+                android:textSize="15sp" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/peopleCountControl_relativeLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:layout_below="@+id/detailAddress_RelativeLayout"
+        android:layout_marginBottom="12.5dp">
+
+        <!-- 인원수 체크 버튼 -->
+        <Button
+            android:id="@+id/peopleScan_btn"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginLeft="27.5dp"
+            android:backgroundTint="#e0ebfd"
+            android:elevation="7.5dp"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:onClick="onMapZoomIn"
+            android:stateListAnimator="@null"
+            app:cornerRadius="15dp"
+            app:icon="@drawable/people_scan"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            app:iconTint="@color/deep_blue" />
+
+        <!-- 장소 등록/수정 버튼 -->
+        <Button
+            android:id="@+id/editLocation_btn"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/peopleScan_btn"
+            android:backgroundTint="#e0ebfd"
+            android:elevation="7.5dp"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:onClick="onMapZoomIn"
+            android:stateListAnimator="@null"
+            app:cornerRadius="15dp"
+            app:icon="@drawable/edit_location"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            app:iconTint="@color/deep_blue" />
+
+        <!-- 북마크 등록/제거 버튼 -->
+        <Button
+            android:id="@+id/bookmarkEmpty_btn"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="60dp"
+            android:layout_toRightOf="@id/editLocation_btn"
+            android:backgroundTint="#e0ebfd"
+            android:elevation="7.5dp"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:onClick="onMapZoomIn"
+            android:stateListAnimator="@null"
+            app:cornerRadius="15dp"
+            app:icon="@drawable/bookmark_empty"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            app:iconTint="@color/deep_blue" />
+    </RelativeLayout>
+</RelativeLayout>
