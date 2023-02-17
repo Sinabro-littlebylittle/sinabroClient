@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- 등록된 장소명 -->
+    <TextView
+        android:id="@+id/placeName_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="29dp"
+        android:layout_marginTop="40dp"
+        android:maxWidth="250dp"
+        android:text="턱스(TUX)"
+        android:textColor="@color/black"
+        android:textSize="17.5sp" />
+
+    <!-- 등록된 장소 상세주소 -->
+    <TextView
+        android:id="@+id/placeInfo_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/placeName_tv"
+        android:layout_marginLeft="29dp"
+        android:layout_marginTop="2.5dp"
+        android:maxWidth="250dp"
+        android:text="1층 108호"
+        android:textColor="@color/grey"
+        android:textSize="13sp" />
+
+    <!-- 우측 화살표 버튼 -->
+    <ImageButton
+        android:id="@+id/in_iBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="6.5dp"
+        android:layout_marginTop="46dp"
+        android:layout_toRightOf="@+id/placeName_tv"
+        android:background="@color/transparent"
+        android:src="@drawable/arrow_right" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="30dp"
+        android:background="@drawable/people_count_list_view_item_background"
+        android:elevation="3dp"
+        android:minWidth="60dp">
+
+        <ImageView
+            android:id="@+id/person_icon_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="9dp"
+            android:background="@drawable/person" />
+
+        <TextView
+            android:id="@+id/peopleCount_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="4.5dp"
+            android:layout_marginTop="2.25dp"
+            android:layout_marginRight="13dp"
+            android:layout_toRightOf="@+id/person_icon_iv"
+            android:maxWidth="110dp"
+            android:text="12"
+            android:textColor="@color/white"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+</RelativeLayout>
