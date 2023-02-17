@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".bottomSheet.place.AddPlaceGuideActivity">
+
+    <!-- 뒤로가기 버튼 -->
+    <ImageButton
+        android:id="@+id/back_iBtn"
+        android:layout_width="42.5dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="17.5dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="15dp"
+        android:backgroundTint="@color/transparent"
+        android:src="@drawable/back" />
+
+    <!-- 안내 문구 -->
+    <TextView
+        android:id="@+id/menuTitle_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="130dp"
+        android:fontFamily="sans-serif"
+        android:text="스캔 전에, \n먼저 장소 등록이\n필요합니다."
+        android:textColor="@color/dark_grey"
+        android:textSize="30sp"
+        android:textStyle="bold" />
+
+    <!-- 집 아이콘 -->
+    <TextView
+        android:id="@+id/houseIcon_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/menuTitle_tv"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="22dp"
+        android:text="🏠"
+        android:textColor="@color/black"
+        android:textSize="50sp"
+        android:textStyle="bold" />
+
+    <!-- 장소 등록하기 버튼 -->
+    <Button
+        android:id="@+id/goAddPlace_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="22.5dp"
+        android:backgroundTint="@color/blue"
+        android:letterSpacing="0"
+        android:outlineProvider="none"
+        android:paddingTop="17.5dp"
+        android:paddingBottom="17.5dp"
+        android:text="장소 등록하기"
+        android:textColor="@color/white"
+        android:textSize="17.5sp"
+        app:cornerRadius="13dp" />
+
+</RelativeLayout>
