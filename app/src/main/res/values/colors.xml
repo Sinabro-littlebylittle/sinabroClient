@@ -5,8 +5,21 @@
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
+    <color name="transparent">#00ff0000</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="deep_white">#eff0f3</color>
+    <color name="blue">#427FFF</color>
+    <color name="deep_blue">#335DB3</color>
+    <color name="lighter_grey">#eeeff1</color>
+    <color name="light_grey">#BCBDBF</color>
+    <color name="grey">#606060</color>
+    <color name="normal_grey">#696969</color>
+    <color name="dark_grey">#212836</color>
+    <color name="cursor">#4261FF</color>
+    <color name="input_label">#8e949f</color>
+    <color name="input_hint">#afb8c1</color>
+    <color name="input_underline">#f2f3f5</color>
 
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
