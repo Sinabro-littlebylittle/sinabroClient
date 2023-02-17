@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".bottomSheet.place.PlaceListActivity">
+
+    <!-- 뒤로가기 버튼 -->
+    <ImageButton
+        android:id="@+id/back_iBtn"
+        android:layout_width="42.5dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="10dp"
+        android:backgroundTint="#FFFFFF"
+        android:src="@drawable/back"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <!-- 장소 목록 타이틀 -->
+    <TextView
+        android:id="@+id/placeList_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="26.5dp"
+        android:layout_marginTop="75dp"
+        android:letterSpacing="0.02"
+        android:text="장소 목록"
+        android:textColor="@color/dark_grey"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <!-- 등록된 장소 정보 -->
+    <TextView
+        android:id="@+id/roadNameAddress_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/placeList_tv"
+        android:layout_marginLeft="29dp"
+        android:layout_marginTop="10dp"
+        android:letterSpacing="-0.05"
+        android:maxWidth="350dp"
+        android:text="충청북도 청주시 서원구 충대로1 충북대학교"
+        android:textColor="@color/grey"
+        android:textSize="15sp" />
+
+    <ListView
+        android:id="@+id/placeList_listView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/roadNameAddress_tv"
+        android:layout_above="@+id/goAddPlace_btn"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="5dp"
+        android:divider="#FFFFFF"
+        android:dividerHeight="0px" />
+
+    <!-- 장소 등록하기 버튼 -->
+    <Button
+        android:id="@+id/goAddPlace_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="22.5dp"
+        android:backgroundTint="@color/blue"
+        android:letterSpacing="0"
+        android:outlineProvider="none"
+        android:paddingTop="17.5dp"
+        android:paddingBottom="17.5dp"
+        android:text="장소 추가하기"
+        android:textColor="@color/white"
+        android:textSize="17.5sp"
+        app:cornerRadius="13dp" />
+
+</RelativeLayout>
