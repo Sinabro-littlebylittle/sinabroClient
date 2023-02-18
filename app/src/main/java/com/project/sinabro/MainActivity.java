@@ -18,12 +18,15 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceActivity;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -49,6 +52,9 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.navigation.NavigationView;
+import com.project.sinabro.bottomSheet.place.AddLocationInfoActivity;
+import com.project.sinabro.bottomSheet.place.AddPlaceGuideActivity;
+import com.project.sinabro.bottomSheet.place.PlaceListActivity;
 import com.project.sinabro.model.Places;
 import com.project.sinabro.retrofit.PlacesAPI;
 import com.project.sinabro.retrofit.RetrofitService;
@@ -112,14 +118,16 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
 
     private ArrayList<MapPOIItem> markers = new ArrayList<>();
 
-    private LocationCallback mLocationCallback;
     private LocationSettingsRequest mLocationSettingsRequest;
-    private Location mLastLocation;
-    private Button currentLocation_btn, mapZoomIn_btn, mapZoomOut_btn, peopleCount_btn, editLocation_btn, bookmarkEmpty_btn;
+    private Button currentLocation_btn, mapZoomIn_btn, mapZoomOut_btn, peopleScan_btn, editLocation_btn, bookmarkEmpty_btn, placeList_btn;
 
     private ImageButton hamburger_ibtn;
 
+    private RelativeLayout layout_navigation_header;
+
     private DrawerLayout drawerlayout;
+
+    private NavigationView navigationView;
 
     private BottomSheetBehavior bottomSheetBehavior;
 
@@ -241,6 +249,16 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
             }
         });
 
+        /** 장소 리스트 버튼 클릭 시 기능 수행 */
+        placeList_btn = findViewById(R.id.placeList_btn);
+        placeList_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Intent intent = new Intent (getApplicationContext(), PlaceListActivity.class);
+                startActivity(intent);
+            }
+        });
+
         /** ========================= Sidebar Navigation Drawer(사이드 메뉴바) ========================= */
         drawerlayout = findViewById(R.id.drawer_layout);
         /** 햄버거 버튼 클릭 시 sidebar navigation을 나타나도록 하는 코드 */
@@ -253,6 +271,17 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
                 // bottom sheet layout을 사라지게 함
                 bottomSheetBehavior.setPeekHeight(0);
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            }
+        });
+
+        /** Sidebar Navigation Header(헤더) */
+        navigationView = findViewById(R.id.navigationView);
+        View header = navigationView.getHeaderView(0);
+        layout_navigation_header = header.findViewById(R.id.layout_navigation_header);
+        layout_navigation_header.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("테스트", "들어옴----------------------");
             }
         });
 
@@ -280,14 +309,16 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         mResultView = findViewById(R.id.resultView);
 //        mResultView.setVisibility(View.INVISIBLE);
         /** 카메라 촬영 버튼 */
-        peopleCount_btn = findViewById(R.id.peopleCount_btn);
-        peopleCount_btn.setOnClickListener(new View.OnClickListener() {
+        peopleScan_btn = findViewById(R.id.peopleScan_btn);
+        peopleScan_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // 이곳에 카메라 촬영으로 이어지는 코드가 추가하면 됩니다.
-                Log.d("테스트", "/////////들어옴//////////");
-                finish();
-                final Intent intent = new Intent(MainActivity.this, ObjectDetectionActivity.class);
+//                Log.d("테스트", "/////////들어옴//////////");
+//                finish();
+//                final Intent intent = new Intent(MainActivity.this, ObjectDetectionActivity.class);
+//                startActivity(intent);
+                final Intent intent = new Intent (MainActivity.this, AddPlaceGuideActivity.class);
                 startActivity(intent);
             }
         });
@@ -297,29 +328,32 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         editLocation_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                RetrofitService retrofitService = new RetrofitService();
-                PlacesAPI placesAPI = retrofitService.getRetrofit().create(PlacesAPI.class);
+//                RetrofitService retrofitService = new RetrofitService();
+//                PlacesAPI placesAPI = retrofitService.getRetrofit().create(PlacesAPI.class);
+//
+//                Log.d(null, "위도: " + selectedLatitude + ", 경도: " + selectedLongitude);
+//                Places place = new Places();
+//                place.setPlace_name("테스트 장소명");
+//                place.setAddress("주소주소주소...");
+//                place.setLatitude(selectedLatitude);
+//                place.setLongitude(selectedLongitude);
+//
+//                placesAPI.save(place).enqueue(new Callback<Places>() {
+//                    @Override
+//                    public void onResponse(Call<Places> call, Response<Places> response) {
+//                        Toast.makeText(MainActivity.this, "save success!!", Toast.LENGTH_SHORT).show();
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Call<Places> call, Throwable t) {
+//                        Toast.makeText(MainActivity.this, "save failed..", Toast.LENGTH_SHORT).show();
+//                        Logger.getLogger(MainActivity.class.getName()).log(Level.SEVERE, "Error occured", t);
+//                    }
+//                });
+//                // 이곳에 장소 등록 액티비티로 이어지는 코드를 추가하면 됩니다.
 
-                Log.d(null, "위도: " + selectedLatitude + ", 경도: " + selectedLongitude);
-                Places place = new Places();
-                place.setPlace_name("테스트 장소명");
-                place.setAddress("주소주소주소...");
-                place.setLatitude(selectedLatitude);
-                place.setLongitude(selectedLongitude);
-
-                placesAPI.save(place).enqueue(new Callback<Places>() {
-                    @Override
-                    public void onResponse(Call<Places> call, Response<Places> response) {
-                        Toast.makeText(MainActivity.this, "save success!!", Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onFailure(Call<Places> call, Throwable t) {
-                        Toast.makeText(MainActivity.this, "save failed..", Toast.LENGTH_SHORT).show();
-                        Logger.getLogger(MainActivity.class.getName()).log(Level.SEVERE, "Error occured", t);
-                    }
-                });
-                // 이곳에 장소 등록 액티비티로 이어지는 코드를 추가하면 됩니다.
+                final Intent intent = new Intent (MainActivity.this, AddLocationInfoActivity.class);
+                startActivity(intent);
             }
         });
 

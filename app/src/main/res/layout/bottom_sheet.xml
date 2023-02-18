@@ -3,9 +3,9 @@
     android:id="@+id/bottomSheet_layout"
     android:layout_width="match_parent"
     android:layout_height="255dp"
-    android:orientation="vertical"
     android:layout_alignParentBottom="true"
     android:background="@drawable/radius_2"
+    android:orientation="vertical"
     app:behavior_peekHeight="0dp"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
@@ -16,22 +16,23 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerInParent="true"
+        android:layout_marginTop="5dp"
         android:scaleType="centerCrop"
         android:src="@drawable/bottom_sheet_minus_bar"
-        app:tint="#BDBDBD" />
+        app:tint="#e6e7ea" />
 
     <!-- 장소명 -->
     <TextView
         android:id="@+id/placeName_tv"
         android:layout_width="260dp"
         android:layout_height="wrap_content"
-        android:maxHeight="80dp"
-        android:textSize="25sp"
-        android:textColor="#0567C2"
-        android:lineSpacingExtra="-7dp"
         android:layout_marginStart="30dp"
         android:layout_marginTop="55dp"
-        android:text="새로운 장소" />
+        android:lineSpacingExtra="-7dp"
+        android:maxHeight="80dp"
+        android:text="새로운 장소"
+        android:textColor="@color/deep_blue"
+        android:textSize="25sp" />
 
     <!-- 상세 주소 -->
     <TextView
@@ -39,10 +40,10 @@
         android:layout_width="260dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/placeName_tv"
-        android:textColor="#000"
         android:layout_marginStart="30dp"
         android:layout_marginTop="5dp"
         android:text="상세 주소"
+        android:textColor="@color/dark_grey"
         android:textSize="20sp" />
 
     <!-- 인원수 -->
@@ -50,86 +51,113 @@
         android:id="@+id/peopleCount_tv"
         android:layout_width="110dp"
         android:layout_height="wrap_content"
-        android:textSize="50sp"
-        android:textStyle="bold"
-        android:gravity="center"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="55dp"
+        android:layout_marginTop="45dp"
         android:layout_marginEnd="3dp"
+        android:gravity="center"
         android:text="?"
-        />
+        android:textSize="50sp"
+        android:textStyle="bold" />
 
     <!-- 밀집도 정도(미등록 시: 없음) -->
     <TextView
         android:id="@+id/peopleDensityState_tv"
         android:layout_width="60dp"
         android:layout_height="30dp"
-        android:textSize="10sp"
-        android:textStyle="bold"
-        android:gravity="center"
         android:layout_below="@+id/peopleCount_tv"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="-10dp"
+        android:layout_marginTop="-12.5dp"
         android:layout_marginEnd="29.5dp"
-        android:text="없음"
-        />
+        android:gravity="center"
+        android:text="정보 없음"
+        android:textSize="10sp"
+        android:textStyle="bold" />
 
-    <!-- 인원수 체크 버튼 -->
-    <Button
-        android:id="@+id/peopleCount_btn"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="30dp"
-        android:backgroundTint="#EFEFEF"
-        android:elevation="5dp"
-        android:insetTop="0dp"
-        android:insetBottom="0dp"
-        android:stateListAnimator="@null"
-        app:cornerRadius="15dp"
-        app:icon="@drawable/camera"
-        app:iconGravity="textStart"
-        app:iconPadding="0dp"
-        app:iconTint="#000000" />
+    <RelativeLayout
+        android:id="@+id/peopleCountControl_relativeLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="82.5dp"
+        android:layout_below="@+id/address_tv"
+        android:layout_marginTop="35dp">
 
-    <!-- 장소 등록/수정 버튼 -->
-    <Button
-        android:id="@+id/editLocation_btn"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignEnd="@+id/peopleCount_btn"
-        android:layout_marginRight="-90dp"
-        android:layout_marginBottom="30dp"
-        android:backgroundTint="#EFEFEF"
-        android:elevation="5dp"
-        android:insetTop="0dp"
-        android:insetBottom="0dp"
-        android:stateListAnimator="@null"
-        app:cornerRadius="15dp"
-        app:icon="@drawable/edit_location"
-        app:iconGravity="textStart"
-        app:iconPadding="0dp"
-        app:iconTint="#000000" />
+        <!-- 인원수 체크 버튼 -->
+        <Button
+            android:id="@+id/peopleScan_btn"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginLeft="27.5dp"
+            android:backgroundTint="#e0ebfd"
+            android:elevation="7.5dp"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:onClick="onMapZoomIn"
+            android:stateListAnimator="@null"
+            app:cornerRadius="15dp"
+            app:icon="@drawable/people_scan"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            app:iconTint="@color/deep_blue" />
 
-    <!-- 북마크 등록/제거 버튼 -->
+        <!-- 장소 등록/수정 버튼 -->
+        <Button
+            android:id="@+id/editLocation_btn"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/peopleScan_btn"
+            android:backgroundTint="#e0ebfd"
+            android:elevation="7.5dp"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:onClick="onMapZoomIn"
+            android:stateListAnimator="@null"
+            app:cornerRadius="15dp"
+            app:icon="@drawable/edit_location"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            app:iconTint="@color/deep_blue" />
+
+        <!-- 북마크 등록/제거 버튼 -->
+        <Button
+            android:id="@+id/bookmarkEmpty_btn"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="60dp"
+            android:layout_toRightOf="@id/editLocation_btn"
+            android:backgroundTint="#e0ebfd"
+            android:elevation="7.5dp"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:onClick="onMapZoomIn"
+            android:stateListAnimator="@null"
+            app:cornerRadius="15dp"
+            app:icon="@drawable/bookmark_empty"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            app:iconTint="@color/deep_blue" />
+    </RelativeLayout>
+
+
     <Button
-        android:id="@+id/bookmarkEmpty_btn"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignEnd="@+id/editLocation_btn"
-        android:layout_marginRight="-90dp"
-        android:layout_marginBottom="30dp"
-        android:backgroundTint="#EFEFEF"
-        android:elevation="5dp"
-        android:insetTop="0dp"
-        android:insetBottom="0dp"
-        android:stateListAnimator="@null"
-        app:cornerRadius="15dp"
-        app:icon="@drawable/bookmark_empty"
-        app:iconGravity="textStart"
-        app:iconPadding="0dp"
-        app:iconTint="#000000" />
+        android:id="@+id/placeList_btn"
+        android:layout_width="85dp"
+        android:layout_height="32.5dp"
+        android:layout_below="@+id/peopleCount_tv"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="7.5dp"
+        android:layout_marginEnd="17.5dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="22.5dp"
+        android:backgroundTint="@color/light_grey"
+        android:letterSpacing="0"
+        android:outlineProvider="none"
+        android:padding="0dp"
+        android:paddingTop="17.5dp"
+        android:paddingBottom="17.5dp"
+        android:text="1/2 모두 보기"
+        android:textColor="@color/white"
+        android:textSize="10.5sp"
+        app:cornerRadius="20dp" />
 
 </RelativeLayout>
