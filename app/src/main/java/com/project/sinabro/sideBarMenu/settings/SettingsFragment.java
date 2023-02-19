@@ -1,5 +1,6 @@
 package com.project.sinabro.sideBarMenu.settings;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
@@ -90,7 +91,9 @@ public class SettingsFragment extends Fragment {
         Notifications_imgbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("Notification", "onClick: 테스트 중입니다.");
+                Intent intent = new Intent(getActivity(), NotificationActivity.class); //fragment라서 activity intent와는 다른 방식
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(intent);
 
             }
         });
