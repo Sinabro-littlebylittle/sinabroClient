@@ -102,7 +102,7 @@ public class BookmarkFragment extends Fragment{
 
 
         //LinearLayoutManager  =
-        mRecyclerView.setLayoutManager(mLinearLayoutManager);                                               // 레이어 설정
+        mRecyclerView.setLayoutManager(mLinearLayoutManager);                                                // 레이어 설정
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setAdapter(mAdapter);                                                                  // 어뎁터 맵핑핑
 
