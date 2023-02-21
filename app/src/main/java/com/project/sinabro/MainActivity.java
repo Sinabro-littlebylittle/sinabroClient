@@ -52,6 +52,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.navigation.NavigationView;
+import com.project.sinabro.bottomSheet.place.AddBookmarkPlaceActivity;
 import com.project.sinabro.bottomSheet.place.AddLocationInfoActivity;
 import com.project.sinabro.bottomSheet.place.AddPlaceGuideActivity;
 import com.project.sinabro.bottomSheet.place.PlaceListActivity;
@@ -362,7 +363,9 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         bookmarkEmpty_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // 이곳에 북마크 등록 액티비티로 이어지는 코드를 추가하면 됩니다.
+                Intent intent = new Intent(MainActivity.this, AddBookmarkPlaceActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(intent);
             }
         });
 
