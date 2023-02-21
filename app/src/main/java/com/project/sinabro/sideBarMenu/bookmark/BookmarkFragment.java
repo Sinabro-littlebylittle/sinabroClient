@@ -154,13 +154,11 @@ public class BookmarkFragment extends Fragment{
                         mArrayList.add(0, dict); //첫 줄에 삽입
                         //mArrayList.add(dict); //마지막 줄에 삽입
                         mAdapter.notifyDataSetChanged(); //변경된 데이터를 화면에 반영
-
                         dialog.dismiss();
                     }
                 });
 
                 dialog.show();
-                Log.d("test", "onClick: 테스트중입니다.");
             }
 
 
