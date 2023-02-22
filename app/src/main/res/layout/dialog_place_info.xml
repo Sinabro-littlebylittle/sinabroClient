@@ -135,6 +135,7 @@
         android:id="@+id/peopleCountControl_relativeLayout"
         android:layout_width="wrap_content"
         android:layout_height="80dp"
+        android:layout_marginTop="15dp"
         android:layout_below="@+id/detailAddress_RelativeLayout"
         android:layout_marginBottom="12.5dp">
 
