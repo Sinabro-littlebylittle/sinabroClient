@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Strings related to (Sign up) -->
+    <string name="sign_up_email">사용하실 이메일을 입력해주세요</string>
+    <string name="sign_up_password">8~20자 숫자, 영문, 특수문자를 모두 포함해주세요.</string>
+    <string name="sign_up_password_confirm">비밀번호를 다시 입력해주세요</string>
+    <string name="sign_up_name">성함을 입력해주세요</string>
+    <string name="sign_up_phone">휴대전화번호을 입력해주세요 (-제외)</string>
+    <string name="sign_up_nickName">앱 내에서 사용하실 별명을 입력해주세요</string>
+    <string name="sign_up_nickname_failed">2~10자 이내의 한/영 및 숫자만 가능합니다</string>
+    <string name="sign_up_roadAddress">도로명주소</string>
+    <string name="sign_up_detailAddress">상세주소</string>
+    <string name="sign_up_step1_email_validation_failed">이메일 확인을 완료해 주세요</string>
+    <string name="sign_up_error_email">이메일을 정확하게 입력해주세요</string>
+    <string name="sign_up_email_confirm_success">사용 가능한 이메일입니다</string>
+    <string name="sign_up_email_confirm_failed">이미 사용 중인 이메일입니다</string>
+    <string name="sign_up_step1_password_validation_failed">비밀번호 입력을 완료해 주세요</string>
+    <string name="sign_up_step1_password_confirm_validation_failed">비밀번호가 일치하지 않습니다</string>
+    <string name="sign_up_error_name">이름은 2글자 이상의 한글만 가능합니다</string>
+    <string name="sign_up_error_phone">전화번호를 정확하게 입력해주세요</string>
+    <string name="sign_up_error_roadAddress">도로명 주소를 입력해주세요</string>
+    <string name="sign_up_error_detailAddress">상세 주소를 입력해주세요</string>
+    <string name="sign_up_error_process">모든 절차를 통과하셔야 합니다</string>
+    <string name="sign_up_success">회원가입이 완료되었습니다!\n로그인을 시도해주세요</string>
+
+    <!-- Strings related to (Sign in) -->
+    <string name="sign_in_email_failed">이메일을 입력해 주세요</string>
+    <string name="sign_in_password_failed">비밀번호를 입력해 주세요</string>
+    <string name="sign_in_success">환영합니다</string>
+    <string name="sign_in_failed">이메일 또는 비밀번호를 잘못 입력했습니다.\n입력하신 내용을 다시 확인해 주세요.</string>
+
+    <string name="find_email">가입하신 이메일은 다음과 같습니다</string>
+    <string name="find_email_failed">입력하신 이메일 정보를 찾을 수 없습니다</string>
+    <string name="input_error">오류가 발생하였습니다. 다시 시도해주세요</string>
+    <string name="find_infoOk">가입 인증 완료! 비밀번호를 변경해주세요</string>
+    <string name="find_change_success">비밀번호 변경에 성공하였습니다.</string>
+    <string name="find_change_failed">비밀번호 변경에 실패하였습니다</string>
+
+    <!-- Strings related to (Dialog)) -->
+    <string name="dialog_place_remove">장소를 삭제할까요?</string>
+    <string name="dialog_ask_user_default_profile_image">기본 프로필 이미지를\n사용하시겠습니까? 😀</string>
+    <string name="dialog_find_email_success">해당 이메일로 임시 비밀번호가\n발송되었습니다 📮</string>
+    <string name="dialog_sign_up_success">회원가입이 완료되었습니다.\n로그인 페이지로 이동합니다 🥳</string>
+
+</resources>
