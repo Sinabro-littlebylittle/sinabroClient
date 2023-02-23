@@ -10,11 +10,7 @@
     <style name="App.hintTextAppearance" parent="TextAppearance.MaterialComponents.Caption">
         <item name="android:textSize">15sp</item>
     </style>
-    <style name="App.hintSmallTextAppearance" parent="TextAppearance.MaterialComponents.Caption">
-        <item name="android:textSize">12.5sp</item>
-    </style>
-
-    <style name="App.helperTextTextAppearance" parent="TextAppearance.MaterialComponents.Caption">
-        <item name="android:textSize">15sp</item>
-    </style>
+<!--    <style name="App.helperTextTextAppearance" parent="TextAppearance.MaterialComponents.Caption">-->
+<!--        <item name="android:textSize">40sp</item>-->
+<!--    </style>-->
 </resources>

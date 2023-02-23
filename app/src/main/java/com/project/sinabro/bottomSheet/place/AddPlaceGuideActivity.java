@@ -15,6 +15,7 @@ public class AddPlaceGuideActivity extends AppCompatActivity {
 
     private ImageButton back_iBtn;
     private Button goAddPlace_btn;
+    private TextView menuTitle_tv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +31,8 @@ public class AddPlaceGuideActivity extends AppCompatActivity {
                 finish(); // 현재 액티비티 종료
             }
         });
+
+        menuTitle_tv = findViewById(R.id.menuTitle_tv);
 
         goAddPlace_btn = findViewById(R.id.goAddPlace_btn);
         goAddPlace_btn.setOnClickListener(new View.OnClickListener() {

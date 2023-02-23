@@ -13,7 +13,7 @@
         android:letterSpacing="-0.025"
         android:paddingLeft="20dp"
         android:paddingTop="23.5dp"
-        android:text="@string/dialog_place_remove"
+        android:text="장소를 삭제할까요?"
         android:textColor="@color/dark_grey"
         android:textSize="20sp" />
 
@@ -37,7 +37,7 @@
             android:outlineProvider="none"
             android:text="취소"
             android:textColor="@color/dark_grey"
-            android:textSize="15sp"
+            android:textSize="17.5sp"
             app:cornerRadius="10dp" />
 
         <Button
@@ -51,7 +51,7 @@
             android:insetBottom="2dp"
             android:outlineProvider="none"
             android:text="삭제"
-            android:textSize="15sp"
+            android:textSize="17.5sp"
             app:cornerRadius="10dp" />
     </LinearLayout>
 

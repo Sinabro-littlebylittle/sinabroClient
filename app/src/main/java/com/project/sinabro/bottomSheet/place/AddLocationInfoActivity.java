@@ -94,7 +94,7 @@ public class AddLocationInfoActivity extends AppCompatActivity {
         // 다이얼로그 창이 나타나면서 외부 액티비티가 어두워지는데, 그 정도를 조절함
         placeRemove_dialog.getWindow().setDimAmount(0.35f);
 
-        // "아니오" 버튼
+        // 아니오 버튼
         Button noBtn = placeRemove_dialog.findViewById(R.id.noBtn);
         noBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,7 +103,7 @@ public class AddLocationInfoActivity extends AppCompatActivity {
             }
         });
 
-        // "네" 버튼
+        // 네 버튼
         placeRemove_dialog.findViewById(R.id.yesBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -19,13 +19,4 @@
 
 
     </style>
-
-    <style name="Theme.Sinabro.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-
-    <style name="Theme.Sinabro.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="Theme.Sinabro.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>
