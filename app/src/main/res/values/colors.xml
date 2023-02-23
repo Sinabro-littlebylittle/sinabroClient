@@ -9,6 +9,8 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="deep_white">#eff0f3</color>
+    <color name="red">#FF0000</color>
+    <color name="blue_normal">#0000FF</color>
     <color name="blue">#427FFF</color>
     <color name="deep_blue">#335DB3</color>
     <color name="lighter_grey">#eeeff1</color>

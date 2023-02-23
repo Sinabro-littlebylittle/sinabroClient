@@ -58,6 +58,7 @@ import com.project.sinabro.bottomSheet.place.PlaceListActivity;
 import com.project.sinabro.model.Places;
 import com.project.sinabro.retrofit.PlacesAPI;
 import com.project.sinabro.retrofit.RetrofitService;
+import com.project.sinabro.sideBarMenu.authentication.SignIn;
 
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
@@ -281,7 +282,8 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         layout_navigation_header.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("테스트", "들어옴----------------------");
+                final Intent intent = new Intent (getApplicationContext(), SignIn.class);
+                startActivity(intent);
             }
         });
 
