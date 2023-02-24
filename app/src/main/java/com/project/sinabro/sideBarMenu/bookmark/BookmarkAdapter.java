@@ -42,6 +42,7 @@ public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkAdapter.Bookma
             this.name = (TextView) view.findViewById(R.id.name_favorite_place);
             view.setOnCreateContextMenuListener(this::onCreateContextMenu);
         }
+
     @NonNull
     @Override
     public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
