@@ -142,28 +142,28 @@
         tools:layout_editor_absoluteX="100dp"
         tools:layout_editor_absoluteY="78dp" />
 
+    <!-- 줄나눔 -->
+
     <TextView
         android:id="@+id/textView17"
-        android:layout_width="69dp"
-        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_height="31dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="26dp"
-        android:layout_marginTop="223dp"
+        android:layout_marginTop="218dp"
         android:layout_marginEnd="316dp"
-        android:layout_marginBottom="597dp"
+        android:layout_marginBottom="594dp"
         android:text="공개 범위"
         android:textColor="@color/black"
         android:textSize="16sp"
         android:textStyle="bold"
         android:visibility="visible" />
 
-    <!-- 줄나눔 -->
-
     <RadioButton
-        android:id="@+id/radioButton"
+        android:id="@+id/radioButton_open"
         android:layout_width="wrap_content"
         android:layout_height="26dp"
         android:layout_alignParentStart="true"
@@ -177,7 +177,7 @@
         android:text="  공개" />
 
     <RadioButton
-        android:id="@+id/radioButton2"
+        android:id="@+id/radioButton_close"
         android:layout_width="wrap_content"
         android:layout_height="26dp"
         android:layout_alignParentStart="true"
