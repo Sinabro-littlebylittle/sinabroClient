@@ -27,7 +27,18 @@
         app:layout_constraintStart_toEndOf="@id/imageView2"
         app:layout_constraintTop_toTopOf="parent" />
 
+
     <!-- 가로 구분선 -->
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.864"
+        app:layout_constraintStart_toEndOf="@+id/name_favorite_place"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
