@@ -59,6 +59,9 @@ dependencies {
     //color Sheet를 사용하기 위한 라이브러리 추가
     implementation "dev.sasikanth:colorsheet:1.0.1"
 
+    //color picker
+    implementation 'petrov.kristiyan:colorpicker-library:1.1.10'
+
     // RecyclerView 라이브러리 추가
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
 
