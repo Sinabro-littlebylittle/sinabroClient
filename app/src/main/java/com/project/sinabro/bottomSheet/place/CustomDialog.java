@@ -1,10 +1,11 @@
-package com.project.sinabro.bottomSheet.place.colorpicker;
+package com.project.sinabro.bottomSheet.place;
 
 import android.content.Context;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatDialog;
 import android.view.View;
 import android.view.Window;
+
+import androidx.appcompat.app.AppCompatDialog;
 
 public class CustomDialog extends AppCompatDialog {
     private View view;

@@ -12,4 +12,8 @@
     <string name="run_model">Running the model...</string>
     <string name="restart">Restart</string>
     <string name="live">Live</string>
+
+    <string name="colorpicker_dialog_title">원하는 색상을 고르세요</string>
+    <string name="colorpicker_dialog_cancel">취소</string>
+    <string name="colorpicker_dialog_ok">확인</string>
 </resources>

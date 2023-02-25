@@ -71,8 +71,6 @@ public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkAdapter.Bookma
                     //final EditText editTextEnglish = (EditText) view.findViewById(R.id.edittext_dialog_endlish);
                     //final EditText editTextKorean = (EditText) view.findViewById(R.id.edittext_dialog_korean);
 
-
-
                     // 6. 해당 줄에 입력되어 있던 데이터를 불러와서 다이얼로그에 보여줍니다.
                     editTextName.setText(mList.get(getAdapterPosition()).getName());
                    // editTextEnglish.setText(mList.get(getAdapterPosition()).getEnglish());

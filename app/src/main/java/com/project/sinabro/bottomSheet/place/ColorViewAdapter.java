@@ -1,20 +1,19 @@
-package com.project.sinabro.bottomSheet.place.colorpicker;
+package com.project.sinabro.bottomSheet.place;
 
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Build;
-
-import androidx.appcompat.widget.AppCompatButton;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
+
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.project.sinabro.R;
 

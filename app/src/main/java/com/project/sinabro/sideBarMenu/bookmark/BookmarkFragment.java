@@ -1,5 +1,6 @@
 package com.project.sinabro.sideBarMenu.bookmark;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
@@ -18,7 +19,9 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.project.sinabro.MainActivity;
 import com.project.sinabro.R;
+import com.project.sinabro.bottomSheet.place.AddBookmarkPlaceActivity;
 
 import java.util.ArrayList;
 
@@ -128,6 +131,8 @@ public class BookmarkFragment extends Fragment{
         add_ibtn.setOnClickListener(new ViewGroup.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+
               //  count++;
                // Dictionary data = new Dictionary(count+"번째 즐겨찾기 목록입니다.");
               //  mArrayList.add(data); // RecyclerView의 마지막 줄에 삽입
@@ -160,6 +165,15 @@ public class BookmarkFragment extends Fragment{
                 });
 
                 dialog.show();
+                // 이전의 생성하는 즐겨찾기 리스트를 추가하는 기능
+
+                // 새롭게 리스트를 생성함
+                /*
+                Intent intent = new Intent(getActivity(), AddBookmarkPlaceActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(intent);
+
+                 */
             }
 
 

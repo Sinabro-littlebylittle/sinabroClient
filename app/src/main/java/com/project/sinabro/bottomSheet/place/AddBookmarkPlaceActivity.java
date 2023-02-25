@@ -5,18 +5,20 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
-import com.google.android.material.textfield.TextInputEditText;
 import com.project.sinabro.R;
+
+import java.util.ArrayList;
+import petrov.kristiyan.colorpicker.ColorPicker;
 
 public class AddBookmarkPlaceActivity extends AppCompatActivity {
 
@@ -24,7 +26,9 @@ public class AddBookmarkPlaceActivity extends AppCompatActivity {
     private Button colorPicker_button;
     private AppCompatButton addlistbtn;
     private Dialog addbookmarklist_dialog;
+    private Dialog colorpicker;
     private RadioButton radioButton_open, radioButton_close;
+
 
 
     @Override
@@ -51,12 +55,44 @@ public class AddBookmarkPlaceActivity extends AppCompatActivity {
         addbookmarklist_dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
 
-        /*컬러 버튼*/
+        /*컬러 버튼*/ // 컬러픽커
         colorPicker_button = findViewById(R.id.colorPicker_button);
         colorPicker_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                final ColorPicker colorPicker = new ColorPicker(AddBookmarkPlaceActivity.this);
+                ArrayList<String> colors = new ArrayList<>();
+                colors.add("#82B926");
+                colors.add("#a276eb");
+                colors.add("#6a3ab2");
+                colors.add("#666666");
+                colors.add("#FFFF00");
+                colors.add("#3C8D2F");
+                colors.add("#FA9F00");
+                colors.add("#FF0000");
 
+                colorPicker
+                        .setDefaultColorButton(Color.parseColor("#f84c44"))
+                        .setColors(colors)
+                        .setColumns(5)
+                        .setRoundColorButton(true)
+                        .setOnChooseColorListener(new ColorPicker.OnChooseColorListener() {
+                            @Override
+                            public void onChooseColor(int position, int color) {
+                                Log.d("position", "" + position);// will be fired only when OK button was tapped
+                            }
+
+                            @Override
+                            public void onCancel() {
+
+                            }
+                        })
+                        .addListenerButton("newButton", new ColorPicker.OnButtonListener() {
+                            @Override
+                            public void onClick(View v, int position, int color) {
+                                Log.d("position", "" + position);
+                            }
+                        }).show();
             }
         });
         /*확인 버튼*/
@@ -64,13 +100,17 @@ public class AddBookmarkPlaceActivity extends AppCompatActivity {
         addlistbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                /*여기다가 확인후 기능을 추가하시면 됩니다.*/
+                onBackPressed();                    // 뒤로가기 기능 수행
+                finish();                           // 현재 액티비티 종료
             }
         });
         /*공개 비공개*/
 
         /*세부 내용*/
     }
+
+
 
     /*다이어로그 내용 */
     public void showDialog_place_remove() {
@@ -91,9 +131,9 @@ public class AddBookmarkPlaceActivity extends AppCompatActivity {
         addbookmarklist_dialog.findViewById(R.id.yesBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addbookmarklist_dialog.dismiss(); // 다이얼로그 닫기
-                final Intent intent = new Intent(getApplicationContext(), AddBookmarkPlaceActivity.class);
-                startActivity(intent);
+                addbookmarklist_dialog.dismiss();   // 다이얼로그 닫기
+                onBackPressed();                    // 뒤로가기 기능 수행
+                finish();                           // 현재 액티비티 종료
             }
         });
     }

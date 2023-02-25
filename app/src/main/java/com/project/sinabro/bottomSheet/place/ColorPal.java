@@ -1,4 +1,4 @@
-package com.project.sinabro.bottomSheet.place.colorpicker;
+package com.project.sinabro.bottomSheet.place;
 
 
 public class ColorPal {

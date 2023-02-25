@@ -1,4 +1,7 @@
-package com.project.sinabro.bottomSheet.place.colorpicker;
+package com.project.sinabro.bottomSheet.place;
+
+import static petrov.kristiyan.colorpicker.ColorUtils.dip2px;
+import static petrov.kristiyan.colorpicker.ColorUtils.getDimensionDp;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -12,9 +15,6 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatTextView;
@@ -22,10 +22,10 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import static petrov.kristiyan.colorpicker.ColorUtils.dip2px;
-import static petrov.kristiyan.colorpicker.ColorUtils.getDimensionDp;
-
 import com.project.sinabro.R;
+
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 
 
 public class ColorPicker {
@@ -93,7 +93,7 @@ public class ColorPicker {
         this.negativeText = context.getString(R.string.colorpicker_dialog_cancel);
         this.positiveText = context.getString(R.string.colorpicker_dialog_ok);
         this.default_color = 0;
-        this.columns = 5;
+        this.columns = 6;
     }
 
     /**
