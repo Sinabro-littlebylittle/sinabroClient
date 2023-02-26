@@ -1,4 +1,4 @@
-package com.project.sinabro.bottomSheet.place;
+package com.project.sinabro.bottomSheet.place.bookmark;
 
 import android.app.Dialog;
 import android.content.Intent;
@@ -62,6 +62,7 @@ public class AddBookmarkPlaceActivity extends AppCompatActivity {
             public void onClick(View view) {
                 final ColorPicker colorPicker = new ColorPicker(AddBookmarkPlaceActivity.this);
                 ArrayList<String> colors = new ArrayList<>();
+                //색상 추가
                 colors.add("#82B926");
                 colors.add("#a276eb");
                 colors.add("#6a3ab2");
@@ -74,25 +75,21 @@ public class AddBookmarkPlaceActivity extends AppCompatActivity {
                 colorPicker
                         .setDefaultColorButton(Color.parseColor("#f84c44"))
                         .setColors(colors)
-                        .setColumns(5)
-                        .setRoundColorButton(true)
+                        .setColumns(5)                      // 열의 크기 설정
+                        .setRoundColorButton(true)          // true : 둥근 모양, false : 사각형
                         .setOnChooseColorListener(new ColorPicker.OnChooseColorListener() {
                             @Override
-                            public void onChooseColor(int position, int color) {
+                            public void onChooseColor(int position, int color) {                // 여기다가 데이터 전달하는 코드 삽입
+
                                 Log.d("position", "" + position);// will be fired only when OK button was tapped
                             }
 
-                            @Override
+                            @Override                                           // 취소시 어떻게 할지
                             public void onCancel() {
 
                             }
-                        })
-                        .addListenerButton("newButton", new ColorPicker.OnButtonListener() {
-                            @Override
-                            public void onClick(View v, int position, int color) {
-                                Log.d("position", "" + position);
-                            }
-                        }).show();
+                        });
+
             }
         });
         /*확인 버튼*/

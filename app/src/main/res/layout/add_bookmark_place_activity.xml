@@ -5,7 +5,7 @@
     android:id="@+id/Addbooklist"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".bottomSheet.place.AddBookmarkPlaceActivity">
+    tools:context=".bottomSheet.place.bookmark.AddBookmarkPlaceActivity">
 
     <!-- 상단 줄 나눔 -->
 
