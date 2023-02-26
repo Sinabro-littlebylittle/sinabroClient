@@ -2,6 +2,7 @@ package com.project.sinabro.bottomSheet.place.bookmark;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
@@ -26,7 +28,8 @@ public class AddBookmarkPlaceActivity extends AppCompatActivity {
     private Button colorPicker_button;
     private AppCompatButton addlistbtn;
     private Dialog addbookmarklist_dialog;
-    private Dialog colorpicker;
+    private Intent ColorIntent;
+    private TextView colortextview;
     private RadioButton radioButton_open, radioButton_close;
 
 
@@ -55,22 +58,32 @@ public class AddBookmarkPlaceActivity extends AppCompatActivity {
         addbookmarklist_dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
 
-        /*컬러 버튼*/ // 컬러픽커
+        final Intent ColorIntent = getIntent();
+
+        colortextview = findViewById(R.id.displayColor);
+        /*컬러 버튼*/
         colorPicker_button = findViewById(R.id.colorPicker_button);
         colorPicker_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 final ColorPicker colorPicker = new ColorPicker(AddBookmarkPlaceActivity.this);
                 ArrayList<String> colors = new ArrayList<>();
-                //색상 추가
-                colors.add("#82B926");
-                colors.add("#a276eb");
-                colors.add("#6a3ab2");
-                colors.add("#666666");
-                colors.add("#FFFF00");
-                colors.add("#3C8D2F");
-                colors.add("#FA9F00");
-                colors.add("#FF0000");
+                //색상 추가는 colors.add("#xxxxxxxx");
+                colors.add("#e8472e");
+                colors.add("#ff8c8c");
+                colors.add("#f77f23");
+                colors.add("#e38436");
+                colors.add("#f0e090");
+                colors.add("#98b84d");
+                colors.add("#a3d17b");
+                colors.add("#6ecf69");
+                colors.add("#6ec48c");
+                colors.add("#5aa392");
+                colors.add("#4b8bbf");
+                colors.add("#6a88d4");
+                colors.add("#736dc9");
+                colors.add("#864fbd");
+                colors.add("#d169ca");
 
                 colorPicker
                         .setDefaultColorButton(Color.parseColor("#f84c44"))
@@ -79,16 +92,17 @@ public class AddBookmarkPlaceActivity extends AppCompatActivity {
                         .setRoundColorButton(true)          // true : 둥근 모양, false : 사각형
                         .setOnChooseColorListener(new ColorPicker.OnChooseColorListener() {
                             @Override
-                            public void onChooseColor(int position, int color) {                // 여기다가 데이터 전달하는 코드 삽입
-
-                                Log.d("position", "" + position);// will be fired only when OK button was tapped
+                            public void onChooseColor(int position, int color ) {                // 여기다가 데이터 전달하는 코드 삽입
+                                Log.d("color", "test"+ color);// will be fired only when OK button was tapped
+                                colortextview.setBackgroundTintList(ColorStateList.valueOf(color));     // 선택한 색상으로 변경
+                                /*추후 데이터 연결시 여기다가 작성하시면 됩니다.*/
                             }
 
-                            @Override                                           // 취소시 어떻게 할지
+                            @Override                                           // 취소시 어떻게 할지 정하는 코든데 취소하면 할게 없으니 그냥 빈칸으로 뒀습니다.
                             public void onCancel() {
 
                             }
-                        });
+                        }).show();
 
             }
         });
