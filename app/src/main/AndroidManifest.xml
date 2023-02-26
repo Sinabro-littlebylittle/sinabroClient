@@ -41,6 +41,7 @@
         <activity android:name="com.project.sinabro.sideBarMenu.settings.NotificationActivity" />
         <activity android:name="com.project.sinabro.bottomSheet.place.bookmark.AddBookmarkPlaceActivity" />
 
+
         <meta-data
             android:name="com.kakao.sdk.AppKey"
             android:value="4507083e30991ba589ab3828da76bcf7" />

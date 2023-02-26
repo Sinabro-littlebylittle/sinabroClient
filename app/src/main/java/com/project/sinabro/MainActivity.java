@@ -48,10 +48,10 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.navigation.NavigationView;
-import com.project.sinabro.bottomSheet.place.bookmark.AddBookmarkPlaceActivity;
 import com.project.sinabro.bottomSheet.place.AddLocationInfoActivity;
 import com.project.sinabro.bottomSheet.place.AddPlaceGuideActivity;
 import com.project.sinabro.bottomSheet.place.PlaceListActivity;
+import com.project.sinabro.bottomSheet.place.bookmark.MyBottomSheetDialog;
 
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
@@ -350,9 +350,8 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         bookmarkEmpty_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, AddBookmarkPlaceActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                startActivity(intent);
+                MyBottomSheetDialog bottomSheetDialog = new MyBottomSheetDialog();                  // BottomSheetDialogFragment를 사용하기 위한 class 생성
+                bottomSheetDialog.show(getSupportFragmentManager(), "myBottomSheetDialog");
             }
         });
 

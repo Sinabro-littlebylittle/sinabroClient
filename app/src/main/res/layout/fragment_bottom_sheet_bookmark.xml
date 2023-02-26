@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="true"
+    android:scrollbarFadeDuration="0"
+    android:scrollbarSize="5dp"
+    tools:context=".sideBarMenu.bookmark.BookmarkFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        android:background="@color/white">
+
+        <!-- 뒤로가기 버튼 -->
+        <ImageButton
+            android:id="@+id/back_ibtn"
+            android:layout_width="42.5dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="22dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="15dp"
+            android:backgroundTint="#FFFFFF"
+            android:src="@drawable/back" />
+
+        <!-- 즐겨찾기 메뉴명 -->
+        <TextView
+            android:id="@+id/menuTitle_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="40dp"
+            android:text="즐겨찾기"
+            android:textColor="@color/black"
+            android:textSize="21sp"
+            android:textStyle="bold" />
+
+        <!-- 가로 구분선 -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignBottom="@+id/menuTitle_tv"
+            android:layout_marginBottom="-18dp"
+            android:background="#BCBCBC" />
+
+        <!-- 추가  -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/bookmark_add"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="87dp"
+            android:layout_marginEnd="0dp">
+
+            <ImageButton
+                android:id="@+id/add_ibtn"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="27.5dp"
+                android:background="@drawable/shape_for_circle_button"
+                android:src="@drawable/plus_2"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/textView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:text="새 리스트"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/add_ibtn"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#BCBCBC"
+                app:layout_constraintBottom_toBottomOf="parent"
+                tools:layout_editor_absoluteX="-6dp" />
+
+            <!-- 가로 구분선 -->
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- 리사클러뷰 -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview_bookmark"
+            android:layout_width="match_parent"
+            android:layout_height="513dp"
+            android:layout_below="@+id/bookmark_add"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="0dp"
+            android:scrollbars="vertical"
+            android:visibility="visible"
+            tools:visibility="visible" />
+
+    </RelativeLayout>
+
+</FrameLayout>
