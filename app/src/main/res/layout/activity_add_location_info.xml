@@ -17,7 +17,7 @@
         android:src="@drawable/back"
         tools:ignore="SpeakableTextPresentCheck" />
 
-    <!-- 문의 메뉴명 -->
+    <!-- "장소 등록" 메뉴명 -->
     <TextView
         android:id="@+id/activityTitle_tv"
         android:layout_width="wrap_content"
