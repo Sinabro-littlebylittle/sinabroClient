@@ -36,9 +36,9 @@
     <!-- 개발 문의 액티비티 연결 -->
     <fragment
         android:id="@+id/aboutUs_menu"
-        android:name="com.project.sinabro.sideBarMenu.aboutUs.AboutUsFragment"
+        android:name="com.project.sinabro.sideBarMenu.devInfo.DevInfoFragment"
         android:label="fragment_about_us_activity"
-        tools:layout="@layout/fragment_about_us_activity" />
+        tools:layout="@layout/fragment_dev_info_activity" />
 
     <!-- 빈 화면 액티비티 연결 -->
     <!-- 빈 화면을 추가하는 이유는 sidebar navigation 사용 시 앱 초기 실행 이후 반드시 -->
