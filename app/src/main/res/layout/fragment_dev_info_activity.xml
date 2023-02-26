@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:clickable="true"
+    tools:context=".sideBarMenu.devInfo.DevInfoFragment">
+
+    <!-- Root RelativeLayout -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!-- fragment (header) RelativeLayout -->
+        <RelativeLayout
+            android:id="@+id/fragment_header_relativeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!-- 뒤로가기 버튼 -->
+            <ImageButton
+                android:id="@+id/back_iBtn"
+                android:layout_width="42.5dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="10dp"
+                android:backgroundTint="@color/transparent"
+                android:src="@drawable/back"
+                tools:ignore="SpeakableTextPresentCheck" />
+        </RelativeLayout>
+
+        <!-- fragment (body) RelativeLayout -->
+        <RelativeLayout
+            android:id="@+id/fragment_body_relativeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/fragment_header_relativeLayout"
+            android:layout_marginTop="20dp">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <RelativeLayout
+                        android:id="@+id/our_goal_relativeLayout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/our_goal_label_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="25dp"
+                            android:text="@string/our_goal_label"
+                            android:textColor="@color/dark_grey"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
+                        <com.makeramen.roundedimageview.RoundedImageView
+                            android:id="@+id/our_goal_roundedImageView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/our_goal_label_tv"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginStart="22.5dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="22.5dp"
+                            android:adjustViewBounds="true"
+                            android:src="@drawable/goal_image"
+                            app:riv_corner_radius="10dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/our_goal_roundedImageView"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginStart="22.5dp"
+                            android:layout_marginTop="22.5dp"
+                            android:layout_marginEnd="22.5dp"
+                            android:layout_marginBottom="22.5dp"
+                            android:lineSpacingExtra="5dp"
+                            android:text="@string/our_goal"
+                            android:textColor="@color/text_blue"
+                            android:textSize="17.5sp" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/project_opensource_relativeLayout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/our_goal_relativeLayout"
+                        android:layout_marginTop="100dp">
+
+                        <TextView
+                            android:id="@+id/project_opensource_label_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="25dp"
+                            android:text="@string/project_opensource_label"
+                            android:textColor="@color/dark_grey"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
+                        <com.makeramen.roundedimageview.RoundedImageView
+                            android:id="@+id/project_opensource_sinabroClient_roundedImageView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/project_opensource_label_tv"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginStart="25dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="25dp"
+                            android:adjustViewBounds="true"
+                            android:background="@drawable/radius"
+                            android:elevation="10dp"
+                            app:riv_corner_radius="10dp" />
+
+                        <TextView
+                            android:id="@+id/project_opensource_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/project_opensource_sinabroClient_roundedImageView"
+                            android:layout_marginStart="25dp"
+                            android:layout_marginTop="22.5dp"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginBottom="7.5dp"
+                            android:lineSpacingExtra="5dp"
+                            android:text="@string/project_opensource"
+                            android:textColor="@color/text_blue"
+                            android:textSize="17.5sp" />
+
+                        <RelativeLayout
+                            android:id="@+id/project_opensource_detail_relativeLayout"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/project_opensource_tv"
+                            android:layout_alignLeft="@+id/project_opensource_tv"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginBottom="22.5dp">
+
+                            <TextView
+                                android:id="@+id/project_opensource_detail_tv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/detail"
+                                android:textColor="@color/blue"
+                                android:textSize="17.5sp"
+                                android:textStyle="bold" />
+
+                            <!-- 우측 화살표 버튼 -->
+                            <ImageButton
+                                android:id="@+id/in_iBtn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="-7.5dp"
+                                android:layout_marginTop="-5dp"
+                                android:layout_toRightOf="@+id/project_opensource_detail_tv"
+                                android:backgroundTint="@color/transparent"
+                                android:foregroundTint="@color/white"
+                                android:src="@drawable/arrow_right_blue" />
+                        </RelativeLayout>
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:layout_below="@+id/project_opensource_relativeLayout"
+                        android:layout_marginTop="80dp"
+                        android:background="@color/bg_grey">
+
+                        <TextView
+                            android:id="@+id/opensource_license_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginStart="22.5dp"
+                            android:background="@drawable/underline"
+                            android:paddingBottom="2dp"
+                            android:text="@string/opensource_license"
+                            android:textSize="15sp"></TextView>
+                    </RelativeLayout>
+                </RelativeLayout>
+            </ScrollView>
+        </RelativeLayout>
+    </RelativeLayout>
+</FrameLayout>
