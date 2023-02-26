@@ -1,4 +1,4 @@
-package com.project.sinabro.bottomSheet.place;
+package com.project.sinabro.bottomSheet.place.colorpicker;
 
 import static petrov.kristiyan.colorpicker.ColorUtils.dip2px;
 import static petrov.kristiyan.colorpicker.ColorUtils.getDimensionDp;

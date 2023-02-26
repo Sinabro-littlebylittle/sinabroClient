@@ -1,4 +1,4 @@
-package com.project.sinabro.bottomSheet.place;
+package com.project.sinabro.bottomSheet.place.colorpicker;
 
 import android.app.Dialog;
 import android.graphics.Color;
