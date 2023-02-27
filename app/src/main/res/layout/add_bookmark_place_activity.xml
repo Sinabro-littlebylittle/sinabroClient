@@ -13,21 +13,6 @@
     <!-- 뒤로가기 버튼 -->
 
     <View
-        android:id="@+id/under_Tline6"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="-1dp"
-        android:layout_marginTop="387dp"
-        android:layout_marginEnd="-1dp"
-        android:layout_marginBottom="455dp"
-        android:background="#BCBCBC" />
-
-    <View
         android:id="@+id/under_Tline3"
         android:layout_width="wrap_content"
         android:layout_height="1dp"
@@ -85,38 +70,40 @@
         android:textSize="16sp"
         android:textStyle="bold" />
 
-    <EditText
-        android:id="@+id/ListName"
-        android:layout_width="wrap_content"
-        android:layout_height="49dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="85dp"
-        android:layout_marginEnd="28dp"
-        android:layout_marginBottom="708dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="새 리스트 명을 입력해주세요." />
-
 
     <!-- 줄 나눔 -->
 
 
-    <TextView
-        android:id="@+id/displayColor"
+    <!-- 줄나눔 -->
+
+    <EditText
+        android:id="@+id/ListName"
         android:layout_width="wrap_content"
-        android:layout_height="36dp"
+        android:layout_height="76dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="34dp"
-        android:layout_marginTop="150dp"
-        android:layout_marginEnd="342dp"
-        android:layout_marginBottom="656dp"
+        android:layout_marginStart="29dp"
+        android:layout_marginTop="122dp"
+        android:layout_marginEnd="31dp"
+        android:layout_marginBottom="645dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="새 리스트 명을 입력해주세요." />
+
+    <TextView
+        android:id="@+id/displayColor"
+        android:layout_width="wrap_content"
+        android:layout_height="51dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="222dp"
+        android:layout_marginEnd="317dp"
+        android:layout_marginBottom="569dp"
         android:background="@drawable/home_iconshape"
         android:backgroundTint="@color/grey"
         tools:ignore="MissingConstraints"
@@ -132,91 +119,15 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="78dp"
-        android:layout_marginTop="144dp"
-        android:layout_marginEnd="224dp"
-        android:layout_marginBottom="651dp"
+        android:layout_marginStart="109dp"
+        android:layout_marginTop="225dp"
+        android:layout_marginEnd="192dp"
+        android:layout_marginBottom="572dp"
         android:text="색상 선택"
         android:textStyle="bold"
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="100dp"
         tools:layout_editor_absoluteY="78dp" />
-
-    <!-- 줄나눔 -->
-
-    <TextView
-        android:id="@+id/textView17"
-        android:layout_width="wrap_content"
-        android:layout_height="31dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="26dp"
-        android:layout_marginTop="218dp"
-        android:layout_marginEnd="316dp"
-        android:layout_marginBottom="594dp"
-        android:text="공개 범위"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:visibility="visible" />
-
-    <RadioButton
-        android:id="@+id/radioButton_open"
-        android:layout_width="wrap_content"
-        android:layout_height="26dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="256dp"
-        android:layout_marginEnd="293dp"
-        android:layout_marginBottom="560dp"
-        android:text="  공개" />
-
-    <RadioButton
-        android:id="@+id/radioButton_close"
-        android:layout_width="wrap_content"
-        android:layout_height="26dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="317dp"
-        android:layout_marginEnd="298dp"
-        android:layout_marginBottom="499dp"
-        android:text="  비공개" />
-
-    <TextView
-        android:id="@+id/textView20"
-        android:layout_width="326dp"
-        android:layout_height="23dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="33dp"
-        android:layout_marginTop="286dp"
-        android:layout_marginEnd="52dp"
-        android:layout_marginBottom="535dp"
-        android:text="URL로 다른 사람에게 리스트를 공유할 수 있습니다." />
-
-    <TextView
-        android:id="@+id/textView25"
-        android:layout_width="wrap_content"
-        android:layout_height="23dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="33dp"
-        android:layout_marginTop="348dp"
-        android:layout_marginEnd="67dp"
-        android:layout_marginBottom="471dp"
-        android:text="나만 볼 수 있으며, 다른 사람과 공유할 수 없습니다." />
 
     <View
         android:id="@+id/under_Tline5"
@@ -227,77 +138,11 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="2dp"
-        android:layout_marginTop="202dp"
-        android:layout_marginEnd="-2dp"
-        android:layout_marginBottom="640dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="320dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginBottom="522dp"
         android:background="#BCBCBC" />
-
-    <TextView
-        android:id="@+id/textView26"
-        android:layout_width="wrap_content"
-        android:layout_height="25dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="23dp"
-        android:layout_marginTop="408dp"
-        android:layout_marginEnd="307dp"
-        android:layout_marginBottom="409dp"
-        android:text="상세 설명"
-        android:textColor="@color/black"
-        android:textSize="17sp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/textView27"
-        android:layout_width="wrap_content"
-        android:layout_height="19dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="110dp"
-        android:layout_marginTop="418dp"
-        android:layout_marginEnd="272dp"
-        android:layout_marginBottom="405dp"
-        android:text="선택"
-        android:textSize="10sp" />
-
-    <EditText
-        android:id="@+id/options_memo"
-        android:layout_width="wrap_content"
-        android:layout_height="35dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="453dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginBottom="355dp"
-        android:background="@drawable/home_iconshape"
-        android:backgroundTint="#F7F7F7"
-        android:text="메모를 남겨주세요."
-        android:textColor="@color/light_grey" />
-
-    <EditText
-        android:id="@+id/options_URL"
-        android:layout_width="wrap_content"
-        android:layout_height="35dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="500dp"
-        android:layout_marginEnd="29dp"
-        android:layout_marginBottom="308dp"
-        android:background="@drawable/home_iconshape"
-        android:backgroundTint="#F7F7F7"
-        android:text="관련 URL을 추가해주세요."
-        android:textColor="@color/light_grey" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/addlistbtn"
