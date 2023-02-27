@@ -85,9 +85,10 @@
                             android:layout_marginEnd="22.5dp"
                             android:layout_marginBottom="22.5dp"
                             android:lineSpacingExtra="5dp"
+                            android:paddingEnd="5dp"
                             android:text="@string/our_goal"
                             android:textColor="@color/text_blue"
-                            android:textSize="17.5sp" />
+                            android:textSize="16sp" />
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -131,9 +132,10 @@
                             android:layout_marginEnd="10dp"
                             android:layout_marginBottom="7.5dp"
                             android:lineSpacingExtra="5dp"
+                            android:paddingEnd="5dp"
                             android:text="@string/project_opensource"
                             android:textColor="@color/text_blue"
-                            android:textSize="17.5sp" />
+                            android:textSize="16sp" />
 
                         <RelativeLayout
                             android:id="@+id/project_opensource_detail_relativeLayout"
@@ -150,8 +152,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="@string/detail"
                                 android:textColor="@color/blue"
-                                android:textSize="17.5sp"
-                                android:textStyle="bold" />
+                                android:textSize="15sp" />
 
                             <!-- 우측 화살표 버튼 -->
                             <ImageButton
@@ -169,7 +170,7 @@
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="100dp"
+                        android:layout_height="80dp"
                         android:layout_below="@+id/project_opensource_relativeLayout"
                         android:layout_marginTop="80dp"
                         android:background="@color/bg_grey">
@@ -181,9 +182,10 @@
                             android:layout_centerVertical="true"
                             android:layout_marginStart="22.5dp"
                             android:background="@drawable/underline"
+                            android:paddingTop="7.5dp"
                             android:paddingBottom="2dp"
                             android:text="@string/opensource_license"
-                            android:textSize="15sp"></TextView>
+                            android:textSize="12.5sp"></TextView>
                     </RelativeLayout>
                 </RelativeLayout>
             </ScrollView>
