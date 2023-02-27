@@ -21,6 +21,7 @@ import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -86,7 +87,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity implements MapView.CurrentLocationEventListener, MapView.MapViewEventListener,Runnable {
+public class MainActivity extends AppCompatActivity implements MapView.CurrentLocationEventListener, MapView.MapViewEventListener, Runnable {
 
     /**
      * 위치 권한 요청 코드의 상숫값
@@ -171,6 +172,7 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
             return file.getAbsolutePath();
         }
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -255,7 +257,7 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         placeList_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final Intent intent = new Intent (getApplicationContext(), PlaceListActivity.class);
+                final Intent intent = new Intent(getApplicationContext(), PlaceListActivity.class);
                 startActivity(intent);
             }
         });
@@ -282,7 +284,7 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         layout_navigation_header.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final Intent intent = new Intent (getApplicationContext(), SignIn.class);
+                final Intent intent = new Intent(getApplicationContext(), SignIn.class);
                 startActivity(intent);
             }
         });
@@ -292,6 +294,46 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         NavigationView navigationView = findViewById(R.id.navigationView);
         NavController navController = Navigation.findNavController(this, R.id.navHostFragment);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+        /** sidebar navigation 내 "문의" 메뉴 선택, 이벤트 리스너 코드 */
+        navigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                        // Handle the menu item click event here
+                        switch (menuItem.getItemId()) {
+                            case R.id.support_menu:
+                                // Code to handle click of "support_menu(문의)"
+                                /** 메일 문의 선택 방식(1) */
+                                Intent intent = new Intent(Intent.ACTION_SENDTO);
+                                intent.setData(Uri.parse("mailto:")); // only email apps should handle this
+                                intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"cbnusinabro@gmail.com"});
+                                intent.putExtra(Intent.EXTRA_SUBJECT, "[문의]: ");
+                                startActivity(intent);
+
+                                /** 메일 문의 선택 방식(2)  */
+                                // Intent selectorIntent = new Intent(Intent.ACTION_SENDTO);
+                                // selectorIntent.setData(Uri.parse("mailto:"));
+                                // Intent emailIntent = new Intent(Intent.ACTION_SEND);
+                                // emailIntent.setData(Uri.parse("mailto:"));
+                                // emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{"cbnusinabro@gmail.com"});
+                                // emailIntent.putExtra(Intent.EXTRA_SUBJECT, "[문의]: ");
+                                // emailIntent.setSelector(selectorIntent);
+                                // startActivity(Intent.createChooser(emailIntent, "Send email..."));
+                                break;
+                            default:
+                                Log.d("error", "잘못된 접근입니다.");
+                                // 애플리케이션 강제종료
+                                android.os.Process.killProcess(android.os.Process.myPid());
+                        }
+
+                        // Close the navigation drawer
+                        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+                        drawer.closeDrawer(GravityCompat.START);
+
+                        return true;
+                    }
+                });
 
         /** ========================= bottom sheet 레이아웃 ========================= */
 //        bottomSheet_layout = (FrameLayout) findViewById(R.id.bottomSheet_layout);
@@ -320,7 +362,7 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
 //                finish();
 //                final Intent intent = new Intent(MainActivity.this, ObjectDetectionActivity.class);
 //                startActivity(intent);
-                final Intent intent = new Intent (MainActivity.this, AddPlaceGuideActivity.class);
+                final Intent intent = new Intent(MainActivity.this, AddPlaceGuideActivity.class);
                 startActivity(intent);
             }
         });
@@ -354,7 +396,7 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
 //                });
 //                // 이곳에 장소 등록 액티비티로 이어지는 코드를 추가하면 됩니다.
 
-                final Intent intent = new Intent (MainActivity.this, AddLocationInfoActivity.class);
+                final Intent intent = new Intent(MainActivity.this, AddLocationInfoActivity.class);
                 startActivity(intent);
             }
         });
@@ -367,7 +409,6 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
                 // 이곳에 북마크 등록 액티비티로 이어지는 코드를 추가하면 됩니다.
             }
         });
-
 
 
         //모델 로드..
@@ -387,9 +428,10 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         }
 
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        System.out.println("\n\nre"+requestCode);
+        System.out.println("\n\nre" + requestCode);
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode != RESULT_CANCELED) {
             switch (requestCode) {
@@ -434,7 +476,7 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         IValue[] outputTuple = mModule.forward(IValue.from(inputTensor)).toTuple();
         final Tensor outputTensor = outputTuple[0].toTensor();
         final float[] outputs = outputTensor.getDataAsFloatArray();
-        final ArrayList<Result> results =  PrePostProcessor.outputsToNMSPredictions(outputs, mImgScaleX, mImgScaleY, mIvScaleX, mIvScaleY, mStartX, mStartY);
+        final ArrayList<Result> results = PrePostProcessor.outputsToNMSPredictions(outputs, mImgScaleX, mImgScaleY, mIvScaleX, mIvScaleY, mStartX, mStartY);
 
         runOnUiThread(() -> {
             //mButtonDetect.setEnabled(true);
