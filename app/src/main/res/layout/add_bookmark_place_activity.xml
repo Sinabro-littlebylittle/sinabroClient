@@ -90,7 +90,7 @@
         android:layout_marginBottom="645dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="새 리스트 명을 입력해주세요." />
+        android:hint="새 리스트 명을 입력해주세요." />
 
     <TextView
         android:id="@+id/displayColor"
