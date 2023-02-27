@@ -37,6 +37,8 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
@@ -60,6 +62,7 @@ import com.project.sinabro.model.Places;
 import com.project.sinabro.retrofit.PlacesAPI;
 import com.project.sinabro.retrofit.RetrofitService;
 import com.project.sinabro.sideBarMenu.authentication.SignIn;
+import com.project.sinabro.sideBarMenu.devInfo.DevInfoFragment;
 
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
@@ -294,46 +297,6 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         NavigationView navigationView = findViewById(R.id.navigationView);
         NavController navController = Navigation.findNavController(this, R.id.navHostFragment);
         NavigationUI.setupWithNavController(navigationView, navController);
-
-        /** sidebar navigation 내 "문의" 메뉴 선택, 이벤트 리스너 코드 */
-        navigationView.setNavigationItemSelectedListener(
-                new NavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                        // Handle the menu item click event here
-                        switch (menuItem.getItemId()) {
-                            case R.id.support_menu:
-                                // Code to handle click of "support_menu(문의)"
-                                /** 메일 문의 선택 방식(1) */
-                                Intent intent = new Intent(Intent.ACTION_SENDTO);
-                                intent.setData(Uri.parse("mailto:")); // only email apps should handle this
-                                intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"cbnusinabro@gmail.com"});
-                                intent.putExtra(Intent.EXTRA_SUBJECT, "[문의]: ");
-                                startActivity(intent);
-
-                                /** 메일 문의 선택 방식(2)  */
-                                // Intent selectorIntent = new Intent(Intent.ACTION_SENDTO);
-                                // selectorIntent.setData(Uri.parse("mailto:"));
-                                // Intent emailIntent = new Intent(Intent.ACTION_SEND);
-                                // emailIntent.setData(Uri.parse("mailto:"));
-                                // emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{"cbnusinabro@gmail.com"});
-                                // emailIntent.putExtra(Intent.EXTRA_SUBJECT, "[문의]: ");
-                                // emailIntent.setSelector(selectorIntent);
-                                // startActivity(Intent.createChooser(emailIntent, "Send email..."));
-                                break;
-                            default:
-                                Log.d("error", "잘못된 접근입니다.");
-                                // 애플리케이션 강제종료
-                                android.os.Process.killProcess(android.os.Process.myPid());
-                        }
-
-                        // Close the navigation drawer
-                        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-                        drawer.closeDrawer(GravityCompat.START);
-
-                        return true;
-                    }
-                });
 
         /** ========================= bottom sheet 레이아웃 ========================= */
 //        bottomSheet_layout = (FrameLayout) findViewById(R.id.bottomSheet_layout);
