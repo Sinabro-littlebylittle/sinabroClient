@@ -26,12 +26,12 @@
         android:label="fragment_settings_activity"
         tools:layout="@layout/fragment_settings_activity" />
 
-    <!-- 문의 액티비티 연결 -->
+    <!-- 문의 fragment 연결 -->
     <fragment
         android:id="@+id/support_menu"
         android:name="com.project.sinabro.sideBarMenu.support.SupportFragment"
         android:label="fragment_support_activity"
-        tools:layout="@layout/fragment_support_activity" />
+        tools:layout="@layout/fragment_empty" />
 
     <!-- 개발 문의 액티비티 연결 -->
     <fragment
