@@ -13,7 +13,9 @@
     <color name="blue_normal">#0000FF</color>
     <color name="blue">#427FFF</color>
     <color name="deep_blue">#335DB3</color>
+    <color name="text_blue">#353d4a</color>
     <color name="lighter_grey">#eeeff1</color>
+    <color name="lighter_md_grey">#E9EAEC</color>
     <color name="light_grey">#BCBDBF</color>
     <color name="grey">#606060</color>
     <color name="normal_grey">#696969</color>
@@ -21,7 +23,7 @@
     <color name="cursor">#4261FF</color>
     <color name="input_label">#8e949f</color>
     <color name="input_hint">#afb8c1</color>
-    <color name="input_underline">#f2f3f5</color>
+    <color name="bg_grey">#f2f3f5</color>
 
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>

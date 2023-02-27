@@ -22,7 +22,6 @@
         android:theme="@style/Theme.Sinabro"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
-
         <activity
             android:name=".IntroActivity"
             android:exported="true">
@@ -45,6 +44,7 @@
         <activity android:name="com.project.sinabro.sideBarMenu.authentication.SignUpStep2" />
         <activity android:name="com.project.sinabro.sideBarMenu.authentication.SignIn" />
         <activity android:name="com.project.sinabro.sideBarMenu.authentication.ResetPassword" />
+        <activity android:name="com.project.sinabro.sideBarMenu.devInfo.OpenSourceLicense" />
 
         <meta-data
             android:name="com.kakao.sdk.AppKey"

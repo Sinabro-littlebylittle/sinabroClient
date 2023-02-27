@@ -12,4 +12,21 @@
     <string name="run_model">Running the model...</string>
     <string name="restart">Restart</string>
     <string name="live">Live</string>
+
+    <!-- (개발 정보) fragment 관련 string -->
+    <string name="our_goal_label">시나브로가 추구하는 목표는?</string>
+    <string name="our_goal">특정 장소에 방문을 희망하는 사용자들에게 실시간 영상 분석 기술을 이용하여 파악된 인구 밀집 정보를 제공하여 특정 지역의 유동 인구 파악 및 이동 계획 수립 시 차질이 발생하지 않도록 노력하고 있답니다!</string>
+    <string name="project_opensource_label">프로젝트 오픈소스 </string>
+    <string name="project_opensource">시나브로는 단순히 멋진 앱을 만드는 조직이 아니라 개인과 사회에 기여할 수 있는 다양한 방식을 갖추기 위해 꾸준히 성장해 나아가는 팀입니다.</string>
+    <string name="sinabro_client_repo_url">https://opengraph.githubassets.com/561987118/sinabro-littlebylittle/sinabroClient</string>
+    <string name="sinabro_repos">https://github.com/orgs/Sinabro-littlebylittle/repositories</string>
+    <string name="sinabro_overview">https://github.com/Sinabro-littlebylittle</string>
+    <string name="detail">자세히 보기</string>
+    <string name="opensource_license">오픈소스 라이선스 보기</string>
+
+    <!-- (오픈소스 라이선스) 액티비티 관련 string  -->
+    <string name="opensource_license_label">오픈소스 라이선스</string>
+    <string name="standard">기준</string>
+    <string name="mit_license_label">* MIT License</string>
+    <string name="mit_license_url">https://github.com/Sinabro-littlebylittle/sinabroClient/blob/main/LICENSE</string>
 </resources>
