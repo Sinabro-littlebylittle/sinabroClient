@@ -86,7 +86,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/mit_license_label"
                         android:textColor="@color/text_blue"
-                        android:textSize="17.5sp" />
+                        android:textSize="15sp" />
 
                     <TextView
                         android:id="@+id/mit_license_tv_url_tv"
@@ -94,10 +94,11 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/mit_license_tv"
                         android:layout_marginTop="5dp"
+                        android:paddingEnd="5dp"
                         android:lineSpacingExtra="5dp"
                         android:text="@string/mit_license_url"
                         android:textColor="@color/blue"
-                        android:textSize="17.5sp" />
+                        android:textSize="15sp" />
                 </RelativeLayout>
             </RelativeLayout>
         </ScrollView>
