@@ -6,128 +6,143 @@
     android:layout_height="match_parent"
     tools:context=".bottomSheet.place.AddLocationInfoActivity">
 
-    <!-- 뒤로가기 버튼 -->
-    <ImageButton
-        android:id="@+id/back_iBtn"
-        android:layout_width="42.5dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="10dp"
-        android:backgroundTint="#FFFFFF"
-        android:src="@drawable/back"
-        tools:ignore="SpeakableTextPresentCheck" />
+    <!-- activity (header) RelativeLayout -->
+    <RelativeLayout
+        android:id="@+id/activity_header_relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <!-- "장소 등록" 메뉴명 -->
-    <TextView
-        android:id="@+id/activityTitle_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="27.5dp"
-        android:letterSpacing="-0.01"
-        android:text="장소 등록"
-        android:textColor="@color/dark_grey"
-        android:textSize="17.5sp" />
+        <!-- 뒤로가기 버튼 -->
+        <ImageButton
+            android:id="@+id/back_iBtn"
+            android:layout_width="42.5dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="#FFFFFF"
+            android:src="@drawable/back"
+            tools:ignore="SpeakableTextPresentCheck" />
 
-    <!-- 장소 삭제하기 버튼 -->
-    <TextView
-        android:id="@+id/placeRemove_tv"
-        android:layout_width="50dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="28dp"
-        android:layout_marginRight="10dp"
-        android:letterSpacing="-0.01"
-        android:text="삭제"
-        android:textAlignment="center"
-        android:textColor="@color/dark_grey"
-        android:textSize="16sp"
-        android:visibility="invisible" />
-
-    <!-- 도로명 주소 레이블 -->
-    <TextView
-        android:id="@+id/roadNameAddress_label_tv"
-        android:layout_width="350dp"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginLeft="23dp"
-        android:layout_marginTop="110dp"
-        android:letterSpacing="-0.05"
-        android:text="현재 위치"
-        android:textColor="@color/input_label"
-        android:textSize="15sp" />
-
-    <!-- (위도, 경도) 기반 도로명 주소 -->
-    <TextView
-        android:id="@+id/roadNameAddress_tv"
-        android:layout_width="350dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/roadNameAddress_label_tv"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        android:letterSpacing="-0.05"
-        android:text="충청북도 청주시 서원구 충대로1 충북대학교"
-        android:textColor="@color/dark_grey"
-        android:textSize="20sp" />
-
-    <!-- 장소명 -->
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/placeName_textInputLayout"
-        android:layout_width="350dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/roadNameAddress_tv"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="18.5dp"
-        android:background="@drawable/edt_bg_selector"
-        android:hint="장소명"
-        android:paddingLeft="-12.5dp"
-        android:textColorHint="@color/input_hint"
-        app:boxBackgroundMode="none"
-        app:endIconMode="clear_text"
-        app:hintTextAppearance="@style/App.hintTextAppearance"
-        app:hintTextColor="@color/input_label">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/placeName_editText"
-            android:layout_width="362.5dp"
-            android:layout_height="match_parent"
-            android:ellipsize="end"
-            android:inputType="textNoSuggestions"
-            android:maxLength="14"
-            android:paddingTop="12dp"
+        <!-- "장소 등록" 메뉴명 -->
+        <TextView
+            android:id="@+id/activityTitle_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="27.5dp"
+            android:letterSpacing="-0.01"
+            android:text="장소 등록"
             android:textColor="@color/dark_grey"
-            android:textCursorDrawable="@drawable/cursor_color"
-            android:textSize="20sp" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:textSize="17.5sp" />
 
-    <!-- 상세주소 -->
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/detailAddress_textInputLayout"
-        android:layout_width="350dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/placeName_textInputLayout"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="19.5dp"
-        android:background="@drawable/edt_bg_selector"
-        android:hint="상세주소"
-        android:paddingLeft="-12.5dp"
-        android:textColorHint="@color/input_hint"
-        app:boxBackgroundMode="none"
-        app:endIconMode="clear_text"
-        app:hintTextAppearance="@style/App.hintTextAppearance"
-        app:hintTextColor="@color/input_label">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/detailAddress_editText"
-            android:layout_width="362.5dp"
-            android:layout_height="match_parent"
-            android:inputType="textNoSuggestions"
-            android:maxLength="14"
-            android:paddingTop="12dp"
+        <!-- "장소 삭제" TextView -->
+        <TextView
+            android:id="@+id/placeRemove_tv"
+            android:layout_width="60dp"
+            android:layout_height="50dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="29dp"
+            android:layout_marginEnd="10dp"
+            android:gravity="center"
+            android:letterSpacing="-0.01"
+            android:text="삭제"
             android:textColor="@color/dark_grey"
-            android:textCursorDrawable="@drawable/cursor_color"
+            android:textSize="16sp" />
+    </RelativeLayout>
+
+    <!-- activity (body) RelativeLayout -->
+    <RelativeLayout
+        android:id="@+id/activity_body_relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/activity_header_relativeLayout">
+
+        <!-- 도로명 주소 레이블 -->
+        <TextView
+            android:id="@+id/roadNameAddress_label_tv"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="23dp"
+            android:layout_marginTop="110dp"
+            android:letterSpacing="-0.05"
+            android:text="현재 위치"
+            android:textColor="@color/input_label"
+            android:textSize="15sp" />
+
+        <!-- (위도, 경도) 기반 도로명 주소 -->
+        <TextView
+            android:id="@+id/roadNameAddress_tv"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/roadNameAddress_label_tv"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:letterSpacing="-0.05"
+            android:text="충청북도 청주시 서원구 충대로1 충북대학교"
+            android:textColor="@color/dark_grey"
             android:textSize="20sp" />
-    </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- 장소명 -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/placeName_textInputLayout"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/roadNameAddress_tv"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="18.5dp"
+            android:background="@drawable/edt_bg_selector"
+            android:hint="장소명"
+            android:paddingLeft="-12.5dp"
+            android:textColorHint="@color/input_hint"
+            app:boxBackgroundMode="none"
+            app:endIconMode="clear_text"
+            app:hintTextAppearance="@style/App.hintTextAppearance"
+            app:hintTextColor="@color/input_label">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/placeName_editText"
+                android:layout_width="362.5dp"
+                android:layout_height="match_parent"
+                android:ellipsize="end"
+                android:inputType="textNoSuggestions"
+                android:maxLength="14"
+                android:paddingTop="12dp"
+                android:textColor="@color/dark_grey"
+                android:textCursorDrawable="@drawable/cursor_color"
+                android:textSize="20sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- 상세주소 -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/detailAddress_textInputLayout"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/placeName_textInputLayout"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="19.5dp"
+            android:background="@drawable/edt_bg_selector"
+            android:hint="상세주소"
+            android:paddingLeft="-12.5dp"
+            android:textColorHint="@color/input_hint"
+            app:boxBackgroundMode="none"
+            app:endIconMode="clear_text"
+            app:hintTextAppearance="@style/App.hintTextAppearance"
+            app:hintTextColor="@color/input_label">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/detailAddress_editText"
+                android:layout_width="362.5dp"
+                android:layout_height="match_parent"
+                android:inputType="textNoSuggestions"
+                android:maxLength="14"
+                android:paddingTop="12dp"
+                android:textColor="@color/dark_grey"
+                android:textCursorDrawable="@drawable/cursor_color"
+                android:textSize="20sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+    </RelativeLayout>
 
     <!-- 장소 등록하기 버튼 -->
     <Button
