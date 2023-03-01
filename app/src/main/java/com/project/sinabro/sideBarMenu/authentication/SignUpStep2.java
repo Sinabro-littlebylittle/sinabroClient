@@ -33,7 +33,7 @@ public class SignUpStep2 extends AppCompatActivity {
     private Dialog askUserUseDefaultProfileImage_dialog,
             signUpSuccess_dialog;
 
-    Bitmap bitmap;
+    private Bitmap bitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
