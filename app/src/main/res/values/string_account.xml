@@ -50,6 +50,7 @@
     <string name="dialog_modify_password_successs">비밀번호가 정상적으로\n변경되었습니다</string>
 
     <!-- Strings related to (Toast) -->
+    <string name="toast_modify_user_image_success">이미지를 변경했어요 😀</string>
     <string name="toast_modify_my_info_success">회원정보를 수정했어요</string>
     <string name="toast_modify_password_success">비밀번호를 변경했어요</string>
 
