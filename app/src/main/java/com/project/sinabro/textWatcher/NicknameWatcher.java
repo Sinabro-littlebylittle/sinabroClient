@@ -52,7 +52,7 @@ public class NicknameWatcher implements TextWatcher {
             nicknameTextLayout.setError(null);
             nicknameTextLayout.setErrorEnabled(false);
             nicknameTextLayout.setBackgroundResource(R.drawable.edt_bg_selector);
-            nicknameTextLayout.setPadding(-25, 0, 0, 20);
+            nicknameTextLayout.setPadding(-34, 20, 0, 20);
         } else if (!validateNickname(s.toString())) {
             nicknameTextLayout.setError(errorMsg);
             nicknameTextLayout.setErrorEnabled(true);
@@ -61,7 +61,7 @@ public class NicknameWatcher implements TextWatcher {
             nicknameTextLayout.setError(null);
             nicknameTextLayout.setErrorEnabled(false);
             nicknameTextLayout.setBackgroundResource(R.drawable.edt_bg_selector);
-            nicknameTextLayout.setPadding(-25, 0, 0, 20);
+            nicknameTextLayout.setPadding(-34, 20, 0, 20);
         }
     }
 

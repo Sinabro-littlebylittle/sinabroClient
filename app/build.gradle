@@ -88,4 +88,7 @@ dependencies {
     // 외부 이미지 로딩 프레임워크 추가(image loading framework for Android)
     implementation 'com.github.bumptech.glide:glide:4.15.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.15.0'
+
+    // 요소 애니메이션 적용을 위한 라이브러리 추가
+    implementation 'com.daimajia.androidanimations:library:2.4@aar'
 }
