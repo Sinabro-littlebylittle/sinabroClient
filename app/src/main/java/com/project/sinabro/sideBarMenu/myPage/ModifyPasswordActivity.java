@@ -99,40 +99,40 @@ public class ModifyPasswordActivity extends AppCompatActivity {
         binding.modifyCompleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new SuccessToast(getResources().getString(R.string.toast_modify_password_success), ModifyPasswordActivity.this);
-//                if (binding.currentPasswordTextInputLayout.getError() != null || String.valueOf(binding.currentPasswordEditText.getText()).equals("")) {
-//                    binding.currentPasswordEditText.requestFocus();
-//                    binding.currentPasswordTextInputLayout.setError(getResources().getString(R.string.sign_up_step1_password_validation_failed));
-//                    binding.currentPasswordTextInputLayout.setErrorEnabled(true);
-//                    binding.currentPasswordTextInputLayout.setBackgroundResource(R.drawable.edt_bg_only_helper_selected);
-//                } else if (String.valueOf(binding.currentPasswordEditText.getText()).equals(String.valueOf(binding.passwordEditText.getText()))) {
-//                    binding.passwordEditText.requestFocus();
-//                    binding.passwordTextInputLayout.setError(getResources().getString(R.string.current_and_new_password_same));
-//                    binding.passwordTextInputLayout.setErrorEnabled(true);
-//                    binding.passwordTextInputLayout.setBackgroundResource(R.drawable.edt_bg_only_helper_selected);
-//                } else if (binding.passwordTextInputLayout.getError() != null || String.valueOf(binding.passwordEditText.getText()).equals("")) {
-//                    binding.passwordEditText.requestFocus();
-//                    binding.passwordTextInputLayout.setError(getResources().getString(R.string.sign_up_step1_password_validation_failed));
-//                    binding.passwordTextInputLayout.setErrorEnabled(true);
-//                    binding.passwordTextInputLayout.setBackgroundResource(R.drawable.edt_bg_only_helper_selected);
-//                } else if (!String.valueOf(binding.passwordEditText.getText()).equals(String.valueOf(binding.passwordConfirmEditText.getText()))) {
-//                    binding.passwordConfirmEditText.requestFocus();
-//                    binding.passwordConfirmTextInputLayout.setError(getResources().getString(R.string.sign_up_step1_current_password_validation_failed));
-//                    binding.passwordConfirmTextInputLayout.setErrorEnabled(true);
-//                    binding.passwordConfirmTextInputLayout.setBackgroundResource(R.drawable.edt_bg_only_helper_selected);
-//                } else if ((binding.passwordConfirmTextInputLayout.getError() != null || String.valueOf(binding.passwordConfirmEditText.getText()).equals("")) && !String.valueOf(binding.passwordEditText.getText()).equals(String.valueOf(binding.passwordConfirmEditText.getText()))) {
-//                    binding.passwordConfirmEditText.requestFocus();
-//                    binding.passwordConfirmTextInputLayout.setError(getResources().getString(R.string.sign_up_step1_password_confirm_validation_failed));
-//                    binding.passwordConfirmTextInputLayout.setErrorEnabled(true);
-//                    binding.passwordConfirmTextInputLayout.setBackgroundResource(R.drawable.edt_bg_only_helper_selected);
-//                } else {
-//                    // showDialog_modify_password_failed();
-//
-//                    // 모든 입력이 정상적으로 완료되었을 때
-//                    new SuccessToast(getResources().getString(R.string.toast_modify_password_success), ModifyPasswordActivity.this);
-//                    onBackPressed(); // 뒤로가기 기능 수행
-//                    finish(); // 현재 액티비티 종료
-//                }
+                // 입력 란 검증 실패 및 공란 확인 조건식
+                if (binding.currentPasswordTextInputLayout.getError() != null || String.valueOf(binding.currentPasswordEditText.getText()).equals("")) {
+                    binding.currentPasswordEditText.requestFocus();
+                    binding.currentPasswordTextInputLayout.setError(getResources().getString(R.string.sign_up_step1_password_validation_failed));
+                    binding.currentPasswordTextInputLayout.setErrorEnabled(true);
+                    binding.currentPasswordTextInputLayout.setBackgroundResource(R.drawable.edt_bg_only_helper_selected);
+                } else if (String.valueOf(binding.currentPasswordEditText.getText()).equals(String.valueOf(binding.passwordEditText.getText()))) {
+                    binding.passwordEditText.requestFocus();
+                    binding.passwordTextInputLayout.setError(getResources().getString(R.string.current_and_new_password_same));
+                    binding.passwordTextInputLayout.setErrorEnabled(true);
+                    binding.passwordTextInputLayout.setBackgroundResource(R.drawable.edt_bg_only_helper_selected);
+                } else if (binding.passwordTextInputLayout.getError() != null || String.valueOf(binding.passwordEditText.getText()).equals("")) {
+                    binding.passwordEditText.requestFocus();
+                    binding.passwordTextInputLayout.setError(getResources().getString(R.string.sign_up_step1_password_validation_failed));
+                    binding.passwordTextInputLayout.setErrorEnabled(true);
+                    binding.passwordTextInputLayout.setBackgroundResource(R.drawable.edt_bg_only_helper_selected);
+                } else if (!String.valueOf(binding.passwordEditText.getText()).equals(String.valueOf(binding.passwordConfirmEditText.getText()))) {
+                    binding.passwordConfirmEditText.requestFocus();
+                    binding.passwordConfirmTextInputLayout.setError(getResources().getString(R.string.sign_up_step1_current_password_validation_failed));
+                    binding.passwordConfirmTextInputLayout.setErrorEnabled(true);
+                    binding.passwordConfirmTextInputLayout.setBackgroundResource(R.drawable.edt_bg_only_helper_selected);
+                } else if ((binding.passwordConfirmTextInputLayout.getError() != null || String.valueOf(binding.passwordConfirmEditText.getText()).equals("")) && !String.valueOf(binding.passwordEditText.getText()).equals(String.valueOf(binding.passwordConfirmEditText.getText()))) {
+                    binding.passwordConfirmEditText.requestFocus();
+                    binding.passwordConfirmTextInputLayout.setError(getResources().getString(R.string.sign_up_step1_password_confirm_validation_failed));
+                    binding.passwordConfirmTextInputLayout.setErrorEnabled(true);
+                    binding.passwordConfirmTextInputLayout.setBackgroundResource(R.drawable.edt_bg_only_helper_selected);
+                } else {
+                    // showDialog_modify_password_failed();
+
+                    // 모든 입력이 정상적으로 완료되었을 때
+                    new SuccessToast(getResources().getString(R.string.toast_modify_password_success), ModifyPasswordActivity.this);
+                    onBackPressed(); // 뒤로가기 기능 수행
+                    finish(); // 현재 액티비티 종료
+                }
             }
         });
     }
