@@ -95,6 +95,7 @@
                     android:layout_height="match_parent"
                     android:ellipsize="end"
                     android:inputType="textNoSuggestions"
+                    android:paddingTop="12dp"
                     android:textColor="@color/dark_grey"
                     android:textCursorDrawable="@drawable/cursor_color"
                     android:textSize="17.5sp" />
