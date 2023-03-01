@@ -10,6 +10,7 @@ import com.project.sinabro.textWatcher.PasswordWatcher;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
 
@@ -18,6 +19,9 @@ public class SignUpStep1 extends AppCompatActivity {
     private ActivitySignUpStep1Binding binding;
 
     public static Boolean emailConfirm;
+
+    private Boolean password_toggle = true,
+            passwordConfirm_toggle = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +66,32 @@ public class SignUpStep1 extends AppCompatActivity {
             }
         });
 
+        /** "비밀번호 입력 란" 비밀번호 show/hidden 아이콘 클릭 시 */
+        binding.passwordTextInputLayout.setEndIconOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (password_toggle) {
+                    binding.passwordEditText.setPadding(34, 50, 0, 25);
+                    binding.passwordEditText.setTransformationMethod(null);
+                } else
+                    binding.passwordEditText.setTransformationMethod(new PasswordTransformationMethod());
+                password_toggle = !password_toggle;
+            }
+        });
+
+        /** "비밀번호 재확인 입력 란" 비밀번호 show/hidden 아이콘 클릭 시 */
+        binding.passwordConfirmTextInputLayout.setEndIconOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (passwordConfirm_toggle) {
+                    binding.passwordConfirmEditText.setTransformationMethod(null);
+                    binding.passwordConfirmEditText.setPadding(34, 50, 0, 25);
+                } else
+                    binding.passwordConfirmEditText.setTransformationMethod(new PasswordTransformationMethod());
+                passwordConfirm_toggle = !passwordConfirm_toggle;
+            }
+        });
+
         /** 이메일 확인 버튼 클릭 시 이벤트 처리 코드 */
         binding.emailConfirmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,7 +103,7 @@ public class SignUpStep1 extends AppCompatActivity {
                 binding.emailConfirmResultTv.setTextColor(getResources().getColor(R.color.blue));
                 binding.emailConfirmResultTv.setText(getResources().getString(R.string.sign_up_email_confirm_success));
                 binding.emailTextInputLayout.setBackgroundResource(R.drawable.edt_bg_selector);
-                binding.emailTextInputLayout.setPadding(-25, 0, 0, 20);
+                binding.emailTextInputLayout.setPadding(-34, 20, 0, 20);
                 emailConfirm = true;
 
                 // 입력된 이메일이 DB 내에 이미 존재할 때 (사용 불가) 관련 문구 표기하기
@@ -100,7 +130,12 @@ public class SignUpStep1 extends AppCompatActivity {
                     binding.passwordTextInputLayout.setError(getResources().getString(R.string.sign_up_step1_password_validation_failed));
                     binding.passwordTextInputLayout.setErrorEnabled(true);
                     binding.passwordTextInputLayout.setBackgroundResource(R.drawable.edt_bg_only_helper_selected);
-                } else if (binding.passwordConfirmTextInputLayout.getError() != null || String.valueOf(binding.passwordConfirmEditText.getText()).equals("")) {
+                } else if (!String.valueOf(binding.passwordEditText.getText()).equals(String.valueOf(binding.passwordConfirmEditText.getText()))) {
+                    binding.passwordConfirmEditText.requestFocus();
+                    binding.passwordConfirmTextInputLayout.setError(getResources().getString(R.string.sign_up_step1_current_password_validation_failed));
+                    binding.passwordConfirmTextInputLayout.setErrorEnabled(true);
+                    binding.passwordConfirmTextInputLayout.setBackgroundResource(R.drawable.edt_bg_only_helper_selected);
+                } else if ((binding.passwordConfirmTextInputLayout.getError() != null || String.valueOf(binding.passwordConfirmEditText.getText()).equals("")) && !String.valueOf(binding.passwordEditText.getText()).equals(String.valueOf(binding.passwordConfirmEditText.getText()))) {
                     binding.passwordConfirmEditText.requestFocus();
                     binding.passwordConfirmTextInputLayout.setError(getResources().getString(R.string.sign_up_step1_password_confirm_validation_failed));
                     binding.passwordConfirmTextInputLayout.setErrorEnabled(true);
