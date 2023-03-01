@@ -10,6 +10,8 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.project.sinabro.R;
 import com.project.sinabro.sideBarMenu.authentication.SignUpStep1;
+import com.project.sinabro.sideBarMenu.myPage.ModifyMyInfoActivity;
+import com.project.sinabro.sideBarMenu.myPage.ModifyPasswordActivity;
 
 public class EmailWatcher implements TextWatcher {
 
@@ -19,11 +21,11 @@ public class EmailWatcher implements TextWatcher {
 
     private TextView emailConfirmResultTv;
 
-    private final String errorMsg;
-
-    private String calledActivityName;
+    private final String errorMsg, calledActivityName;
 
     private final SignUpStep1 signUpStep1 = new SignUpStep1();
+
+    private final ModifyMyInfoActivity modifyMyInfoActivity = new ModifyMyInfoActivity();
 
     public EmailWatcher(TextInputLayout textInputLayout, TextInputEditText textInputEditText, String errorMsg, String calledActivityName) {
         this.emailTextLayout = textInputLayout;
@@ -56,9 +58,13 @@ public class EmailWatcher implements TextWatcher {
 
     @Override
     public void afterTextChanged(Editable s) {
-        // SignUpStep1 액티비티에서 호출된 EmailWatcher의 경우, 하단의 if문 실행
         if (calledActivityName.equals("SignUpStep1") && signUpStep1.emailConfirm) {
+            // (SignUpStep1 액티비티)에서 호출된 EmailWatcher의 경우, 하단의 문장 실행
             signUpStep1.emailConfirm = false;
+            emailConfirmResultTv.setVisibility(View.GONE);
+        } else if (calledActivityName.equals("ModifyMyInfoActivity") && modifyMyInfoActivity.emailConfirm) {
+            // (ModifyMyInfoActivity 액티비티)에서 호출된 EmailWatcher의 경우, 하단의 문장 실행
+            modifyMyInfoActivity.emailConfirm = false;
             emailConfirmResultTv.setVisibility(View.GONE);
         }
 
@@ -66,7 +72,7 @@ public class EmailWatcher implements TextWatcher {
             emailTextLayout.setError(null);
             emailTextLayout.setErrorEnabled(false);
             emailTextLayout.setBackgroundResource(R.drawable.edt_bg_selector);
-            emailTextLayout.setPadding(-25, 0, 0, 20);
+            emailTextLayout.setPadding(-34, 20, 0, 20);
         } else if (!validateEmail(s.toString())) {
             emailTextLayout.setError(errorMsg);
             emailTextLayout.setErrorEnabled(true);
@@ -75,7 +81,7 @@ public class EmailWatcher implements TextWatcher {
             emailTextLayout.setError(null);
             emailTextLayout.setErrorEnabled(false);
             emailTextLayout.setBackgroundResource(R.drawable.edt_bg_selector);
-            emailTextLayout.setPadding(-25, 0, 0, 20);
+            emailTextLayout.setPadding(-34, 20, 0, 20);
         }
     }
 
