@@ -145,13 +145,12 @@ public class BookmarkFragment extends Fragment{
                 ButtonSubmit.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {                                   // 변경
                         String strNAME = editTextNAME.getText().toString();
-                        //String strEnglish = editTextEnglish.getText().toString();
-                        //String strKorean = editTextKorean.getText().toString();
 
                         Dictionary dict = new Dictionary(strNAME);
-
                         mArrayList.add(0, dict); //첫 줄에 삽입
+
                         //mArrayList.add(dict); //마지막 줄에 삽입
+
                         mAdapter.notifyDataSetChanged(); //변경된 데이터를 화면에 반영
                         dialog.dismiss();
                     }
@@ -175,8 +174,5 @@ public class BookmarkFragment extends Fragment{
         return view;
     }
 
-    private void preparDate(){
-        mArrayList.add(new Dictionary("MY PLACE"));
-        mArrayList.add(new Dictionary("Good"));
-    }
+
 }

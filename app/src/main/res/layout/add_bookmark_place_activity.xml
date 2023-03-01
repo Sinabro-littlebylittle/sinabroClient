@@ -4,27 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/Addbooklist"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="500dp"
     tools:context=".bottomSheet.place.bookmark.AddBookmarkPlaceActivity">
 
     <!-- 상단 줄 나눔 -->
 
 
     <!-- 뒤로가기 버튼 -->
-
-    <View
-        android:id="@+id/under_Tline3"
-        android:layout_width="wrap_content"
-        android:layout_height="1dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="-1dp"
-        android:layout_marginTop="68dp"
-        android:layout_marginEnd="-1dp"
-        android:layout_marginBottom="774dp"
-        android:background="#BCBCBC" />
 
     <!-- 레어 제목 -->
 
@@ -35,6 +21,20 @@
 
 
     <!-- 색 선택을 위한 컬러 버튼 -->
+
+    <View
+        android:id="@+id/under_Tline3"
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="73dp"
+        android:layout_marginEnd="-4dp"
+        android:layout_marginBottom="427dp"
+        android:background="#BCBCBC" />
 
     <ImageButton
         android:id="@+id/back_iBtn"
@@ -55,14 +55,14 @@
 
     <TextView
         android:id="@+id/textView4"
-        android:layout_width="112dp"
+        android:layout_width="wrap_content"
         android:layout_height="55dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="147dp"
+        android:layout_marginStart="127dp"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="152dp"
+        android:layout_marginEnd="126dp"
         android:gravity="center"
         android:text="새 리스트 추가"
         android:textAlignment="center"
@@ -79,31 +79,27 @@
     <EditText
         android:id="@+id/ListName"
         android:layout_width="wrap_content"
-        android:layout_height="76dp"
+        android:layout_height="69dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="29dp"
-        android:layout_marginTop="122dp"
-        android:layout_marginEnd="31dp"
-        android:layout_marginBottom="645dp"
+        android:layout_marginStart="31dp"
+        android:layout_marginTop="101dp"
+        android:layout_marginEnd="68dp"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:hint="새 리스트 명을 입력해주세요." />
+        android:hint="새 리스트 명을 입력해주세요."
+        android:inputType="textPersonName" />
 
     <TextView
         android:id="@+id/displayColor"
-        android:layout_width="wrap_content"
-        android:layout_height="51dp"
+        android:layout_width="90dp"
+        android:layout_height="55dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="44dp"
-        android:layout_marginTop="222dp"
-        android:layout_marginEnd="317dp"
-        android:layout_marginBottom="569dp"
+        android:layout_marginStart="31dp"
+        android:layout_marginTop="191dp"
+        android:layout_marginEnd="290dp"
         android:background="@drawable/home_iconshape"
         android:backgroundTint="@color/grey"
         tools:ignore="MissingConstraints"
@@ -114,15 +110,13 @@
         android:id="@+id/colorPicker_button"
         style="?attr/materialButtonOutlinedStyle"
         android:layout_width="wrap_content"
-        android:layout_height="47dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="109dp"
-        android:layout_marginTop="225dp"
-        android:layout_marginEnd="192dp"
-        android:layout_marginBottom="572dp"
+        android:layout_marginStart="115dp"
+        android:layout_marginTop="194dp"
+        android:layout_marginEnd="166dp"
         android:text="색상 선택"
         android:textStyle="bold"
         tools:ignore="MissingConstraints"
@@ -138,29 +132,27 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="320dp"
-        android:layout_marginEnd="0dp"
-        android:layout_marginBottom="522dp"
+        android:layout_marginStart="3dp"
+        android:layout_marginTop="314dp"
+        android:layout_marginEnd="-3dp"
+        android:layout_marginBottom="186dp"
         android:background="#BCBCBC" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/addlistbtn"
         android:layout_width="wrap_content"
-        android:layout_height="61dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="766dp"
+        android:layout_marginStart="23dp"
+        android:layout_marginTop="336dp"
         android:layout_marginEnd="25dp"
-        android:layout_marginBottom="14dp"
         android:background="@drawable/home_iconshape"
         android:backgroundTint="@color/grey"
+
         android:text="완료"
         android:textColor="@color/white"
-
         android:textSize="17sp"
         android:textStyle="bold" />
 

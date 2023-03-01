@@ -1,9 +1,6 @@
 package com.project.sinabro.sideBarMenu.bookmark;
 
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.util.Log;
@@ -19,6 +16,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.project.sinabro.R;
 
 import java.util.ArrayList;
@@ -32,6 +32,7 @@ public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkAdapter.Bookma
     public class BookmarkViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
         /*변수 선언*/
         protected TextView name;
+        protected int color;
 
         private ContextMenu menu;
         private ContextMenu.ContextMenuInfo menuInfo;
@@ -144,8 +145,8 @@ public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkAdapter.Bookma
 
         viewholder.name.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
         viewholder.name.setGravity(Gravity.CENTER);                             // 텍스트 설정
-
         viewholder.name.setText(mList.get(position).getName());                 // get 형식으로 텍스트를 받아옴
+
 
         /*추후 뷰홀더 클릭시 여기서 소스코드 구현 하면 됨 */
         viewholder.name.setOnClickListener(new View.OnClickListener() {

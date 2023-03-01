@@ -46,8 +46,10 @@ public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkAdapter.Bookma
     @NonNull
     @Override
     public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
+        Log.d("ViewHolder", "onClick: 테스트 중입니다.");
         MenuItem Edit = menu.add(Menu.NONE, 1001, 1, "편집");
         MenuItem Delete = menu.add(Menu.NONE, 1002, 2, "삭제");
+
         Edit.setOnMenuItemClickListener(onEditMenu);
         Delete.setOnMenuItemClickListener(onEditMenu);
     }
@@ -64,7 +66,7 @@ public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkAdapter.Bookma
                     // 다이얼로그를 보여주기 위해 edit_box.xml 파일을 사용합니다.
 
                     View v = LayoutInflater.from(mContext)
-                            .inflate(R.layout.bookmark_place_list, null, false);
+                            .inflate(R.layout.favorite_edit_box, null, false);
                     builder.setView(v);
                     final Button ButtonSubmit = (Button) v.findViewById(R.id.button_bookmark_submit);
                     final EditText editTextName = (EditText) v.findViewById(R.id.edittext_bookmark_name);
@@ -133,7 +135,7 @@ public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkAdapter.Bookma
     public BookmarkViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType ) {
 
         View view = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.favorite_place_list, viewGroup, false);
+                .inflate(R.layout.bookmark_place_list, viewGroup, false);
 
         BookmarkViewHolder viewHolder = new BookmarkViewHolder(view);
 

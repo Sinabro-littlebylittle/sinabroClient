@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -17,9 +18,11 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.project.sinabro.R;
 
 import java.util.ArrayList;
+
 import petrov.kristiyan.colorpicker.ColorPicker;
 
 public class AddBookmarkPlaceActivity extends AppCompatActivity {
@@ -28,8 +31,10 @@ public class AddBookmarkPlaceActivity extends AppCompatActivity {
     private Button colorPicker_button;
     private AppCompatButton addlistbtn;
     private Dialog addbookmarklist_dialog;
-    private Intent ColorIntent;
     private TextView colortextview;
+    private EditText ListName;
+    private int Get_color;
+
     private RadioButton radioButton_open, radioButton_close;
 
 
@@ -48,8 +53,9 @@ public class AddBookmarkPlaceActivity extends AppCompatActivity {
             }
         });
 
-        final Intent intent = getIntent();
-        Boolean modify_clicked = intent.getBooleanExtra("modify_clicked", false);
+        Intent intent = new Intent();
+        ListName = findViewById(R.id.ListName);     //
+
 
 
         addbookmarklist_dialog = new Dialog(AddBookmarkPlaceActivity.this);     // dialog 초기화
@@ -59,8 +65,8 @@ public class AddBookmarkPlaceActivity extends AppCompatActivity {
 
 
         final Intent ColorIntent = getIntent();
-
         colortextview = findViewById(R.id.displayColor);
+
         /*컬러 버튼*/
         colorPicker_button = findViewById(R.id.colorPicker_button);
         colorPicker_button.setOnClickListener(new View.OnClickListener() {
@@ -96,6 +102,8 @@ public class AddBookmarkPlaceActivity extends AppCompatActivity {
                                 Log.d("color", "test"+ color);// will be fired only when OK button was tapped
                                 colortextview.setBackgroundTintList(ColorStateList.valueOf(color));     // 선택한 색상으로 변경
                                 /*추후 데이터 연결시 여기다가 작성하시면 됩니다.*/
+                                Get_color = color;
+                                // 색깔을 넣어야겠네
                             }
 
                             @Override                                           // 취소시 어떻게 할지 정하는 코든데 취소하면 할게 없으니 그냥 빈칸으로 뒀습니다.
@@ -112,8 +120,22 @@ public class AddBookmarkPlaceActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 /*여기다가 확인후 기능을 추가하시면 됩니다.*/
+                // 엑티비티에서 엑티비티 데이터 전송
+                intent.putExtra("listname",ListName.getText().toString() );
+                intent.putExtra("ColorPicker", Get_color);
+
+                // 프레그먼트로 데이터 전송
+                Bundle bundle = new Bundle();
+                bundle.putString("listname",ListName.getText().toString());
+                bundle.putInt("ColorPicker",Get_color);
+                BottomSheetDialogFragment bottomSheetDialogFragment = new BottomSheetDialogFragment();
+                bottomSheetDialogFragment.setArguments(bundle);
+
                 onBackPressed();                    // 뒤로가기 기능 수행
                 finish();                           // 현재 액티비티 종료
+
+
+
             }
         });
         /*공개 비공개*/

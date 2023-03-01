@@ -1,12 +1,17 @@
 package com.project.sinabro.bottomSheet.place.bookmark;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -47,6 +52,8 @@ public class MyBottomSheetDialog extends BottomSheetDialogFragment {
     private int count = 0;                                  // n번째 즐겨찾기 이름을 부여할 count 변수
     private RecyclerView mRecyclerView;
 
+    private int ColorPicker;
+
 
     /**
      * Use this factory method to create a new instance of
@@ -78,7 +85,7 @@ public class MyBottomSheetDialog extends BottomSheetDialogFragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view =inflater.inflate(R.layout.fragment_bottom_sheet_bookmark, container, false);
@@ -110,70 +117,68 @@ public class MyBottomSheetDialog extends BottomSheetDialogFragment {
         });
 
 
-        /*객체 별로 떨어트리는 코드 */
-       // DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(), mLinearLayoutManager.getOrientation());
-        //mRecyclerView.addItemDecoration(dividerItemDecoration);
+
 
         /*장소 추가*/
         add_ibtn = (ImageButton) view.findViewById(R.id.add_ibtn);
         add_ibtn.setOnClickListener(new ViewGroup.OnClickListener() {
             @Override
             public void onClick(View view) {
-              /*
-
-              //  count++;
-               // Dictionary data = new Dictionary(count+"번째 즐겨찾기 목록입니다.");
-              //  mArrayList.add(data); // RecyclerView의 마지막 줄에 삽입
-               // mAdapter.notifyDataSetChanged();
-
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                View v = LayoutInflater.from(getActivity()).inflate(R.layout.favorite_edit_box,null,false);
+                View v = LayoutInflater.from(getActivity()).inflate(R.layout.add_bookmark_place_activity,null,false);
                 builder.setView(v);
 
-                final Button ButtonSubmit = (Button) v.findViewById(R.id.button_bookmark_submit);
-                final EditText editTextNAME = (EditText) v.findViewById(R.id.edittext_bookmark_name);
+
+
+                final Button ButtonSubmit = (Button) v.findViewById(R.id.addlistbtn);
+                final EditText editTextNAME = (EditText) v.findViewById(R.id.ListName);
                 //final EditText editTextEnglish = (EditText) view.findViewById(R.id.edittext_dialog_endlish);
                 //final EditText editTextKorean = (EditText) view.findViewById(R.id.edittext_dialog_korean);
-                ButtonSubmit.setText("추가");
+
 
                 final AlertDialog dialog = builder.create();
                 ButtonSubmit.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {                                   // 변경
                         String strNAME = editTextNAME.getText().toString();
-                        //String strEnglish = editTextEnglish.getText().toString();
-                        //String strKorean = editTextKorean.getText().toString();
 
                         Dictionary dict = new Dictionary(strNAME);
-
                         mArrayList.add(0, dict); //첫 줄에 삽입
+
                         //mArrayList.add(dict); //마지막 줄에 삽입
+
                         mAdapter.notifyDataSetChanged(); //변경된 데이터를 화면에 반영
                         dialog.dismiss();
                     }
                 });
+                WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+                lp.copyFrom(dialog.getWindow().getAttributes());
+                lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+                lp.height = 1800;
+
 
                 dialog.show();
-                */
+                Window window = dialog.getWindow();
+                window.setAttributes(lp);
 
-                // 이전의 생성하는 즐겨찾기 리스트를 추가하는 기능
 
-                // 새롭게 리스트를 생성함
-
-                Intent intent = new Intent(getActivity(), AddBookmarkPlaceActivity.class);
+                /*
+                //새로운 리스트와 관련된 추가
+                final Intent intent = new Intent(getActivity(), AddBookmarkPlaceActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
 
+
+
+                 */
 
             }
 
 
         });
 
+
         return view;
     }
 
-    private void preparDate(){
-        mArrayList.add(new Dictionary("MY PLACE"));
-        mArrayList.add(new Dictionary("Good"));
-    }
+
 }
