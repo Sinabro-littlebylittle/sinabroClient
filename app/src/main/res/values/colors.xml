@@ -24,6 +24,8 @@
     <color name="input_label">#8e949f</color>
     <color name="input_hint">#afb8c1</color>
     <color name="bg_grey">#f2f3f5</color>
+    <color name="toast_bg">#888F9B</color>
+    <color name="light_green">#59bd83</color>
 
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
