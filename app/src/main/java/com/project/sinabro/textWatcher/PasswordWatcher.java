@@ -2,7 +2,6 @@ package com.project.sinabro.textWatcher;
 
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.widget.TextView;
 
 import com.google.android.material.textfield.TextInputEditText;
