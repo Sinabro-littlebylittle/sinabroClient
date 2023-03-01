@@ -29,6 +29,7 @@ import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.project.sinabro.R;
+import com.project.sinabro.toast.SuccessToast;
 
 import java.io.InputStream;
 
@@ -149,7 +150,8 @@ public class MyPageFragment extends Fragment {
         modify_complete_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("테스트", "홀리몰리");
+                modify_complete_btn.setVisibility(View.INVISIBLE);
+                new SuccessToast(getResources().getString(R.string.toast_modify_user_image_success), getActivity());
             }
         });
 
@@ -176,8 +178,8 @@ public class MyPageFragment extends Fragment {
                             bitmap = BitmapFactory.decodeStream(inputStream, null, option);
                             inputStream.close();
                             if (bitmap != null) {
-                                modify_complete_btn.setVisibility(View.VISIBLE);
                                 userImage_roundedImageView.setImageBitmap(bitmap);
+                                modify_complete_btn.setVisibility(View.VISIBLE);
                                 YoYo.with(Techniques.FadeInUp)
                                         .duration(500)
                                         .repeat(0)
