@@ -14,6 +14,7 @@
     <string name="sign_up_error_email">이메일을 정확하게 입력해주세요</string>
     <string name="sign_up_email_confirm_success">사용 가능한 이메일입니다</string>
     <string name="sign_up_email_confirm_failed">이미 사용 중인 이메일입니다</string>
+    <string name="sign_up_step1_current_password_validation_failed">현재 비밀번호와 일치하지 않습니다</string>
     <string name="sign_up_step1_password_validation_failed">비밀번호 입력을 완료해 주세요</string>
     <string name="sign_up_step1_password_confirm_validation_failed">비밀번호가 일치하지 않습니다</string>
     <string name="sign_up_error_name">이름은 2글자 이상의 한글만 가능합니다</string>
@@ -36,10 +37,20 @@
     <string name="find_change_success">비밀번호 변경에 성공하였습니다.</string>
     <string name="find_change_failed">비밀번호 변경에 실패하였습니다</string>
 
-    <!-- Strings related to (Dialog)) -->
+    <string name="current_and_new_password_same">현재와 동일한 비밀번호는 사용하실 수 없습니다</string>
+
+
+    <!-- Strings related to (Dialog) -->
     <string name="dialog_place_remove">장소를 삭제할까요?</string>
     <string name="dialog_ask_user_default_profile_image">기본 프로필 이미지를\n사용하시겠습니까? 😀</string>
     <string name="dialog_find_email_success">해당 이메일로 임시 비밀번호가\n발송되었습니다 📮</string>
     <string name="dialog_sign_up_success">회원가입이 완료되었습니다.\n로그인 페이지로 이동합니다 🥳</string>
+    <string name="dialog_modify_my_info_complete_success">회원정보를 정상적으로\n수정하였습니다</string>
+    <string name="dialog_modify_password_failed">비밀번호를 정확하게\n입력해주세요</string>
+    <string name="dialog_modify_password_successs">비밀번호가 정상적으로\n변경되었습니다</string>
+
+    <!-- Strings related to (Toast) -->
+    <string name="toast_modify_my_info_success">회원정보를 수정했어요</string>
+    <string name="toast_modify_password_success">비밀번호를 변경했어요</string>
 
 </resources>
