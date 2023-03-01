@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 
 import com.project.sinabro.MainActivity;
@@ -15,6 +16,8 @@ import com.project.sinabro.textWatcher.PasswordWatcher;
 public class SignIn extends AppCompatActivity {
 
     private ActivitySignInBinding binding;
+
+    private Boolean password_toggle = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +44,19 @@ public class SignIn extends AppCompatActivity {
             public void onClick(View view) {
                 final Intent intent = new Intent(getApplicationContext(), SignUpStep1.class);
                 startActivity(intent);
+            }
+        });
+
+        /** "비밀번호 입력 란" 비밀번호 show/hidden 아이콘 클릭 시 */
+        binding.passwordTextInputLayout.setEndIconOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (password_toggle) {
+                    binding.passwordEditText.setTransformationMethod(null);
+                    binding.passwordEditText.setPadding(34, 50, 0, 25);
+                } else
+                    binding.passwordEditText.setTransformationMethod(new PasswordTransformationMethod());
+                password_toggle = !password_toggle;
             }
         });
 
