@@ -1,17 +1,13 @@
 package com.project.sinabro.bottomSheet.place.bookmark;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -124,6 +120,8 @@ public class MyBottomSheetDialog extends BottomSheetDialogFragment {
         add_ibtn.setOnClickListener(new ViewGroup.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+               /*
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 View v = LayoutInflater.from(getActivity()).inflate(R.layout.add_bookmark_place_activity,null,false);
                 builder.setView(v);
@@ -132,8 +130,8 @@ public class MyBottomSheetDialog extends BottomSheetDialogFragment {
 
                 final Button ButtonSubmit = (Button) v.findViewById(R.id.addlistbtn);
                 final EditText editTextNAME = (EditText) v.findViewById(R.id.ListName);
-                //final EditText editTextEnglish = (EditText) view.findViewById(R.id.edittext_dialog_endlish);
-                //final EditText editTextKorean = (EditText) view.findViewById(R.id.edittext_dialog_korean);
+                final Button colorPicker_button = (Button) v.findViewById(R.id.colorPicker_button);
+
 
 
                 final AlertDialog dialog = builder.create();
@@ -159,17 +157,14 @@ public class MyBottomSheetDialog extends BottomSheetDialogFragment {
                 dialog.show();
                 Window window = dialog.getWindow();
                 window.setAttributes(lp);
+                */
 
 
-                /*
                 //새로운 리스트와 관련된 추가
                 final Intent intent = new Intent(getActivity(), AddBookmarkPlaceActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
 
-
-
-                 */
 
             }
 
