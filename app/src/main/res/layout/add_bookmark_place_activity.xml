@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/Addbooklist"
     android:layout_width="match_parent"
-    android:layout_height="500dp"
+    android:layout_height="match_parent"
     tools:context=".bottomSheet.place.bookmark.AddBookmarkPlaceActivity">
 
     <!-- 상단 줄 나눔 -->
@@ -33,7 +33,7 @@
         android:layout_marginStart="2dp"
         android:layout_marginTop="73dp"
         android:layout_marginEnd="-4dp"
-        android:layout_marginBottom="427dp"
+        android:layout_marginBottom="768dp"
         android:background="#BCBCBC" />
 
     <ImageButton
@@ -83,23 +83,27 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
         android:layout_marginStart="31dp"
         android:layout_marginTop="101dp"
         android:layout_marginEnd="68dp"
+        android:layout_marginBottom="672dp"
         android:ems="10"
         android:hint="새 리스트 명을 입력해주세요."
         android:inputType="textPersonName" />
 
     <TextView
         android:id="@+id/displayColor"
-        android:layout_width="90dp"
-        android:layout_height="55dp"
+        android:layout_width="46dp"
+        android:layout_height="51dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="31dp"
-        android:layout_marginTop="191dp"
-        android:layout_marginEnd="290dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="29dp"
+        android:layout_marginTop="195dp"
+        android:layout_marginEnd="336dp"
+        android:layout_marginBottom="596dp"
         android:background="@drawable/home_iconshape"
         android:backgroundTint="@color/grey"
         tools:ignore="MissingConstraints"
@@ -114,9 +118,11 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="115dp"
-        android:layout_marginTop="194dp"
-        android:layout_marginEnd="166dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="94dp"
+        android:layout_marginTop="196dp"
+        android:layout_marginEnd="186dp"
+        android:layout_marginBottom="598dp"
         android:text="색상 선택"
         android:textStyle="bold"
         tools:ignore="MissingConstraints"
@@ -125,8 +131,8 @@
 
     <View
         android:id="@+id/under_Tline5"
-        android:layout_width="match_parent"
-        android:layout_height="8dp"
+        android:layout_width="408dp"
+        android:layout_height="1dp"
         android:layout_below="@+id/ListName"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
@@ -134,8 +140,8 @@
         android:layout_alignParentBottom="true"
         android:layout_marginStart="3dp"
         android:layout_marginTop="314dp"
-        android:layout_marginEnd="-3dp"
-        android:layout_marginBottom="186dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginBottom="527dp"
         android:background="#BCBCBC" />
 
     <androidx.appcompat.widget.AppCompatButton
@@ -145,12 +151,14 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="23dp"
-        android:layout_marginTop="336dp"
-        android:layout_marginEnd="25dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="21dp"
+        android:layout_marginTop="776dp"
+        android:layout_marginEnd="27dp"
+        android:layout_marginBottom="18dp"
+
         android:background="@drawable/home_iconshape"
         android:backgroundTint="@color/grey"
-
         android:text="완료"
         android:textColor="@color/white"
         android:textSize="17sp"
