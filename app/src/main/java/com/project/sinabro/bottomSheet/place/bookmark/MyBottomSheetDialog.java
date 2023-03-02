@@ -164,12 +164,13 @@ public class MyBottomSheetDialog extends BottomSheetDialogFragment {
                 final Intent intent = new Intent(getActivity(), AddBookmarkPlaceActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
-
+               // startActivityForResult(getActivity(),AddBookmarkPlaceActivity.class, 555);
 
             }
 
 
         });
+
 
 
         return view;
