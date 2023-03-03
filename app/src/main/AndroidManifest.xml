@@ -41,6 +41,9 @@
         <activity android:name="com.project.sinabro.bottomSheet.place.AddPlaceGuideActivity" />
         <activity android:name="com.project.sinabro.bottomSheet.place.PlaceListActivity" />
         <activity android:name="com.project.sinabro.sideBarMenu.settings.NotificationActivity" />
+
+        <activity android:name="com.project.sinabro.bottomSheet.place.bookmark.AddBookmarkPlaceActivity" />
+        <activity android:name="com.project.sinabro.sideBarMenu.bookmark.AddBookmarkPlaceActivity_setting" />
         <activity android:name="com.project.sinabro.sideBarMenu.authentication.SignUpStep1" />
         <activity android:name="com.project.sinabro.sideBarMenu.authentication.SignUpStep2" />
         <activity android:name="com.project.sinabro.sideBarMenu.authentication.SignIn" />
@@ -48,6 +51,7 @@
         <activity android:name="com.project.sinabro.sideBarMenu.devInfo.OpenSourceLicense" />
         <activity android:name="com.project.sinabro.sideBarMenu.myPage.ModifyMyInfoActivity" />
         <activity android:name="com.project.sinabro.sideBarMenu.myPage.ModifyPasswordActivity" />
+
 
         <meta-data
             android:name="com.kakao.sdk.AppKey"

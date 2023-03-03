@@ -1,4 +1,4 @@
-package com.project.sinabro.sideBarMenu.bookmark;
+package com.project.sinabro.bottomSheet.place.bookmark;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,22 +7,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
-import androidx.fragment.app.Fragment;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.project.sinabro.R;
 
 import java.util.ArrayList;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link BookmarkFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class BookmarkFragment extends Fragment{
+
+public class MyBottomSheetDialog extends BottomSheetDialogFragment {
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -37,7 +36,7 @@ public class BookmarkFragment extends Fragment{
     private String mParam1;
     private String mParam2;
 
-    public BookmarkFragment() {
+    public MyBottomSheetDialog() {
         // Required empty public constructor
     }
     /**
@@ -50,6 +49,8 @@ public class BookmarkFragment extends Fragment{
     private int count = 0;                                  // n번째 즐겨찾기 이름을 부여할 count 변수
     private RecyclerView mRecyclerView;
 
+    private int ColorPicker;
+
 
     /**
      * Use this factory method to create a new instance of
@@ -60,8 +61,8 @@ public class BookmarkFragment extends Fragment{
      * @return A new instance of fragment BookmarkActivity.
      */
     // TODO: Rename and change types and number of parameters
-    public static BookmarkFragment newInstance(String param1, String param2) {
-        BookmarkFragment fragment = new BookmarkFragment();
+    public static MyBottomSheetDialog newInstance(String param1, String param2) {
+        MyBottomSheetDialog fragment = new MyBottomSheetDialog();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -81,10 +82,10 @@ public class BookmarkFragment extends Fragment{
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view =inflater.inflate(R.layout.fragment_bookmark_activity, container, false);
+        View view =inflater.inflate(R.layout.fragment_bottom_sheet_bookmark, container, false);
 
         // 리사이클 뷰 생성
         mRecyclerView = (RecyclerView)view.findViewById(R.id.recyclerview_bookmark);     //리사이클 뷰에 넣어줄 뷰어 생성
@@ -108,14 +109,15 @@ public class BookmarkFragment extends Fragment{
         back_ibtn.setOnClickListener(new ViewGroup.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getActivity().onBackPressed();
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();            // 프레그먼트 메니져 호출
+                fragmentManager.beginTransaction().remove(MyBottomSheetDialog.this).commit();           // 현재 바텀시트 종료
+                fragmentManager.popBackStack();                                                         // 이전 화면 호출
+
             }
         });
 
 
-        /*객체 별로 떨어트리는 코드 */
-       // DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(), mLinearLayoutManager.getOrientation());
-        //mRecyclerView.addItemDecoration(dividerItemDecoration);
+
 
         /*장소 추가*/
         add_ibtn = (ImageButton) view.findViewById(R.id.add_ibtn);
@@ -123,18 +125,18 @@ public class BookmarkFragment extends Fragment{
             @Override
             public void onClick(View view) {
 
-
-              /*
-
+               /*
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                View v = LayoutInflater.from(getActivity()).inflate(R.layout.favorite_edit_box,null,false);
+                View v = LayoutInflater.from(getActivity()).inflate(R.layout.add_bookmark_place_activity,null,false);
                 builder.setView(v);
 
-                final Button ButtonSubmit = (Button) v.findViewById(R.id.button_bookmark_submit);
-                final EditText editTextNAME = (EditText) v.findViewById(R.id.edittext_bookmark_name);
-                //final EditText editTextEnglish = (EditText) view.findViewById(R.id.edittext_dialog_endlish);
-                //final EditText editTextKorean = (EditText) view.findViewById(R.id.edittext_dialog_korean);
-                ButtonSubmit.setText("추가");
+
+
+                final Button ButtonSubmit = (Button) v.findViewById(R.id.addlistbtn);
+                final EditText editTextNAME = (EditText) v.findViewById(R.id.ListName);
+                final Button colorPicker_button = (Button) v.findViewById(R.id.colorPicker_button);
+
+
 
                 final AlertDialog dialog = builder.create();
                 ButtonSubmit.setOnClickListener(new View.OnClickListener() {
@@ -150,21 +152,30 @@ public class BookmarkFragment extends Fragment{
                         dialog.dismiss();
                     }
                 });
+                WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+                lp.copyFrom(dialog.getWindow().getAttributes());
+                lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+                lp.height = 1800;
+
 
                 dialog.show();
-                // 이전의 생성하는 즐겨찾기 리스트를 추가하는 기능
-*/
-                // 새롭게 리스트를 생성함
+                Window window = dialog.getWindow();
+                window.setAttributes(lp);
+                */
 
-                Intent intent = new Intent(getActivity(), AddBookmarkPlaceActivity_setting.class);
+
+                //새로운 리스트와 관련된 추가
+                final Intent intent = new Intent(getActivity(), AddBookmarkPlaceActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
-
+               // startActivityForResult(getActivity(),AddBookmarkPlaceActivity.class, 555);
 
             }
 
 
         });
+
+
 
         return view;
     }

@@ -18,7 +18,6 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceActivity;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.MenuItem;
@@ -27,8 +26,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -45,7 +42,6 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
@@ -58,11 +54,15 @@ import com.google.android.material.navigation.NavigationView;
 import com.project.sinabro.bottomSheet.place.AddLocationInfoActivity;
 import com.project.sinabro.bottomSheet.place.AddPlaceGuideActivity;
 import com.project.sinabro.bottomSheet.place.PlaceListActivity;
+
+import com.project.sinabro.bottomSheet.place.bookmark.MyBottomSheetDialog;
+
 import com.project.sinabro.model.Places;
 import com.project.sinabro.retrofit.PlacesAPI;
 import com.project.sinabro.retrofit.RetrofitService;
 import com.project.sinabro.sideBarMenu.authentication.SignIn;
 import com.project.sinabro.sideBarMenu.devInfo.DevInfoFragment;
+
 
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
@@ -83,12 +83,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements MapView.CurrentLocationEventListener, MapView.MapViewEventListener, Runnable {
 
@@ -369,7 +363,8 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         bookmarkEmpty_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // 이곳에 북마크 등록 액티비티로 이어지는 코드를 추가하면 됩니다.
+                MyBottomSheetDialog bottomSheetDialog = new MyBottomSheetDialog();                  // BottomSheetDialogFragment를 사용하기 위한 class 생성
+                bottomSheetDialog.show(getSupportFragmentManager(), "myBottomSheetDialog");
             }
         });
 
