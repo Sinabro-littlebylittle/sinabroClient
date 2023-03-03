@@ -48,12 +48,13 @@
         android:id="@+id/placeList_listView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/roadNameAddress_tv"
         android:layout_above="@+id/goAddPlace_btn"
+        android:layout_below="@+id/roadNameAddress_tv"
         android:layout_marginTop="15dp"
-        android:layout_marginBottom="5dp"
         android:divider="#FFFFFF"
-        android:dividerHeight="0px" />
+        android:dividerHeight="0px"
+        android:layout_marginBottom="5dp"
+        android:scrollbars="none" />
 
     <!-- 장소 등록하기 버튼 -->
     <Button

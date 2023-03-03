@@ -38,7 +38,7 @@
         android:layout_marginTop="46dp"
         android:layout_toRightOf="@+id/placeName_tv"
         android:background="@color/transparent"
-        android:src="@drawable/arrow_right" />
+        android:src="@drawable/arrow_right_grey" />
 
     <RelativeLayout
         android:layout_width="wrap_content"
