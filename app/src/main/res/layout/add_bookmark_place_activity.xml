@@ -29,11 +29,9 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
         android:layout_marginStart="2dp"
-        android:layout_marginTop="73dp"
+        android:layout_marginTop="67dp"
         android:layout_marginEnd="-4dp"
-        android:layout_marginBottom="768dp"
         android:background="#BCBCBC" />
 
     <ImageButton
@@ -92,14 +90,14 @@
 
     <TextView
         android:id="@+id/displayColor"
-        android:layout_width="51dp"
-        android:layout_height="51dp"
+        android:layout_width="47dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/ListName"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="29dp"
-        android:layout_marginTop="195dp"
-        android:layout_marginEnd="336dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="335dp"
         android:background="@drawable/circle"
         android:backgroundTint="@color/grey"
         tools:ignore="MissingConstraints"
