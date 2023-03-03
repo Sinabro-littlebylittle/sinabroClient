@@ -1,5 +1,7 @@
 package com.project.sinabro.sideBarMenu.support;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,7 +9,6 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 
 import com.project.sinabro.R;
 
@@ -23,8 +24,6 @@ public class SupportFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    private ImageButton back_ibtn;
-
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -39,7 +38,7 @@ public class SupportFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment SupportActivity.
+     * @return A new instance of fragment SupportFragment.
      */
     // TODO: Rename and change types and number of parameters
     public static SupportFragment newInstance(String param1, String param2) {
@@ -64,16 +63,23 @@ public class SupportFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_support_activity, container, false);
+        View view = inflater.inflate(R.layout.fragment_empty, container, false);
+        /** 메일 문의 선택 방식(1) */
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
+        intent.setData(Uri.parse("mailto:")); // only email apps should handle this
+        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"cbnusinabro@gmail.com"});
+        intent.putExtra(Intent.EXTRA_SUBJECT, "[문의]: ");
+        startActivity(intent);
 
-        // 뒤로가기 버튼 기능
-        back_ibtn = (ImageButton) view.findViewById(R.id.back_ibtn);
-        back_ibtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getActivity().onBackPressed();
-            }
-        });
+        /** 메일 문의 선택 방식(2)  */
+        // Intent selectorIntent = new Intent(Intent.ACTION_SENDTO);
+        // selectorIntent.setData(Uri.parse("mailto:"));
+        // Intent emailIntent = new Intent(Intent.ACTION_SEND);
+        // emailIntent.setData(Uri.parse("mailto:"));
+        // emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{"cbnusinabro@gmail.com"});
+        // emailIntent.putExtra(Intent.EXTRA_SUBJECT, "[문의]: ");
+        // emailIntent.setSelector(selectorIntent);
+        // startActivity(Intent.createChooser(emailIntent, "Send email..."));
 
         return view;
     }

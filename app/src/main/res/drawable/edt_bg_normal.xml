@@ -8,15 +8,15 @@
         <shape android:shape="rectangle" >
             <stroke
                 android:width="2.5dp"
-                android:color="@color/input_underline" />
+                android:color="@color/bg_grey" />
 
             <solid android:color="#00FFFFFF" />
 
             <padding
-                android:bottom="5dp"
-                android:left="5dp"
-                android:right="5dp"
-                android:top="5dp" />
+                android:bottom="7.5dp"
+                android:left="7.5dp"
+                android:right="7.5dp"
+                android:top="7.5dp" />
         </shape>
     </item>
 </layer-list>

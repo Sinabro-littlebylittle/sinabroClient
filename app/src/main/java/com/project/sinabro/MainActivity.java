@@ -20,6 +20,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -33,6 +34,8 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
@@ -51,7 +54,15 @@ import com.google.android.material.navigation.NavigationView;
 import com.project.sinabro.bottomSheet.place.AddLocationInfoActivity;
 import com.project.sinabro.bottomSheet.place.AddPlaceGuideActivity;
 import com.project.sinabro.bottomSheet.place.PlaceListActivity;
+
 import com.project.sinabro.bottomSheet.place.bookmark.MyBottomSheetDialog;
+
+import com.project.sinabro.model.Places;
+import com.project.sinabro.retrofit.PlacesAPI;
+import com.project.sinabro.retrofit.RetrofitService;
+import com.project.sinabro.sideBarMenu.authentication.SignIn;
+import com.project.sinabro.sideBarMenu.devInfo.DevInfoFragment;
+
 
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
@@ -73,7 +84,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements MapView.CurrentLocationEventListener, MapView.MapViewEventListener,Runnable {
+public class MainActivity extends AppCompatActivity implements MapView.CurrentLocationEventListener, MapView.MapViewEventListener, Runnable {
 
     /**
      * 위치 권한 요청 코드의 상숫값
@@ -158,6 +169,7 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
             return file.getAbsolutePath();
         }
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -242,7 +254,7 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         placeList_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final Intent intent = new Intent (getApplicationContext(), PlaceListActivity.class);
+                final Intent intent = new Intent(getApplicationContext(), PlaceListActivity.class);
                 startActivity(intent);
             }
         });
@@ -269,7 +281,8 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         layout_navigation_header.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("테스트", "들어옴----------------------");
+                final Intent intent = new Intent(getApplicationContext(), SignIn.class);
+                startActivity(intent);
             }
         });
 
@@ -306,7 +319,7 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
 //                finish();
 //                final Intent intent = new Intent(MainActivity.this, ObjectDetectionActivity.class);
 //                startActivity(intent);
-                final Intent intent = new Intent (MainActivity.this, AddPlaceGuideActivity.class);
+                final Intent intent = new Intent(MainActivity.this, AddPlaceGuideActivity.class);
                 startActivity(intent);
             }
         });
@@ -340,7 +353,7 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
 //                });
 //                // 이곳에 장소 등록 액티비티로 이어지는 코드를 추가하면 됩니다.
 
-                final Intent intent = new Intent (MainActivity.this, AddLocationInfoActivity.class);
+                final Intent intent = new Intent(MainActivity.this, AddLocationInfoActivity.class);
                 startActivity(intent);
             }
         });
@@ -354,7 +367,6 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
                 bottomSheetDialog.show(getSupportFragmentManager(), "myBottomSheetDialog");
             }
         });
-
 
 
         //모델 로드..
@@ -374,9 +386,10 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         }
 
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        System.out.println("\n\nre"+requestCode);
+        System.out.println("\n\nre" + requestCode);
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode != RESULT_CANCELED) {
             switch (requestCode) {
@@ -421,7 +434,7 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         IValue[] outputTuple = mModule.forward(IValue.from(inputTensor)).toTuple();
         final Tensor outputTensor = outputTuple[0].toTensor();
         final float[] outputs = outputTensor.getDataAsFloatArray();
-        final ArrayList<Result> results =  PrePostProcessor.outputsToNMSPredictions(outputs, mImgScaleX, mImgScaleY, mIvScaleX, mIvScaleY, mStartX, mStartY);
+        final ArrayList<Result> results = PrePostProcessor.outputsToNMSPredictions(outputs, mImgScaleX, mImgScaleY, mIvScaleX, mIvScaleY, mStartX, mStartY);
 
         runOnUiThread(() -> {
             //mButtonDetect.setEnabled(true);
