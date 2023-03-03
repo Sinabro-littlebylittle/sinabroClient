@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -108,7 +109,10 @@ public class MyBottomSheetDialog extends BottomSheetDialogFragment {
         back_ibtn.setOnClickListener(new ViewGroup.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getActivity().onBackPressed();
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();            // 프레그먼트 메니져 호출
+                fragmentManager.beginTransaction().remove(MyBottomSheetDialog.this).commit();           // 현재 바텀시트 종료    
+                fragmentManager.popBackStack();                                                         // 이전 화면 호출
+
             }
         });
 
