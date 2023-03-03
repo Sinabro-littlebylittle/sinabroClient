@@ -110,7 +110,7 @@ public class MyBottomSheetDialog extends BottomSheetDialogFragment {
             @Override
             public void onClick(View view) {
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();            // 프레그먼트 메니져 호출
-                fragmentManager.beginTransaction().remove(MyBottomSheetDialog.this).commit();           // 현재 바텀시트 종료    
+                fragmentManager.beginTransaction().remove(MyBottomSheetDialog.this).commit();           // 현재 바텀시트 종료
                 fragmentManager.popBackStack();                                                         // 이전 화면 호출
 
             }
