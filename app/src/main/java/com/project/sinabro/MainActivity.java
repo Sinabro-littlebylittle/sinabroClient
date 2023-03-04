@@ -18,17 +18,13 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceActivity;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -37,15 +33,12 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
@@ -58,11 +51,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.project.sinabro.bottomSheet.place.AddLocationInfoActivity;
 import com.project.sinabro.bottomSheet.place.AddPlaceGuideActivity;
 import com.project.sinabro.bottomSheet.place.PlaceListActivity;
-import com.project.sinabro.model.Places;
-import com.project.sinabro.retrofit.PlacesAPI;
-import com.project.sinabro.retrofit.RetrofitService;
-import com.project.sinabro.sideBarMenu.authentication.SignIn;
-import com.project.sinabro.sideBarMenu.devInfo.DevInfoFragment;
+import com.project.sinabro.sideBarMenu.authentication.SignInActivity;
 
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
@@ -83,12 +72,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements MapView.CurrentLocationEventListener, MapView.MapViewEventListener, Runnable {
 
@@ -287,7 +270,7 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         layout_navigation_header.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final Intent intent = new Intent(getApplicationContext(), SignIn.class);
+                final Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
                 startActivity(intent);
             }
         });
