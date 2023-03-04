@@ -57,6 +57,8 @@
         <activity android:name="com.project.sinabro.sideBarMenu.settings.OthersUseUserInformationActivity" />
         <activity android:name="com.project.sinabro.sideBarMenu.settings.StoreUserInformationActivity" />
         <activity android:name="com.project.sinabro.sideBarMenu.settings.HandleUserInformationActivity" />
+        <activity android:name="com.project.sinabro.bottomSheet.place.bookmark.AddBookmarkPlaceActivity" />
+        <activity android:name="com.project.sinabro.sideBarMenu.bookmark.AddBookmarkPlaceActivity_setting" />
 
         <meta-data
             android:name="com.kakao.sdk.AppKey"

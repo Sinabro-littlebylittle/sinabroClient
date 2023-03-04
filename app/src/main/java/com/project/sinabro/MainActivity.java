@@ -52,6 +52,12 @@ import com.project.sinabro.bottomSheet.place.AddLocationInfoActivity;
 import com.project.sinabro.bottomSheet.place.AddPlaceGuideActivity;
 import com.project.sinabro.bottomSheet.place.PlaceListActivity;
 import com.project.sinabro.sideBarMenu.authentication.SignInActivity;
+import com.project.sinabro.bottomSheet.place.bookmark.MyBottomSheetDialog;
+
+import com.project.sinabro.model.Places;
+import com.project.sinabro.retrofit.PlacesAPI;
+import com.project.sinabro.retrofit.RetrofitService;
+import com.project.sinabro.sideBarMenu.devInfo.DevInfoFragment;
 
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
@@ -352,7 +358,8 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         bookmarkEmpty_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // 이곳에 북마크 등록 액티비티로 이어지는 코드를 추가하면 됩니다.
+                MyBottomSheetDialog bottomSheetDialog = new MyBottomSheetDialog();                  // BottomSheetDialogFragment를 사용하기 위한 class 생성
+                bottomSheetDialog.show(getSupportFragmentManager(), "myBottomSheetDialog");
             }
         });
 

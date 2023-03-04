@@ -1,4 +1,4 @@
-package com.project.sinabro.sideBarMenu.bookmark;
+package com.project.sinabro.bottomSheet.place.bookmark;
 
 
 import android.app.AlertDialog;
@@ -32,7 +32,6 @@ public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkAdapter.Bookma
     public class BookmarkViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
         /*변수 선언*/
         protected TextView name;
-        protected int color;
 
         private ContextMenu menu;
         private ContextMenu.ContextMenuInfo menuInfo;
@@ -47,8 +46,10 @@ public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkAdapter.Bookma
     @NonNull
     @Override
     public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
+        Log.d("ViewHolder", "onClick: 테스트 중입니다.");
         MenuItem Edit = menu.add(Menu.NONE, 1001, 1, "편집");
         MenuItem Delete = menu.add(Menu.NONE, 1002, 2, "삭제");
+
         Edit.setOnMenuItemClickListener(onEditMenu);
         Delete.setOnMenuItemClickListener(onEditMenu);
     }
@@ -134,19 +135,19 @@ public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkAdapter.Bookma
     public BookmarkViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType ) {
 
         View view = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.favorite_place_list, viewGroup, false);
+                .inflate(R.layout.bookmark_place_list, viewGroup, false);
 
         BookmarkViewHolder viewHolder = new BookmarkViewHolder(view);
 
         return viewHolder;
     }
     @Override
-    public void onBindViewHolder(@NonNull BookmarkAdapter.BookmarkViewHolder viewholder, int position) {
+    public void onBindViewHolder(@NonNull BookmarkViewHolder viewholder, int position) {
 
         viewholder.name.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
         viewholder.name.setGravity(Gravity.CENTER);                             // 텍스트 설정
-        viewholder.name.setText(mList.get(position).getName());                 // get 형식으로 텍스트를 받아옴
 
+        viewholder.name.setText(mList.get(position).getName());                 // get 형식으로 텍스트를 받아옴
 
         /*추후 뷰홀더 클릭시 여기서 소스코드 구현 하면 됨 */
         viewholder.name.setOnClickListener(new View.OnClickListener() {

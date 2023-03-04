@@ -20,6 +20,7 @@ public class Dictionary {
     }
 
 
+
    // private String English;
     //private String Korean;
 
