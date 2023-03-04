@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".sideBarMenu.settings.WithdrawalStep1Activity">
+
+    <!-- activity (header) RelativeLayout -->
+    <RelativeLayout
+        android:id="@+id/activity_header_relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- "뒤로가기" 버튼 -->
+        <ImageButton
+            android:id="@+id/back_iBtn"
+            android:layout_width="42.5dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="@color/transparent"
+            android:src="@drawable/back"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+    </RelativeLayout>
+
+    <!-- activity (body) RelativeLayout -->
+    <RelativeLayout
+        android:id="@+id/activity_body_relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/activity_header_relativeLayout">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RelativeLayout
+                    android:id="@+id/withdrawal_step1_relativeLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginStart="50dp"
+                    android:layout_marginTop="15dp">
+
+                    <TextView
+                        android:id="@+id/get_personal_information_title_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="탈퇴하려는 이유가 무엇인가요?"
+                        android:textColor="@color/text_blue"
+                        android:textSize="23sp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/dont_use_app_relativeLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/withdrawal_step1_relativeLayout"
+                    android:layout_marginTop="20dp"
+                    android:paddingStart="25dp"
+                    android:paddingTop="12.5dp"
+                    android:paddingEnd="12.5dp"
+                    android:paddingBottom="12.5dp">
+
+                    <TextView
+                        android:id="@+id/dont_use_app_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="쓰지 않는 앱이에요"
+                        android:textColor="@color/text_blue"
+                        android:textSize="18sp" />
+
+                    <!-- 우측 화살표 버튼 -->
+                    <ImageButton
+                        android:id="@+id/arrow_right_iBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:backgroundTint="@color/transparent"
+                        android:foregroundTint="@color/white"
+                        android:src="@drawable/arrow_right_grey" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/security_concern_relativeLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/dont_use_app_relativeLayout"
+                    android:paddingStart="25dp"
+                    android:paddingTop="12.5dp"
+                    android:paddingEnd="12.5dp"
+                    android:paddingBottom="12.5dp">
+
+                    <TextView
+                        android:id="@+id/security_concern_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="보안이 걱정돼요"
+                        android:textColor="@color/text_blue"
+                        android:textSize="18sp" />
+
+                    <!-- 우측 화살표 버튼 -->
+                    <ImageButton
+                        android:id="@+id/arrow_right_iBtn2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:backgroundTint="@color/transparent"
+                        android:foregroundTint="@color/white"
+                        android:src="@drawable/arrow_right_grey" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/etc_relativeLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/security_concern_relativeLayout"
+                    android:paddingStart="25dp"
+                    android:paddingTop="12.5dp"
+                    android:paddingEnd="12.5dp"
+                    android:paddingBottom="12.5dp">
+
+                    <TextView
+                        android:id="@+id/etc_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="기타"
+                        android:textColor="@color/text_blue"
+                        android:textSize="18sp" />
+
+                    <!-- 우측 화살표 버튼 -->
+                    <ImageButton
+                        android:id="@+id/arrow_right_iBtn3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:backgroundTint="@color/transparent"
+                        android:foregroundTint="@color/white"
+                        android:src="@drawable/arrow_right_grey" />
+                </RelativeLayout>
+            </RelativeLayout>
+        </ScrollView>
+    </RelativeLayout>
+</RelativeLayout>
