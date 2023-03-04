@@ -2,13 +2,11 @@ package com.project.sinabro.textWatcher;
 
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.View;
 import android.widget.TextView;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.project.sinabro.R;
-import com.project.sinabro.sideBarMenu.authentication.SignUpStep1;
 
 public class NicknameWatcher implements TextWatcher {
 
