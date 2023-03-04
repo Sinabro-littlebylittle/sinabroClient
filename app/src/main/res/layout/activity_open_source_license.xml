@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".sideBarMenu.devInfo.OpenSourceLicense">
+    tools:context=".sideBarMenu.devInfo.OpenSourceLicenseActivity">
 
     <!-- activity (header) RelativeLayout -->
     <RelativeLayout
@@ -57,7 +57,7 @@
                     android:layout_below="@+id/opensource_license_label_tv"
                     android:layout_alignLeft="@+id/opensource_license_label_tv"
                     android:layout_marginTop="17.5dp"
-                    android:background="@drawable/small_info_background"
+                    android:background="@drawable/small_info_lighter_md_grey_background"
                     android:paddingStart="9.5dp"
                     android:paddingTop="3dp"
                     android:paddingEnd="9.5dp"
@@ -94,8 +94,8 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/mit_license_tv"
                         android:layout_marginTop="5dp"
-                        android:paddingEnd="5dp"
                         android:lineSpacingExtra="5dp"
+                        android:paddingEnd="5dp"
                         android:text="@string/mit_license_url"
                         android:textColor="@color/blue"
                         android:textSize="15sp" />
