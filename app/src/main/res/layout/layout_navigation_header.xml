@@ -4,7 +4,7 @@
     android:id="@+id/layout_navigation_header"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginBottom="20dp"
+    android:layout_marginBottom="10dp"
     android:paddingLeft="20dp"
     android:paddingTop="50dp">
 
