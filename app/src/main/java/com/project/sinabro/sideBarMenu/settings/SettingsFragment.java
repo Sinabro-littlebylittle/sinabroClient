@@ -3,16 +3,13 @@ package com.project.sinabro.sideBarMenu.settings;
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.Toast;
+import android.widget.RelativeLayout;
 
 import com.project.sinabro.R;
 
@@ -32,12 +29,11 @@ public class SettingsFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private ImageButton back_ibtn;                      // 뒤로가기 버튼
-    private ImageButton Notifications_imgbtn;           // Notification 버튼
-    private ImageButton Userpolicy_imgbtn;              // use policy 버튼
-    private ImageButton Language_imgbtn;                // Language 버튼
-    private ImageButton Delete_histoty_imgbtn;          // Delete histoty 버튼
-    private ImageButton TextSize_imgbtn;                // TextSize 버튼
+    private ImageButton back_iBtn;
+
+    private RelativeLayout modify_my_info_relativeLayout,
+            setting_notifications_relativeLayout, our_policies_relativeLayout,
+            withdrawal_relativeLayout;
 
 
     public SettingsFragment() {
@@ -77,88 +73,60 @@ public class SettingsFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_settings_activity, container, false);
 
-        // 뒤로가기 버튼 기능
-        back_ibtn = (ImageButton) view.findViewById(R.id.back_ibtn);
-        back_ibtn.setOnClickListener(new View.OnClickListener() {
+        /** 뒤로가기 버튼 기능 */
+        back_iBtn = (ImageButton) view.findViewById(R.id.back_iBtn);
+        back_iBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 getActivity().onBackPressed();
             }
         });
 
-        // Notification 페이지로 넘어가기
-        Notifications_imgbtn =(ImageButton) view.findViewById(R.id.Notifications_imgbtn);
-        Notifications_imgbtn.setOnClickListener(new View.OnClickListener() {
+        modify_my_info_relativeLayout = (RelativeLayout) view.findViewById(R.id.modify_my_info_relativeLayout);
+        modify_my_info_relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), NotificationActivity.class); //fragment라서 activity intent와는 다른 방식
-                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                // "회원정보확인" 액티비티로 이동
+                // fragment이기 때문에 activity intent와는 다른 방식
+                Intent intent = new Intent(getActivity(), CheckPasswordActivity.class);
+                intent.putExtra("destActivityName", "MyPageActivity");
                 startActivity(intent);
-
             }
         });
-        // use policy 페이지로 넘어가기
-        Userpolicy_imgbtn = (ImageButton) view.findViewById(R.id.Userpolicy_imgbtn);
-        Userpolicy_imgbtn.setOnClickListener(new View.OnClickListener() {
+
+        setting_notifications_relativeLayout = (RelativeLayout) view.findViewById(R.id.setting_notifications_relativeLayout);
+        setting_notifications_relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("usepolicy", "onClick: 테스트 중입니다.");
+                // "알림 설정" 액티비티로 이동
+                // fragment이기 때문에 activity intent와는 다른 방식
+                Intent intent = new Intent(getActivity(), SettingNotificationsActivity.class);
+                startActivity(intent);
             }
         });
-        // 텍스트 크기 설정
-        TextSize_imgbtn = (ImageButton) view.findViewById(R.id.TextSize_imgbtn);
-        TextSize_imgbtn.setOnClickListener(new View.OnClickListener() {
+
+        our_policies_relativeLayout = (RelativeLayout) view.findViewById(R.id.our_policies_relativeLayout);
+        our_policies_relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("텍스트 크기변경", "onClick: 테스트 중입니다.");
+                // "약관 및 개인정보 처리 동의" 액티비티로 이동
+                // fragment이기 때문에 activity intent와는 다른 방식
+                Intent intent = new Intent(getActivity(), OurPoliciesActivity.class);
+                startActivity(intent);
             }
         });
-        //언어 설정
-        Language_imgbtn =(ImageButton) view.findViewById(R.id.Language_imgbtn);
-        Language_imgbtn.setOnClickListener(new View.OnClickListener() {
+
+        withdrawal_relativeLayout = (RelativeLayout) view.findViewById(R.id.withdrawal_relativeLayout);
+        withdrawal_relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("언어설정", "onClick: 테스트 중입니다.");
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                View v = LayoutInflater.from(getActivity()).inflate(R.layout.settings_language_change,null,false);
-                builder.setView(v);
-
-                final Button button_Cancel = (Button) v.findViewById(R.id.button_Cancel);
-
-                //final EditText editTextEnglish = (EditText) view.findViewById(R.id.edittext_dialog_endlish);
-                //final EditText editTextKorean = (EditText) view.findViewById(R.id.edittext_dialog_korean);
-                button_Cancel.setText("취소");
-
-                final AlertDialog dialog = builder.create();
-                button_Cancel.setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View v) {                                   // 변경
-                        Toast.makeText(getContext(),"Clicked Cancel",Toast.LENGTH_LONG).show();
-                        dialog.cancel();
-
-                    }
-                });
-
-                dialog.show();
-            }
-
-
-
-
-        });
-
-        // 사용기록 삭제
-        Delete_histoty_imgbtn= (ImageButton) view.findViewById(R.id.Delete_histoty_imgbtn);
-        Delete_histoty_imgbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d("사용기록 삭제", "onClick: 테스트 중입니다.");
+                // "회원정보확인" 액티비티로 이동
+                // fragment이기 때문에 activity intent와는 다른 방식
+                Intent intent = new Intent(getActivity(), CheckPasswordActivity.class);
+                intent.putExtra("destActivityName", "WithdrawalStep1Activity");
+                startActivity(intent);
             }
         });
-
-
-
-
 
         return view;
     }
