@@ -4,320 +4,269 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:clickable="true"
     tools:context=".sideBarMenu.settings.SettingsFragment">
 
-    <LinearLayout
+    <!-- Root RelativeLayout -->
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-       <!-- 상단 뒤로가기 레이아웃-->
+        <!-- fragment (header) RelativeLayout -->
         <RelativeLayout
+            android:id="@+id/fragment_header_relativeLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white">
+            android:layout_height="wrap_content">
 
-            <!-- 뒤로가기 버튼 -->
+            <!-- "뒤로가기" 버튼 -->
             <ImageButton
-                android:id="@+id/back_ibtn"
+                android:id="@+id/back_iBtn"
                 android:layout_width="42.5dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="22dp"
-                android:layout_marginEnd="15dp"
-                android:layout_marginBottom="15dp"
-                android:backgroundTint="#FFFFFF"
-                android:src="@drawable/back" />
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="10dp"
+                android:backgroundTint="@color/transparent"
+                android:src="@drawable/back"
+                tools:ignore="SpeakableTextPresentCheck" />
 
-            <!-- 설정 메뉴명 -->
+            <!-- "설정" 메뉴명 -->
             <TextView
-                android:id="@+id/menuTitle_tv"
+                android:id="@+id/my_page_fragment_title_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="41dp"
+                android:layout_marginTop="27.5dp"
+                android:letterSpacing="-0.01"
                 android:text="설정"
-                android:textColor="@color/black"
-                android:textSize="21sp"
-                android:textStyle="bold" />
-
-            <!-- 가로 구분선 -->
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_below="@+id/menuTitle_tv"
-                android:layout_alignParentStart="true"
-                android:layout_marginTop="33dp"
-                android:background="#BCBCBC" />
-
+                android:textColor="@color/dark_grey"
+                android:textSize="17.5sp" />
         </RelativeLayout>
 
-        <!--Notifications 레이아웃-->
-        <LinearLayout
-            android:id="@+id/Setting_page_Notifications"
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:layout_gravity="center_horizontal"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-        <!-- 레이아웃 안에 버튼과 글-->
-            <TextView
-                android:id="@+id/Notice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_weight="1"
-                android:text="알림 설정"
-                android:textColor="@color/black"
-                android:textSize="30dp"
-                android:textStyle="normal" />
-
-            <Space
-                android:layout_width="41dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
-
-            <ImageButton
-                android:id="@+id/Notifications_imgbtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="15dp"
-                android:layout_weight="1"
-                android:background="@color/white"
-                android:src="@drawable/arrow" />
-        </LinearLayout>
-
-        <!-- 가운데 선 구분-->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginLeft="23dp"
-            android:layout_marginRight="23dp"
-            android:layout_gravity="center"
-            android:background="#BCBCBC" />
-
-        <!-- textSize 레이아웃-->
-        <LinearLayout
-            android:id="@+id/Setting_page_TextSize"
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:background="@drawable/layout_border_bottom"
-            android:layout_gravity="center_horizontal"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <!-- 레이아웃 안에 버튼과 글-->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_weight="1"
-                android:text="글자 크기"
-                android:textColor="@color/black"
-                android:textSize="30dp"
-                android:textStyle="normal" />
-
-            <Space
-                android:layout_width="57dp"
-                android:layout_height="15dp"
-                android:layout_weight="1" />
-
-            <ImageButton
-                android:id="@+id/TextSize_imgbtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="15dp"
-                android:layout_weight="1"
-                android:background="@color/white"
-                android:src="@drawable/arrow" />
-        </LinearLayout>
-
-        <!-- Language 레이아웃 -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:id="@+id/Setting_page_Language"
-            android:background="@drawable/layout_border_top"
-            android:layout_gravity="center_horizontal"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <!-- 레이아웃 안에 버튼과 글-->
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_weight="1"
-                android:text="언어 설정"
-                android:textColor="@color/black"
-                android:textSize="30dp"
-                android:textStyle="normal" />
-
-            <TextView
-                android:id="@+id/Language_state_view"
-                android:layout_width="9dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="right"
-                android:text="시스템 기본값"
-                android:textColor="#0584FE" />
-
-            <ImageButton
-                android:id="@+id/Language_imgbtn"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="15dp"
-                android:layout_weight="1"
-                android:background="@color/white"
-                android:src="@drawable/arrow"
-                android:text="Terms of Use &amp; Policy" />
-
-        </LinearLayout>
-
-        <!-- 가운데 선 구분-->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginLeft="23dp"
-            android:layout_marginRight="23dp"
-            android:layout_gravity="center"
-            android:background="#BCBCBC" />
-
-        <!-- Delete_history-->
-        <LinearLayout
-            android:id="@+id/Setting_page_Delete_histoty"
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:background="@drawable/layout_border_bottom"
-            android:layout_gravity="center_horizontal"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <!-- 레이아웃 안에 버튼과 글-->
-            <TextView
-                android:layout_width="250dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_weight="1"
-                android:text="사용 기록 전체 삭제"
-                android:textColor="@color/black"
-                android:textSize="26dp"
-                android:textStyle="normal" />
-
-            <ImageButton
-                android:id="@+id/Delete_histoty_imgbtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="15dp"
-                android:layout_weight="1"
-                android:background="@color/white"
-                android:src="@drawable/arrow" />
-        </LinearLayout>
-
-
-        <!-- UserPolicy 레이아웃 -->
-        <LinearLayout
-            android:id="@+id/Setting_page_UserPolicy"
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:background="@drawable/layout_border_top"
-            android:layout_gravity="center_horizontal"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <!-- 레이아웃 안에 버튼과 글-->
-            <TextView
-                android:layout_width="259dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_weight="1"
-                android:text="이용 약관 및 정책"
-                android:textColor="@color/black"
-                android:textSize="28dp"
-                android:textStyle="normal" />
-
-            <ImageButton
-                android:id="@+id/Userpolicy_imgbtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="15dp"
-                android:layout_weight="1"
-                android:background="@color/white"
-                android:src="@drawable/arrow" />
-        </LinearLayout>
-
-        <!-- 가운데 선 구분-->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginLeft="23dp"
-            android:layout_marginRight="23dp"
-            android:layout_gravity="center"
-            android:background="#BCBCBC" />
-
-        <!-- Version 레이아웃-->
+        <!-- fragment (body) RelativeLayout -->
         <RelativeLayout
-            android:id="@+id/Setting_page_Version"
+            android:id="@+id/fragment_body_relativeLayout"
             android:layout_width="match_parent"
-            android:layout_height="80dp">
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/fragment_header_relativeLayout">
 
-            <TextView
-                android:id="@+id/textView15"
+            <RelativeLayout
+                android:id="@+id/modify_my_info_relativeLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="15dp">
+
+                <!-- 프로필 이미지 -->
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:id="@+id/userImage_roundedImageView"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/default_profile_image"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:riv_oval="true" />
+
+                <!-- 닉네임 -->
+                <TextView
+                    android:id="@+id/userName_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="22.5dp"
+                    android:layout_marginTop="1dp"
+                    android:layout_toRightOf="@+id/userImage_roundedImageView"
+                    android:text="홍길동"
+                    android:textColor="@color/text_blue"
+                    android:textSize="17.5sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/nickname_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/userName_tv"
+                    android:layout_marginStart="22.5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_toRightOf="@id/userImage_roundedImageView"
+                    android:text="내 정보 수정하기" />
+
+                <!-- 우측 화살표 버튼 -->
+                <ImageButton
+                    android:id="@+id/arrow_right_iBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="15dp"
+                    android:backgroundTint="@color/transparent"
+                    android:foregroundTint="@color/white"
+                    android:src="@drawable/arrow_right_grey" />
+            </RelativeLayout>
+
+            <!-- 가로 구분선 #1 -->
+            <RelativeLayout
+                android:id="@+id/dividing_line_relativeLayout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginTop="10dp"
-                android:text="  버전"
-                android:textColor="@color/black"
-                android:textSize="25dp"
-                android:textStyle="bold" />
+                android:layout_height="15dp"
+                android:layout_below="@+id/modify_my_info_relativeLayout"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="5dp"
+                android:background="@color/bg_grey" />
 
-            <TextView
-                android:id="@+id/Version_lastest_view"
+            <RelativeLayout
+                android:id="@+id/setting_notifications_relativeLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/textView15"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentBottom="true"
-                android:layout_marginTop="7dp"
-                android:layout_marginEnd="193dp"
-                android:layout_marginBottom="8dp"
-                android:text="최신 1.0.0" />
+                android:layout_below="@+id/dividing_line_relativeLayout"
+                android:layout_marginTop="-10dp"
+                android:paddingStart="25dp"
+                android:paddingTop="15dp"
+                android:paddingEnd="12.5dp"
+                android:paddingBottom="15dp">
 
-            <TextView
-                android:id="@+id/Version_current_view"
+                <TextView
+                    android:id="@+id/setting_notifications_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="알림 설정"
+                    android:textColor="@color/text_blue"
+                    android:textSize="16.5sp" />
+
+                <!-- 우측 화살표 버튼 -->
+                <ImageButton
+                    android:id="@+id/arrow_right_iBtn2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:backgroundTint="@color/transparent"
+                    android:foregroundTint="@color/white"
+                    android:src="@drawable/arrow_right_grey" />
+            </RelativeLayout>
+
+            <!-- 가로 구분선 #2 -->
+            <RelativeLayout
+                android:id="@+id/dividing_line_relativeLayout2"
+                android:layout_width="match_parent"
+                android:layout_height="15dp"
+                android:layout_below="@+id/setting_notifications_relativeLayout"
+                android:layout_marginBottom="5dp"
+                android:background="@color/bg_grey" />
+
+            <RelativeLayout
+                android:id="@+id/our_policies_relativeLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/textView15"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentBottom="true"
-                android:layout_marginStart="12dp"
-                android:layout_marginTop="7dp"
-                android:layout_marginBottom="8dp"
-                android:text="현재 1.0.0" />
+                android:layout_below="@+id/dividing_line_relativeLayout2"
+                android:layout_marginTop="-10dp"
+                android:paddingStart="25dp"
+                android:paddingTop="15dp"
+                android:paddingEnd="12.5dp"
+                android:paddingBottom="15dp">
 
-            <TextView
-                android:id="@+id/textView18"
-                android:layout_width="10dp"
-                android:layout_height="21dp"
-                android:layout_alignTop="@+id/textView15"
-                android:layout_alignParentBottom="true"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="42dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="7dp"
-                android:layout_toStartOf="@+id/Version_lastest_view"
-                android:layout_toEndOf="@+id/Version_current_view"
-                android:gravity="center"
-                android:textSize="15dp"
-                android:text="/" />
+                <TextView
+                    android:id="@+id/our_policies_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="약관 및 개인정보 처리 동의"
+                    android:textColor="@color/text_blue"
+                    android:textSize="16.5sp" />
+
+                <!-- 우측 화살표 버튼 -->
+                <ImageButton
+                    android:id="@+id/arrow_right_iBtn3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:backgroundTint="@color/transparent"
+                    android:foregroundTint="@color/white"
+                    android:src="@drawable/arrow_right_grey" />
+            </RelativeLayout>
+
+            <!-- 가로 구분선 #3 -->
+            <RelativeLayout
+                android:id="@+id/dividing_line_relativeLayout3"
+                android:layout_width="match_parent"
+                android:layout_height="15dp"
+                android:layout_below="@+id/our_policies_relativeLayout"
+                android:layout_marginBottom="5dp"
+                android:background="@color/bg_grey" />
+
+            <RelativeLayout
+                android:id="@+id/application_version_relativeLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/dividing_line_relativeLayout3"
+                android:layout_marginTop="-10dp"
+                android:paddingStart="25dp"
+                android:paddingTop="20dp"
+                android:paddingEnd="25dp"
+                android:paddingBottom="20dp">
+
+                <TextView
+                    android:id="@+id/application_version_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="앱 버전"
+                    android:textColor="@color/text_blue"
+                    android:textSize="16.5sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:text="0.0.1"
+                    android:textSize="16.5sp" />
+            </RelativeLayout>
+
+            <!-- 가로 구분선 #4 -->
+            <RelativeLayout
+                android:id="@+id/dividing_line_relativeLayout4"
+                android:layout_width="match_parent"
+                android:layout_height="15dp"
+                android:layout_below="@+id/application_version_relativeLayout"
+                android:layout_marginBottom="5dp"
+                android:background="@color/bg_grey" />
+
+            <RelativeLayout
+                android:id="@+id/withdrawal_relativeLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/dividing_line_relativeLayout4"
+                android:layout_marginTop="-10dp"
+                android:paddingStart="25dp"
+                android:paddingTop="15dp"
+                android:paddingEnd="12.5dp"
+                android:paddingBottom="15dp">
+
+                <TextView
+                    android:id="@+id/withdrawal_relativeLayout_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="탈퇴하기"
+                    android:textColor="@color/text_blue"
+                    android:textSize="16.5sp" />
+
+                <!-- 우측 화살표 버튼 -->
+                <ImageButton
+                    android:id="@+id/arrow_right_iBtn4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:backgroundTint="@color/transparent"
+                    android:foregroundTint="@color/white"
+                    android:src="@drawable/arrow_right_grey" />
+            </RelativeLayout>
         </RelativeLayout>
+    </RelativeLayout>
 
-    </LinearLayout>
 
 </FrameLayout>
