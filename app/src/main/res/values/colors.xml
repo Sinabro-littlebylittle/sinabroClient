@@ -10,13 +10,16 @@
     <color name="white">#FFFFFFFF</color>
     <color name="deep_white">#eff0f3</color>
     <color name="red">#FF0000</color>
+    <color name="yellow">#f6ca64</color>
     <color name="blue_normal">#0000FF</color>
     <color name="blue">#427FFF</color>
     <color name="deep_blue">#335DB3</color>
     <color name="text_blue">#353d4a</color>
+    <color name="x_lighter_grey">#f9f9fb</color>
     <color name="lighter_grey">#eeeff1</color>
     <color name="lighter_md_grey">#E9EAEC</color>
     <color name="light_grey">#BCBDBF</color>
+    <color name="sm_light_grey">#dfdedf</color>
     <color name="grey">#606060</color>
     <color name="normal_grey">#696969</color>
     <color name="dark_grey">#212836</color>
