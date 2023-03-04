@@ -29,7 +29,7 @@ public class DevInfoFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    private ImageButton back_ibtn;
+    private ImageButton back_iBtn;
 
     private RoundedImageView projectOpenSourceSinabroClientRoundedImageView;
 
@@ -79,8 +79,8 @@ public class DevInfoFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_dev_info_activity, container, false);
 
         /** 뒤로가기 버튼 기능 */
-        back_ibtn = (ImageButton) view.findViewById(R.id.back_iBtn);
-        back_ibtn.setOnClickListener(new View.OnClickListener() {
+        back_iBtn = (ImageButton) view.findViewById(R.id.back_iBtn);
+        back_iBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 getActivity().onBackPressed();
@@ -117,8 +117,7 @@ public class DevInfoFragment extends Fragment {
             public void onClick(View view) {
                 // "오픈소스 라이선스" 액티비티로 이동
                 // fragment이기 때문에 activity intent와는 다른 방식
-                Intent intent = new Intent(getActivity(), OpenSourceLicense.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                Intent intent = new Intent(getActivity(), OpenSourceLicenseActivity.class);
                 startActivity(intent);
             }
         });
