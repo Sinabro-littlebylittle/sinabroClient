@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".sideBarMenu.settings.SettingNotificationsActivity">
+
+    <!-- activity (header) RelativeLayout -->
+    <RelativeLayout
+        android:id="@+id/activity_header_relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- "뒤로가기" 버튼 -->
+        <ImageButton
+            android:id="@+id/back_iBtn"
+            android:layout_width="42.5dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="@color/transparent"
+            android:src="@drawable/back"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+    </RelativeLayout>
+
+    <!-- activity (body) RelativeLayout -->
+    <RelativeLayout
+        android:id="@+id/activity_body_relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/activity_header_relativeLayout">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/setting_notifications_title_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="22.5dp"
+                    android:layout_marginTop="10dp"
+                    android:text="알림"
+                    android:textColor="@color/text_blue"
+                    android:textSize="27.5sp"
+                    android:textStyle="bold" />
+
+                <RelativeLayout
+                    android:id="@+id/announcement_notification_relativeLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/setting_notifications_title_tv"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginEnd="15dp"
+                    android:background="@drawable/relative_layout_x_lighter_grey_bg"
+                    android:paddingStart="25dp"
+                    android:paddingTop="17.5dp"
+                    android:paddingEnd="25dp"
+                    android:paddingBottom="17.5dp"
+                    app:cornerRadius="20dp">
+
+                    <TextView
+                        android:id="@+id/announcement_notification_label_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="공지사항"
+                        android:textColor="@color/text_blue"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/announcement_notification_label_tv"
+                        android:layout_marginTop="15dp"
+                        android:maxWidth="230dp"
+                        android:text="공지, 유용한 정보를 알려드려요."
+                        android:textSize="15sp" />
+
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/switchBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:checked="true"
+                        android:thumb="@drawable/switch_thumb"
+                        app:track="@drawable/switch_track_selector" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/advertising_notification_relativeLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/announcement_notification_relativeLayout"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:background="@drawable/relative_layout_x_lighter_grey_bg"
+                    android:paddingStart="25dp"
+                    android:paddingTop="17.5dp"
+                    android:paddingEnd="25dp"
+                    android:paddingBottom="17.5dp"
+                    app:cornerRadius="20dp">
+
+                    <TextView
+                        android:id="@+id/advertising_notification_label_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="추천/혜택"
+                        android:textColor="@color/text_blue"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/advertising_notification_label_tv"
+                        android:layout_marginTop="15dp"
+                        android:maxWidth="230dp"
+                        android:text="추천, 혜택, 광고에 대한 정보를\n알려드려요."
+                        android:textSize="15sp" />
+
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/switchBtn2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:checked="true"
+                        android:thumb="@drawable/switch_thumb"
+                        app:track="@drawable/switch_track_selector" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/nightly_advertising_notification_relativeLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/advertising_notification_relativeLayout"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginBottom="15dp"
+                    android:background="@drawable/relative_layout_x_lighter_grey_bg"
+                    android:paddingStart="25dp"
+                    android:paddingTop="17.5dp"
+                    android:paddingEnd="25dp"
+                    android:paddingBottom="17.5dp"
+                    app:cornerRadius="20dp">
+
+                    <TextView
+                        android:id="@+id/nightly_advertising_notification_label_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="야간 광고성"
+                        android:textColor="@color/text_blue"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/nightly_advertising_notification_label_tv"
+                        android:layout_marginTop="15dp"
+                        android:maxWidth="230dp"
+                        android:text="21~08시 시간에 추천/혜택 알림을\n보내지 않아요."
+                        android:textSize="15sp" />
+
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/switchBtn3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:checked="true"
+                        android:thumb="@drawable/switch_thumb"
+                        app:track="@drawable/switch_track_selector" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/bookmarked_place_people_num_update_notification_relativeLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/nightly_advertising_notification_relativeLayout"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginBottom="15dp"
+                    android:background="@drawable/relative_layout_x_lighter_grey_bg"
+                    android:paddingStart="25dp"
+                    android:paddingTop="17.5dp"
+                    android:paddingEnd="25dp"
+                    android:paddingBottom="17.5dp"
+                    app:cornerRadius="20dp">
+
+                    <TextView
+                        android:id="@+id/bookmarked_place_people_num_update_notification_label_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="즐겨찾기 장소 인원수 변동"
+                        android:textColor="@color/text_blue"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/bookmarked_place_people_num_update_notification_label_tv"
+                        android:layout_marginTop="15dp"
+                        android:maxWidth="230dp"
+                        android:text="즐겨찾기된 장소의 인원수의 변동\n정보를 알려드려요."
+                        android:textSize="15sp" />
+
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/switchBtn4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:checked="true"
+                        android:thumb="@drawable/switch_thumb"
+                        app:track="@drawable/switch_track_selector" />
+                </RelativeLayout>
+
+            </RelativeLayout>
+        </ScrollView>
+
+
+    </RelativeLayout>
+
+</RelativeLayout>
