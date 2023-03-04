@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".sideBarMenu.myPage.ModifyMyInfoActivity">
+    tools:context=".sideBarMenu.settings.ModifyMyInfoActivity">
 
-    <!-- fragment (header) RelativeLayout -->
+    <!-- activity (header) RelativeLayout -->
     <RelativeLayout
-        android:id="@+id/fragment_header_relativeLayout"
+        android:id="@+id/activity_header_relativeLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -36,12 +36,12 @@
             android:textSize="17.5sp" />
     </RelativeLayout>
 
-    <!-- fragment (body) RelativeLayout -->
+    <!-- activity (body) RelativeLayout -->
     <RelativeLayout
-        android:id="@+id/fragment_body_relativeLayout"
+        android:id="@+id/activity_body_relativeLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/fragment_header_relativeLayout">
+        android:layout_below="@+id/activity_header_relativeLayout">
 
         <ScrollView
             android:layout_width="match_parent"
