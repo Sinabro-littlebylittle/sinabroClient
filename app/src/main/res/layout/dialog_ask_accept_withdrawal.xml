@@ -13,7 +13,7 @@
         android:letterSpacing="-0.025"
         android:paddingLeft="20dp"
         android:paddingTop="27.5dp"
-        android:text="@string/dialog_find_email_success"
+        android:text="이후 모든 정보는 복구가 불가능\n합니다. 정말 탈퇴하시겠습니까?"
         android:textColor="@color/dark_grey"
         android:textSize="20sp" />
 
@@ -22,14 +22,29 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginLeft="15dp"
-        android:layout_centerHorizontal="true"
         android:layout_marginRight="15dp"
         android:layout_marginBottom="15dp">
+
+        <Button
+            android:id="@+id/noBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="3.5dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/lighter_grey"
+            android:insetTop="2dp"
+            android:insetBottom="2dp"
+            android:outlineProvider="none"
+            android:text="취소"
+            android:textColor="@color/dark_grey"
+            android:textSize="15sp"
+            app:cornerRadius="10dp" />
 
         <Button
             android:id="@+id/yesBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="3.5dp"
             android:layout_weight="1"
             android:backgroundTint="@color/blue"
             android:insetTop="2dp"

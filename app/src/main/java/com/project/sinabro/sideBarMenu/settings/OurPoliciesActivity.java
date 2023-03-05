@@ -1,38 +1,30 @@
 package com.project.sinabro.sideBarMenu.settings;
 
+import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.View;
 
-import android.widget.ImageButton;
-
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.project.sinabro.R;
+import com.project.sinabro.databinding.ActivityOurPoliciesBinding;
 
+public class OurPoliciesActivity extends AppCompatActivity {
 
-public class NotificationActivity extends AppCompatActivity {
-
-    private ImageButton back_iBtn;
+    private ActivityOurPoliciesBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_settings_notification);
+        binding = ActivityOurPoliciesBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        // 뒤로가기 버튼 기능
-        back_iBtn = findViewById(R.id.back_iBtn);
-        back_iBtn.setOnClickListener(new View.OnClickListener() {
+        /** 뒤로가기 버튼 기능 */
+        binding.backIBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onBackPressed(); // 뒤로가기 기능 수행
                 finish(); // 현재 액티비티 종료
             }
         });
-
-
-
     }
 }
-
-

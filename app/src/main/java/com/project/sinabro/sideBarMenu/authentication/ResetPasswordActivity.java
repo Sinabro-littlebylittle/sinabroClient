@@ -9,16 +9,12 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
-import android.widget.Button;
-import android.widget.ImageButton;
 
 import com.project.sinabro.R;
-import com.project.sinabro.bottomSheet.place.AddLocationInfoActivity;
-import com.project.sinabro.bottomSheet.place.PlaceListActivity;
 import com.project.sinabro.databinding.ActivityResetPasswordBinding;
 import com.project.sinabro.textWatcher.EmailWatcher;
 
-public class ResetPassword extends AppCompatActivity {
+public class ResetPasswordActivity extends AppCompatActivity {
 
     private ActivityResetPasswordBinding binding;
 
@@ -31,7 +27,7 @@ public class ResetPassword extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         /** "비밀번호 초기화 완료 안내" 다이얼로그 변수 초기화 및 설정 */
-        resetPasswordSuccess_dialog = new Dialog(ResetPassword.this);  // Dialog 초기화
+        resetPasswordSuccess_dialog = new Dialog(ResetPasswordActivity.this);  // Dialog 초기화
         resetPasswordSuccess_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE); // 타이틀 제거
         resetPasswordSuccess_dialog.setContentView(R.layout.dialog_reset_password_success); // xml 레이아웃 파일과 연결
         // dialog 창의 root 레이아웃을 투명하게 조절 모서리(코너)를 둥글게 보이게 하기 위해
@@ -88,7 +84,7 @@ public class ResetPassword extends AppCompatActivity {
                 resetPasswordSuccess_dialog.dismiss(); // 다이얼로그 닫기
 
                 // 로그인 액티비티로 이동
-                final Intent intent = new Intent(getApplicationContext(), SignIn.class);
+                final Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
                 startActivity(intent);
             }
         });

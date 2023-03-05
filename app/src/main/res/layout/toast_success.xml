@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:cardBackgroundColor="@color/toast_bg"
+    app:cardCornerRadius="30dp">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="52.5dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp">
+
+        <RelativeLayout
+            android:id="@+id/check_circle_image_relativeLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true">
+
+            <!-- 프로필 이미지 추가 이미지 배경(흰색) -->
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/photoIcon_plus_background_roundedImageView"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/white_filled_circle"
+                app:riv_oval="true" />
+
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/check_circle_roundedImageView"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/check_circle_green"
+                app:riv_oval="true" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/toast_modify_success_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="9dp"
+            android:layout_toRightOf="@+id/check_circle_image_relativeLayout"
+            android:text=""
+            android:textColor="@color/white"
+            android:textSize="17.5sp" />
+
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

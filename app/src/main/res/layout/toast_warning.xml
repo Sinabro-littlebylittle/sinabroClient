@@ -29,19 +29,18 @@
                 android:src="@drawable/white_filled_circle"
                 app:riv_oval="true" />
 
-            <!-- 프로필 이미지 추가 이미지 배경(흰색) -->
             <com.makeramen.roundedimageview.RoundedImageView
                 android:id="@+id/check_circle_roundedImageView"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/check_circle"
+                android:src="@drawable/warning"
                 app:riv_oval="true" />
 
         </RelativeLayout>
 
         <TextView
-            android:id="@+id/toast_modify_success_tv"
+            android:id="@+id/toast_check_failed_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"

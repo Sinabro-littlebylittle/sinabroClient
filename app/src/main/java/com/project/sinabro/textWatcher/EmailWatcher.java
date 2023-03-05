@@ -2,16 +2,14 @@ package com.project.sinabro.textWatcher;
 
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.project.sinabro.R;
-import com.project.sinabro.sideBarMenu.authentication.SignUpStep1;
-import com.project.sinabro.sideBarMenu.myPage.ModifyMyInfoActivity;
-import com.project.sinabro.sideBarMenu.myPage.ModifyPasswordActivity;
+import com.project.sinabro.sideBarMenu.authentication.SignUpStep1Activity;
+import com.project.sinabro.sideBarMenu.settings.ModifyMyInfoActivity;
 
 public class EmailWatcher implements TextWatcher {
 
@@ -23,7 +21,7 @@ public class EmailWatcher implements TextWatcher {
 
     private final String errorMsg, calledActivityName;
 
-    private final SignUpStep1 signUpStep1 = new SignUpStep1();
+    private final SignUpStep1Activity signUpStep1 = new SignUpStep1Activity();
 
     private final ModifyMyInfoActivity modifyMyInfoActivity = new ModifyMyInfoActivity();
 

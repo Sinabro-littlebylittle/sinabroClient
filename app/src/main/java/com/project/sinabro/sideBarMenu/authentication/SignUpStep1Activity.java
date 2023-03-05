@@ -14,7 +14,7 @@ import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
 
-public class SignUpStep1 extends AppCompatActivity {
+public class SignUpStep1Activity extends AppCompatActivity {
 
     private ActivitySignUpStep1Binding binding;
 
@@ -50,7 +50,7 @@ public class SignUpStep1 extends AppCompatActivity {
         binding.signInTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final Intent intent = new Intent(getApplicationContext(), SignIn.class);
+                final Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
                 startActivity(intent);
             }
         });
@@ -107,8 +107,8 @@ public class SignUpStep1 extends AppCompatActivity {
                 emailConfirm = true;
 
                 // 입력된 이메일이 DB 내에 이미 존재할 때 (사용 불가) 관련 문구 표기하기
-//                binding.emailConfirmResultTv.setTextColor(getResources().getColor(R.color.red));
-//                binding.emailConfirmResultTv.setText(getResources().getString(R.string.signup_email_confirm_failed));
+                // binding.emailConfirmResultTv.setTextColor(getResources().getColor(R.color.red));
+                // binding.emailConfirmResultTv.setText(getResources().getString(R.string.signup_email_confirm_failed));
 
                 binding.emailConfirmResultTv.setVisibility(View.VISIBLE);
                 binding.emailEditText.clearFocus();
@@ -142,7 +142,7 @@ public class SignUpStep1 extends AppCompatActivity {
                     binding.passwordConfirmTextInputLayout.setBackgroundResource(R.drawable.edt_bg_only_helper_selected);
                 } else {
                     // "회원가입 2단계" 액티비티로 이동
-                    final Intent intent = new Intent(getApplicationContext(), SignUpStep2.class);
+                    final Intent intent = new Intent(getApplicationContext(), SignUpStep2Activity.class);
                     startActivity(intent);
                 }
             }

@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="400dp"
+    android:layout_centerVertical="true"
+    android:layout_gravity="center"
+    android:background="@drawable/dialog_radius">
+
+    <!-- Dialog 종료 버튼 -->
+    <ImageButton
+        android:id="@+id/dialogClose_iBtn"
+        android:layout_width="42.5dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="7.5dp"
+        android:layout_marginEnd="7.5dp"
+        android:backgroundTint="@color/transparent"
+        android:src="@drawable/close" />
+
+    <RelativeLayout
+        android:id="@+id/agree_1_relativeLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="50dp">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:id="@+id/check_relativeLayout_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="27.5dp">
+
+                <!-- 프로필 이미지 추가 이미지 배경(흰색) -->
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:id="@+id/photoIcon_plus_background_roundedImageView"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/white_filled_circle"
+                    app:riv_oval="true" />
+
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:id="@+id/check_circle_roundedImageView"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/check_circle_grey"
+                    app:riv_oval="true" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_toRightOf="@+id/check_relativeLayout_1">
+
+                <TextView
+                    android:id="@+id/agree_1_title_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="29.5dp"
+                    android:text="필수 동의 항목 모두 동의"
+                    android:textColor="@color/text_blue"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <RelativeLayout
+                    android:id="@+id/use_service_agreement_relativeLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/agree_1_title_tv"
+                    android:layout_marginTop="15dp"
+                    android:paddingTop="7.5dp"
+                    android:paddingBottom="7.5dp">
+
+                    <TextView
+                        android:id="@+id/required_things_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="서비스 이용약관 동의 (필수)"
+                        android:textColor="@color/text_blue"
+                        android:textSize="14sp" />
+
+                    <!-- 우측 화살표 버튼 -->
+                    <ImageButton
+                        android:id="@+id/arrow_right_iBtn"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:backgroundTint="@color/transparent"
+                        android:foregroundTint="@color/white"
+                        android:src="@drawable/arrow_right_grey" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/handle_user_information_relativeLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/use_service_agreement_relativeLayout"
+                    android:paddingTop="7.5dp"
+                    android:paddingBottom="7.5dp">
+
+                    <TextView
+                        android:id="@+id/handle_user_information_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="개인정보 처리 방침 (필수)"
+                        android:textColor="@color/text_blue"
+                        android:textSize="14sp" />
+
+                    <!-- 우측 화살표 버튼 -->
+                    <ImageButton
+                        android:id="@+id/arrow_right_iBtn2"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:backgroundTint="@color/transparent"
+                        android:foregroundTint="@color/white"
+                        android:src="@drawable/arrow_right_grey" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/store_user_information_relativeLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/handle_user_information_relativeLayout"
+                    android:paddingTop="7.5dp"
+                    android:paddingBottom="7.5dp">
+
+                    <TextView
+                        android:id="@+id/store_user_information_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="개인정보 수집 및 이용 동의 (필수)"
+                        android:textColor="@color/text_blue"
+                        android:textSize="14sp" />
+
+                    <!-- 우측 화살표 버튼 -->
+                    <ImageButton
+                        android:id="@+id/arrow_right_iBtn3"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:backgroundTint="@color/transparent"
+                        android:foregroundTint="@color/white"
+                        android:src="@drawable/arrow_right_grey" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/others_use_user_information_relativeLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/store_user_information_relativeLayout"
+                    android:paddingTop="7.5dp"
+                    android:paddingBottom="7.5dp">
+
+                    <TextView
+                        android:id="@+id/others_use_user_information_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="개인정보 제 3자 제공 동의 (필수)"
+                        android:textColor="@color/text_blue"
+                        android:textSize="14sp" />
+
+                    <!-- 우측 화살표 버튼 -->
+                    <ImageButton
+                        android:id="@+id/arrow_right_iBtn4"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:backgroundTint="@color/transparent"
+                        android:foregroundTint="@color/white"
+                        android:src="@drawable/arrow_right_grey" />
+                </RelativeLayout>
+            </RelativeLayout>
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/agree_1_relativeLayout"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="50dp">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:id="@+id/check_relativeLayout_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="27.5dp">
+
+                <!-- 프로필 이미지 추가 이미지 배경(흰색) -->
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:id="@+id/photoIcon_plus_background_roundedImageView2"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/white_filled_circle"
+                    app:riv_oval="true" />
+
+                <!-- 프로필 이미지 추가 이미지 배경(흰색) -->
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:id="@+id/check_circle_roundedImageView2"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/check_circle_grey"
+                    app:riv_oval="true" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_toRightOf="@+id/check_relativeLayout_2">
+
+                <TextView
+                    android:id="@+id/agree_2_title_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="29.5dp"
+                    android:text="공지 및 광고 알림 수신 동의 (선택)"
+                    android:textColor="@color/text_blue"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginBottom="22.5dp">
+
+        <Button
+            android:id="@+id/yesBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:background="@drawable/border_line"
+            android:insetTop="2dp"
+            android:insetBottom="2dp"
+            android:outlineProvider="none"
+            android:text="확인"
+            android:textColor="@color/blue"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+</RelativeLayout>

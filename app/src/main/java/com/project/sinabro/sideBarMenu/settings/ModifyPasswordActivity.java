@@ -1,4 +1,4 @@
-package com.project.sinabro.sideBarMenu.myPage;
+package com.project.sinabro.sideBarMenu.settings;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -11,13 +11,11 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 
-import com.daimajia.androidanimations.library.Techniques;
-import com.daimajia.androidanimations.library.YoYo;
 import com.project.sinabro.R;
 import com.project.sinabro.databinding.ActivityModifyPasswordBinding;
 import com.project.sinabro.textWatcher.PasswordConfirmWatcher;
 import com.project.sinabro.textWatcher.PasswordWatcher;
-import com.project.sinabro.toast.SuccessToast;
+import com.project.sinabro.toast.ToastSuccess;
 
 public class ModifyPasswordActivity extends AppCompatActivity {
 
@@ -58,7 +56,6 @@ public class ModifyPasswordActivity extends AppCompatActivity {
         binding.currentPasswordTextInputLayout.setEndIconOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("테스트", "" + current_password_toggle);
                 if (current_password_toggle) {
                     binding.currentPasswordEditText.setTransformationMethod(null);
                     binding.currentPasswordEditText.setPadding(34, 50, 0, 25);
@@ -86,7 +83,6 @@ public class ModifyPasswordActivity extends AppCompatActivity {
         binding.passwordConfirmTextInputLayout.setEndIconOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("테스트", "" + current_password_toggle);
                 if (passwordConfirm_toggle) {
                     binding.passwordConfirmEditText.setTransformationMethod(null);
                     binding.passwordConfirmEditText.setPadding(34, 50, 0, 25);
@@ -129,7 +125,7 @@ public class ModifyPasswordActivity extends AppCompatActivity {
                     // showDialog_modify_password_failed();
 
                     // 모든 입력이 정상적으로 완료되었을 때
-                    new SuccessToast(getResources().getString(R.string.toast_modify_password_success), ModifyPasswordActivity.this);
+                    new ToastSuccess(getResources().getString(R.string.toast_modify_password_success), ModifyPasswordActivity.this);
                     onBackPressed(); // 뒤로가기 기능 수행
                     finish(); // 현재 액티비티 종료
                 }

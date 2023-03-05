@@ -9,9 +9,8 @@ import android.view.View;
 
 import com.project.sinabro.R;
 import com.project.sinabro.databinding.ActivityOpenSourceLicenseBinding;
-import com.project.sinabro.databinding.ActivitySignInBinding;
 
-public class OpenSourceLicense extends AppCompatActivity {
+public class OpenSourceLicenseActivity extends AppCompatActivity {
 
     private ActivityOpenSourceLicenseBinding binding;
 

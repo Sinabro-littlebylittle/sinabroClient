@@ -5,13 +5,6 @@
     android:id="@+id/main"
     app:startDestination="@id/emptyFragment">
 
-    <!-- 마이페이지 액티비티 연결 -->
-    <fragment
-        android:id="@+id/myPage_menu"
-        android:name="com.project.sinabro.sideBarMenu.myPage.MyPageFragment"
-        android:label="fragment_my_page_activity"
-        tools:layout="@layout/fragment_my_page_activity" />
-
     <!-- 즐겨찾기 액티비티 연결 -->
     <fragment
         android:id="@+id/bookmark_menu"

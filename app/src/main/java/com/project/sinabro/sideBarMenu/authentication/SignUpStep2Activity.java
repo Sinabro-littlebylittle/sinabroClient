@@ -21,12 +21,11 @@ import android.widget.Button;
 
 import com.project.sinabro.R;
 import com.project.sinabro.databinding.ActivitySignUpStep2Binding;
-import com.project.sinabro.textWatcher.EmailWatcher;
 import com.project.sinabro.textWatcher.NicknameWatcher;
 
 import java.io.InputStream;
 
-public class SignUpStep2 extends AppCompatActivity {
+public class SignUpStep2Activity extends AppCompatActivity {
 
     private ActivitySignUpStep2Binding binding;
 
@@ -42,14 +41,14 @@ public class SignUpStep2 extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         /** "기본 프로필 이미지 이용 안내" 다이얼로그 변수 초기화 및 설정 */
-        askUserUseDefaultProfileImage_dialog = new Dialog(SignUpStep2.this);  // Dialog 초기화
+        askUserUseDefaultProfileImage_dialog = new Dialog(SignUpStep2Activity.this);  // Dialog 초기화
         askUserUseDefaultProfileImage_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE); // 타이틀 제거
         askUserUseDefaultProfileImage_dialog.setContentView(R.layout.dialog_ask_user_use_default_profile_image); // xml 레이아웃 파일과 연결
         // dialog 창의 root 레이아웃을 투명하게 조절 모서리(코너)를 둥글게 보이게 하기 위해
         askUserUseDefaultProfileImage_dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         /** "회원가입 완료 안내" 다이얼로그 변수 초기화 및 설정 */
-        signUpSuccess_dialog = new Dialog(SignUpStep2.this);  // Dialog 초기화
+        signUpSuccess_dialog = new Dialog(SignUpStep2Activity.this);  // Dialog 초기화
         signUpSuccess_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE); // 타이틀 제거
         signUpSuccess_dialog.setContentView(R.layout.dialog_sign_up_success); // xml 레이아웃 파일과 연결
         // dialog 창의 root 레이아웃을 투명하게 조절 모서리(코너)를 둥글게 보이게 하기 위해
@@ -208,7 +207,7 @@ public class SignUpStep2 extends AppCompatActivity {
                 signUpSuccess_dialog.dismiss(); // 다이얼로그 닫기
 
                 // 로그인 액티비티로 이동
-                final Intent intent = new Intent(getApplicationContext(), SignIn.class);
+                final Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
                 startActivity(intent);
             }
         });

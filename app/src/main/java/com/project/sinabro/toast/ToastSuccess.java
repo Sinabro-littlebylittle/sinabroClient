@@ -8,11 +8,11 @@ import android.widget.Toast;
 
 import com.project.sinabro.R;
 
-public class SuccessToast {
-    public SuccessToast(String message, Activity activity) {
+public class ToastSuccess {
+    public ToastSuccess(String message, Activity activity) {
         Toast toast = new Toast(activity);
         View view = LayoutInflater.from(activity)
-                .inflate(R.layout.toast_modify_success, null);
+                .inflate(R.layout.toast_success, null);
 
         TextView tvMessage = view.findViewById(R.id.toast_modify_success_tv);
         tvMessage.setText(message);

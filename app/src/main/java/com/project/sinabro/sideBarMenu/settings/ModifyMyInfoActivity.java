@@ -1,24 +1,15 @@
-package com.project.sinabro.sideBarMenu.myPage;
+package com.project.sinabro.sideBarMenu.settings;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Dialog;
-import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
-import android.widget.Button;
 
 import com.project.sinabro.R;
 import com.project.sinabro.databinding.ActivityModifyMyInfoBinding;
-import com.project.sinabro.databinding.ActivitySignUpStep2Binding;
-import com.project.sinabro.sideBarMenu.authentication.SignIn;
-import com.project.sinabro.sideBarMenu.authentication.SignUpStep2;
 import com.project.sinabro.textWatcher.EmailWatcher;
 import com.project.sinabro.textWatcher.NicknameWatcher;
-import com.project.sinabro.toast.SuccessToast;
+import com.project.sinabro.toast.ToastSuccess;
 
 public class ModifyMyInfoActivity extends AppCompatActivity {
 
@@ -97,7 +88,7 @@ public class ModifyMyInfoActivity extends AppCompatActivity {
                     binding.emailTextInputLayout.setBackgroundResource(R.drawable.edt_bg_only_helper_selected);
                 } else {
                     // 모든 입력이 정상적으로 완료되었을 때
-                    new SuccessToast(getResources().getString(R.string.toast_modify_my_info_success), ModifyMyInfoActivity.this);
+                    new ToastSuccess(getResources().getString(R.string.toast_modify_my_info_success), ModifyMyInfoActivity.this);
                     onBackPressed(); // 뒤로가기 기능 수행
                     finish(); // 현재 액티비티 종료
                 }

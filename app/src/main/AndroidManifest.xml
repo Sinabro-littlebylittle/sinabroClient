@@ -40,18 +40,25 @@
         <activity android:name="com.project.sinabro.bottomSheet.place.AddLocationInfoActivity" />
         <activity android:name="com.project.sinabro.bottomSheet.place.AddPlaceGuideActivity" />
         <activity android:name="com.project.sinabro.bottomSheet.place.PlaceListActivity" />
-        <activity android:name="com.project.sinabro.sideBarMenu.settings.NotificationActivity" />
-
+        <activity android:name="com.project.sinabro.sideBarMenu.authentication.SignUpStep1Activity" />
+        <activity android:name="com.project.sinabro.sideBarMenu.authentication.SignUpStep2Activity" />
+        <activity android:name="com.project.sinabro.sideBarMenu.authentication.SignInActivity" />
+        <activity android:name="com.project.sinabro.sideBarMenu.authentication.ResetPasswordActivity" />
+        <activity android:name="com.project.sinabro.sideBarMenu.devInfo.OpenSourceLicenseActivity" />
+        <activity android:name="com.project.sinabro.sideBarMenu.settings.CheckPasswordActivity" />
+        <activity android:name="com.project.sinabro.sideBarMenu.settings.ModifyMyInfoActivity" />
+        <activity android:name="com.project.sinabro.sideBarMenu.settings.ModifyPasswordActivity" />
+        <activity android:name="com.project.sinabro.sideBarMenu.settings.MyPageActivity" />
+        <activity android:name="com.project.sinabro.sideBarMenu.settings.OurPoliciesActivity" />
+        <activity android:name="com.project.sinabro.sideBarMenu.settings.SettingNotificationsActivity" />
+        <activity android:name="com.project.sinabro.sideBarMenu.settings.WithdrawalStep1Activity" />
+        <activity android:name="com.project.sinabro.sideBarMenu.settings.WithdrawalStep2Activity" />
+        <activity android:name="com.project.sinabro.sideBarMenu.settings.UseServiceAgreementActivity" />
+        <activity android:name="com.project.sinabro.sideBarMenu.settings.OthersUseUserInformationActivity" />
+        <activity android:name="com.project.sinabro.sideBarMenu.settings.StoreUserInformationActivity" />
+        <activity android:name="com.project.sinabro.sideBarMenu.settings.HandleUserInformationActivity" />
         <activity android:name="com.project.sinabro.bottomSheet.place.bookmark.AddBookmarkPlaceActivity" />
         <activity android:name="com.project.sinabro.sideBarMenu.bookmark.AddBookmarkPlaceActivity_setting" />
-        <activity android:name="com.project.sinabro.sideBarMenu.authentication.SignUpStep1" />
-        <activity android:name="com.project.sinabro.sideBarMenu.authentication.SignUpStep2" />
-        <activity android:name="com.project.sinabro.sideBarMenu.authentication.SignIn" />
-        <activity android:name="com.project.sinabro.sideBarMenu.authentication.ResetPassword" />
-        <activity android:name="com.project.sinabro.sideBarMenu.devInfo.OpenSourceLicense" />
-        <activity android:name="com.project.sinabro.sideBarMenu.myPage.ModifyMyInfoActivity" />
-        <activity android:name="com.project.sinabro.sideBarMenu.myPage.ModifyPasswordActivity" />
-
 
         <meta-data
             android:name="com.kakao.sdk.AppKey"

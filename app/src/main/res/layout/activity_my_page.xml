@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".sideBarMenu.settings.MyPageActivity">
+
+    <!-- activity (header) RelativeLayout -->
+    <RelativeLayout
+        android:id="@+id/activity_header_relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- "뒤로가기" 버튼 -->
+        <ImageButton
+            android:id="@+id/back_iBtn"
+            android:layout_width="42.5dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="@color/transparent"
+            android:src="@drawable/back"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+        <!-- "~~~님의 정보" 메뉴명 -->
+        <TextView
+            android:id="@+id/my_page_fragment_title_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="27.5dp"
+            android:letterSpacing="-0.01"
+            android:text="홍길동님의 정보"
+            android:textColor="@color/dark_grey"
+            android:textSize="17.5sp" />
+
+        <!-- "정보 수정" TextView -->
+        <TextView
+            android:id="@+id/modify_my_info_tv"
+            android:layout_width="60dp"
+            android:layout_height="50dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="29dp"
+            android:layout_marginEnd="10dp"
+            android:gravity="center"
+            android:letterSpacing="-0.01"
+            android:text="수정"
+            android:textColor="@color/dark_grey"
+            android:textSize="16sp" />
+    </RelativeLayout>
+
+    <!-- activity (body) RelativeLayout -->
+    <RelativeLayout
+        android:id="@+id/activity_body_relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/activity_header_relativeLayout">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp">
+
+                <!-- "프로필 이미지" RelativeLayout -->
+                <RelativeLayout
+                    android:id="@+id/userImage_relativeLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true">
+
+                    <!-- 프로필 이미지 -->
+                    <com.makeramen.roundedimageview.RoundedImageView
+                        android:id="@+id/userImage_roundedImageView"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_marginTop="10dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/default_profile_image"
+                        app:riv_oval="true" />
+
+                    <!-- 프로필 이미지 추가 이미지 배경(흰색) -->
+                    <com.makeramen.roundedimageview.RoundedImageView
+                        android:id="@+id/photoIcon_plus_background_roundedImageView"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_marginStart="45dp"
+                        android:layout_marginTop="62.5dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/white_filled_circle"
+                        app:riv_oval="true" />
+
+                    <!-- 프로필 이미지 추가(플러스) 이미지 -->
+                    <com.makeramen.roundedimageview.RoundedImageView
+                        android:id="@+id/photoIcon_plus_roundedImageView"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_marginStart="50.5dp"
+                        android:layout_marginTop="67.5dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/plus_circle"
+                        app:riv_oval="true" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/userImage_relativeLayout"
+                    android:layout_marginTop="20dp">
+
+                    <RelativeLayout
+                        android:id="@+id/nickname_relativeLayout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="25dp"
+                        android:paddingTop="20dp"
+                        android:paddingEnd="25dp"
+                        android:paddingBottom="20dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="이름"
+                            android:textColor="@color/text_blue"
+                            android:textSize="16.5sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:text="홍길동"
+                            android:textSize="16.5sp" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/email_relativeLayout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/nickname_relativeLayout"
+                        android:paddingStart="25dp"
+                        android:paddingTop="20dp"
+                        android:paddingEnd="25dp"
+                        android:paddingBottom="20dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="이메일 주소"
+                            android:textColor="@color/text_blue"
+                            android:textSize="16.5sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:text="abc123@naver.com"
+                            android:textSize="16.5sp" />
+                    </RelativeLayout>
+
+                    <!-- 가로 구분선 -->
+                    <RelativeLayout
+                        android:id="@+id/dividing_line_relativeLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="17.5dp"
+                        android:layout_below="@+id/email_relativeLayout"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:background="@color/bg_grey" />
+
+                    <RelativeLayout
+                        android:id="@+id/password_relativeLayout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/dividing_line_relativeLayout"
+                        android:paddingStart="25dp"
+                        android:paddingTop="15dp"
+                        android:paddingEnd="12.5dp"
+                        android:paddingBottom="15dp">
+
+                        <TextView
+                            android:id="@+id/modify_password_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:text="비밀번호 변경"
+                            android:textColor="@color/text_blue"
+                            android:textSize="16.5sp" />
+
+                        <!-- 우측 화살표 버튼 -->
+                        <ImageButton
+                            android:id="@+id/arrow_right_iBtn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:backgroundTint="@color/transparent"
+                            android:foregroundTint="@color/white"
+                            android:src="@drawable/arrow_right_grey" />
+                    </RelativeLayout>
+                </RelativeLayout>
+            </RelativeLayout>
+        </ScrollView>
+    </RelativeLayout>
+
+    <!-- 비밀번호 변경 버튼 -->
+    <Button
+        android:id="@+id/modify_complete_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="22.5dp"
+        android:backgroundTint="@color/blue"
+        android:letterSpacing="0"
+        android:outlineProvider="none"
+        android:paddingTop="17.5dp"
+        android:paddingBottom="17.5dp"
+        android:text="이미지 변경"
+        android:textColor="@color/white"
+        android:textSize="17.5sp"
+        android:visibility="invisible"
+        app:cornerRadius="13dp" />
+
+</RelativeLayout>
