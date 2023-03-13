@@ -82,7 +82,7 @@ public class SignUpStep2Activity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // 입력 란 검증 실패 및 공란 확인 조건식
-                if (String.valueOf(binding.nicknameEditText.getText()).equals("")) {
+                if (binding.nicknameTextInputLayout.getError() != null || String.valueOf(binding.nicknameEditText.getText()).equals("")) {
                     binding.nicknameEditText.requestFocus();
                     binding.nicknameTextInputLayout.setError(getResources().getString(R.string.sign_up_nickname_failed));
                     binding.nicknameTextInputLayout.setErrorEnabled(true);
