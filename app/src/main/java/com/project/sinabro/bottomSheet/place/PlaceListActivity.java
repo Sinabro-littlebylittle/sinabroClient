@@ -290,6 +290,7 @@ public class PlaceListActivity extends AppCompatActivity {
                     startActivity(intent);
                 } else {
                     final Intent intent = new Intent(getApplicationContext(), AddBookmarkToListActivity.class);
+                    intent.putExtra("fromPlaceListActivity", true);
                     startActivity(intent);
                 }
                 showDialog_placeInfo(clickedPlaceItem);

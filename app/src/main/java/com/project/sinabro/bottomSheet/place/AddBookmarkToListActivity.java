@@ -65,8 +65,12 @@ public class AddBookmarkToListActivity extends AppCompatActivity {
         binding.addNewListTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                final Intent prevIntent = getIntent();
+                Boolean calledView = prevIntent.getBooleanExtra("fromPlaceListActivity", false);
                 final Intent intent = new Intent(getApplicationContext(), AddNewListActivity.class);
                 intent.putExtra("fromBottomSheetDialog", true);
+                if (calledView)
+                    intent.putExtra("fromPlaceListActivity", true);
                 startActivity(intent);
                 finish();
             }
@@ -207,7 +211,7 @@ public class AddBookmarkToListActivity extends AppCompatActivity {
                 // "뒤로가기" 기능을 통해, 즐겨찾기 리스트 fragment로 이동
 
                 Boolean calledView = getIntent().getBooleanExtra("fromMainActivity", false);
-                if(calledView) {
+                if (calledView) {
                     MainActivity mainActivity = new MainActivity();
                     mainActivity.updateBookmarkBtnState(true);
                 } else {

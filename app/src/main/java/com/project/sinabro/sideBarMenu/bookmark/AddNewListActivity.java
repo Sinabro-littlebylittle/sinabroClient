@@ -110,9 +110,10 @@ public class AddNewListActivity extends AppCompatActivity {
                 } else {
                     new ToastSuccess(getResources().getString(R.string.toast_add_list_success), AddNewListActivity.this);
                     Boolean calledView = intent.getBooleanExtra("fromBottomSheetDialog", false);
+                    Boolean calledView2 = intent.getBooleanExtra("fromPlaceListActivity", false);
                     if (calledView) {
                         final Intent intent = new Intent(getApplicationContext(), AddBookmarkToListActivity.class);
-                        intent.putExtra("fromMainActivity", true);
+                        intent.putExtra("fromMainActivity", !calledView2);
                         intent.putExtra("newListIconColor", checkedColorInfo[0]);
                         intent.putExtra("newListName", String.valueOf(binding.listNameEditText.getText()));
                         startActivity(intent);
