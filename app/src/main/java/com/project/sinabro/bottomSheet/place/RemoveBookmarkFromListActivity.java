@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -193,12 +194,20 @@ public class RemoveBookmarkFromListActivity extends AppCompatActivity {
                 new ToastSuccess(getResources().getString(R.string.toast_remove_list_success), RemoveBookmarkFromListActivity.this);
 
                 Boolean calledView = getIntent().getBooleanExtra("fromMainActivity", false);
+                Boolean calledView2 = getIntent().getBooleanExtra("fromPlaceInList", false);
+
                 if(calledView) {
                     MainActivity mainActivity = new MainActivity();
                     mainActivity.updateBookmarkBtnState(false);
                 } else {
-                    PlaceListActivity placeListActivity = new PlaceListActivity();
-                    placeListActivity.updateBookmarkBtnState(false);
+                    if (calledView2) {
+                        PlaceInListActivity placeInListActivity = new PlaceInListActivity();
+                        placeInListActivity.updateBookmarkBtnState(false);
+                    } else {
+                        PlaceListActivity placeListActivity = new PlaceListActivity();
+                        placeListActivity.updateBookmarkBtnState(false);
+                    }
+
                 }
 
                 // "뒤로가기" 기능을 통해, 즐겨찾기 리스트 fragment로 이동

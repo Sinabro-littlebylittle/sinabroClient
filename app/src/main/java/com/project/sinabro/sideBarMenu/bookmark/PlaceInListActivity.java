@@ -37,7 +37,7 @@ public class PlaceInListActivity extends AppCompatActivity {
 
     private PlaceItem clickedPlaceItem;
 
-    private Button bookmarkFilled_btn;
+    private static Button bookmarkEmpty_btn, bookmarkFilled_btn;
 
     Boolean bookmarked = true;
 
@@ -161,6 +161,16 @@ public class PlaceInListActivity extends AppCompatActivity {
         }
     }
 
+    public void updateBookmarkBtnState(Boolean bookmarked) {
+        if (bookmarked) {
+            bookmarkEmpty_btn.setVisibility(View.GONE);
+            bookmarkFilled_btn.setVisibility(View.VISIBLE);
+        } else {
+            bookmarkEmpty_btn.setVisibility(View.VISIBLE);
+            bookmarkFilled_btn.setVisibility(View.GONE);
+        }
+    }
+
     /**
      * (dialog_ask_add_or_cancel_bookmark) 다이얼로그를 디자인하는 함수
      */
@@ -169,7 +179,7 @@ public class PlaceInListActivity extends AppCompatActivity {
         // 다이얼로그 창이 나타나면서 외부 액티비티가 어두워지는데, 그 정도를 조절함
         ask_add_or_cancel_bookmark_dialog.getWindow().setDimAmount(0.35f);
 
-        Button bookmarkFilled_btn = findViewById(R.id.bookmarkFilled_btn);
+        Button bookmarkFilled_btn = placeInfo_dialog.findViewById(R.id.bookmarkFilled_btn);
         TextView dialog_tv = ask_add_or_cancel_bookmark_dialog.findViewById(R.id.dialog_tv);
         if (bookmarkFilled_btn.getVisibility() == View.VISIBLE) {
             dialog_tv.setText(getResources().getString(R.string.dialog_cancel_bookmark));
@@ -196,9 +206,11 @@ public class PlaceInListActivity extends AppCompatActivity {
                 ask_add_or_cancel_bookmark_dialog.dismiss(); // 다이얼로그 닫기
                 if (bookmarked) {
                     final Intent intent = new Intent(getApplicationContext(), RemoveBookmarkFromListActivity.class);
+                    intent.putExtra("fromPlaceInList", true);
                     startActivity(intent);
                 } else {
                     final Intent intent = new Intent(getApplicationContext(), AddBookmarkToListActivity.class);
+                    intent.putExtra("fromPlaceInList", true);
                     startActivity(intent);
                 }
             }
@@ -261,7 +273,7 @@ public class PlaceInListActivity extends AppCompatActivity {
         });
 
         // 즐겨찾기 버튼
-        Button bookmarkEmpty_btn = placeInfo_dialog.findViewById(R.id.bookmarkEmpty_btn);
+        bookmarkEmpty_btn = placeInfo_dialog.findViewById(R.id.bookmarkEmpty_btn);
         bookmarkFilled_btn = placeInfo_dialog.findViewById(R.id.bookmarkFilled_btn);
 
         if (bookmarked) {

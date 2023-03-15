@@ -211,12 +211,19 @@ public class AddBookmarkToListActivity extends AppCompatActivity {
                 // "뒤로가기" 기능을 통해, 즐겨찾기 리스트 fragment로 이동
 
                 Boolean calledView = getIntent().getBooleanExtra("fromMainActivity", false);
+                Boolean calledView2 = getIntent().getBooleanExtra("fromPlaceInList", false);
+
                 if (calledView) {
                     MainActivity mainActivity = new MainActivity();
                     mainActivity.updateBookmarkBtnState(true);
                 } else {
-                    PlaceListActivity placeListActivity = new PlaceListActivity();
-                    placeListActivity.updateBookmarkBtnState(true);
+                    if (calledView2) {
+                        PlaceInListActivity placeInListActivity = new PlaceInListActivity();
+                        placeInListActivity.updateBookmarkBtnState(true);
+                    } else {
+                        PlaceListActivity placeListActivity = new PlaceListActivity();
+                        placeListActivity.updateBookmarkBtnState(true);
+                    }
                 }
 
                 onBackPressed(); // 뒤로가기 기능 수행
