@@ -108,6 +108,13 @@ public class AddNewListActivity extends AppCompatActivity {
                 } else if (colorChecked[0] != true) {
                     new ToastWarning(getResources().getString(R.string.toast_add_list_failed), AddNewListActivity.this);
                 } else {
+                    Boolean forModify = intent.getBooleanExtra("forModify", false);
+                    if (forModify) {
+                        new ToastSuccess(getResources().getString(R.string.toast_modify_list_success), AddNewListActivity.this);
+                        finish();
+                        return;
+                    }
+
                     new ToastSuccess(getResources().getString(R.string.toast_add_list_success), AddNewListActivity.this);
                     Boolean calledView = intent.getBooleanExtra("fromBottomSheetDialog", false);
                     Boolean calledView2 = intent.getBooleanExtra("fromPlaceListActivity", false);
@@ -134,7 +141,7 @@ public class AddNewListActivity extends AppCompatActivity {
         if (modify_clicked) {
             int newListIconColor = intent.getIntExtra("newListIconColor", -1);
             String newListName = intent.getStringExtra("newListName");
-
+            colorChecked[0] = true;
             binding.myPageFragmentTitleTv.setText("리스트 수정");
             binding.addNewListBtn.setText("수정하기");
             binding.selectedColorRoundedImageView.setImageResource(newListIconColor);

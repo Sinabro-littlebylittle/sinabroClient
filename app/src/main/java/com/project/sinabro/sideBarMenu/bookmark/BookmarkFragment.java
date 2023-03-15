@@ -193,10 +193,12 @@ public class BookmarkFragment extends Fragment {
             RoundedImageView list_color_circle_roundedImageView = convertView.findViewById(R.id.list_color_circle_roundedImageView);
             list_color_circle_roundedImageView.setImageResource(listItem.getListIconColorValue());
 
+            // 리스트 정보 수정 아이콘 버튼 클릭 시
             convertView.findViewById(R.id.modify_list_info_roundedImageView).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(getActivity(), AddNewListActivity.class);
+                    intent.putExtra("forModify", true);
                     intent.putExtra("modify_clicked", true);
                     intent.putExtra("newListIconColor", listItem.getListIconColorValue());
                     intent.putExtra("newListName", listName_tv.getText().toString());
@@ -204,7 +206,7 @@ public class BookmarkFragment extends Fragment {
                 }
             });
 
-            //각 아이템 선택 event
+            // 각 아이템 선택 event
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

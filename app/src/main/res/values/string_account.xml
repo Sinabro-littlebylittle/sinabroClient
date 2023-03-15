@@ -64,6 +64,7 @@
     <string name="toast_add_bookmark_to_list_success">리스트에 추가했어요</string>
     <string name="toast_remove_list_failed">선택된 리스트가 없어요</string>
     <string name="toast_add_list_success">리스트를 추가했어요</string>
+    <string name="toast_modify_list_success">정보를 수정했어요</string>
     <string name="toast_add_list_failed">리스트 색상이 필요해요</string>
     <string name="toast_select_color_failed">색상 선택이 필요해요</string>
 
