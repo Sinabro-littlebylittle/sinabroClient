@@ -48,7 +48,8 @@
             android:letterSpacing="-0.01"
             android:text="삭제"
             android:textColor="@color/dark_grey"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:visibility="invisible" />
     </RelativeLayout>
 
     <!-- activity (body) RelativeLayout -->
