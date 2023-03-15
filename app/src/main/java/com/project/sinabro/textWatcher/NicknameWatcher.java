@@ -64,7 +64,7 @@ public class NicknameWatcher implements TextWatcher {
     }
 
     public boolean validateNickname(String s) {
-        String nicknamePattern = "^(?=.*[a-z0-9가-힣])[a-z0-9가-힣]{2,10}$";
+        String nicknamePattern = "^[a-zA-Z0-9가-힣 ]{2,10}$";
         return s.matches(nicknamePattern);
     }
 }
