@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".sideBarMenu.bookmark.AddNewListActivity">
+
+    <!-- activity (header) RelativeLayout -->
+    <RelativeLayout
+        android:id="@+id/activity_header_relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- 뒤로가기 버튼 -->
+        <ImageButton
+            android:id="@+id/back_iBtn"
+            android:layout_width="42.5dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="@color/transparent"
+            android:src="@drawable/back"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+        <!-- "즐겨찾기" 메뉴명 -->
+        <TextView
+            android:id="@+id/my_page_fragment_title_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="27.5dp"
+            android:letterSpacing="-0.01"
+            android:text="리스트 추가"
+            android:textColor="@color/dark_grey"
+            android:textSize="17.5sp" />
+    </RelativeLayout>
+
+    <!-- activity (body) RelativeLayout -->
+    <RelativeLayout
+        android:id="@+id/activity_body_relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/activity_header_relativeLayout">
+
+        <!-- 리스트명 입력 TextInputLayout -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/listName_textInputLayout"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/edt_bg_selector"
+            android:hint="리스트명"
+            android:paddingLeft="-12.5dp"
+            android:textColorHint="@color/input_hint"
+            app:boxBackgroundMode="none"
+            app:endIconMode="clear_text"
+            app:hintTextAppearance="@style/App.hintTextAppearance"
+            app:hintTextColor="@color/input_label">
+
+            <!-- 리스트명 입력 란 -->
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/listName_editText"
+                android:layout_width="362.5dp"
+                android:layout_height="match_parent"
+                android:ellipsize="end"
+                android:inputType="textNoSuggestions"
+                android:maxLength="14"
+                android:paddingTop="12dp"
+                android:textColor="@color/dark_grey"
+                android:textCursorDrawable="@drawable/cursor_color"
+                android:textSize="20sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/listName_textInputLayout"
+            android:layout_marginStart="22.5dp"
+            android:layout_marginTop="25dp">
+
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/selected_color_roundedImageView"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:scaleType="centerCrop"
+                android:layout_centerVertical="true"
+                android:src="@drawable/question_mark"
+                app:riv_oval="true" />
+
+            <Button
+                android:id="@+id/show_color_palette_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="15dp"
+                android:layout_toRightOf="@+id/selected_color_roundedImageView"
+                android:minWidth="0dp"
+                android:paddingStart="15dp"
+                android:paddingEnd="15dp"
+                android:backgroundTint="@color/x_lighter_grey"
+                android:stateListAnimator="@null"
+                android:text="선택"
+                android:textColor="@color/text_blue"
+                app:cornerRadius="5dp" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <!-- 회원가입 2단계 이동 버튼 -->
+    <Button
+        android:id="@+id/addNewList_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="22.5dp"
+        android:backgroundTint="@color/blue"
+        android:letterSpacing="0"
+        android:outlineProvider="none"
+        android:paddingTop="17.5dp"
+        android:paddingBottom="17.5dp"
+        android:text="추가하기"
+        android:textColor="@color/white"
+        android:textSize="17.5sp"
+        app:cornerRadius="13dp" />
+
+</RelativeLayout>

@@ -3,6 +3,7 @@ package com.project.sinabro;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,6 +14,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
@@ -22,9 +24,11 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -48,16 +52,15 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.navigation.NavigationView;
+import com.project.sinabro.bottomSheet.place.AddBookmarkToListActivity;
 import com.project.sinabro.bottomSheet.place.AddLocationInfoActivity;
 import com.project.sinabro.bottomSheet.place.AddPlaceGuideActivity;
 import com.project.sinabro.bottomSheet.place.PlaceListActivity;
+import com.project.sinabro.bottomSheet.place.RemoveBookmarkFromListActivity;
 import com.project.sinabro.sideBarMenu.authentication.SignInActivity;
-import com.project.sinabro.bottomSheet.place.bookmark.MyBottomSheetDialog;
-
-import com.project.sinabro.model.Places;
-import com.project.sinabro.retrofit.PlacesAPI;
-import com.project.sinabro.retrofit.RetrofitService;
-import com.project.sinabro.sideBarMenu.devInfo.DevInfoFragment;
+import com.project.sinabro.sideBarMenu.authentication.SignUpStep2Activity;
+import com.project.sinabro.sideBarMenu.bookmark.PlaceInListActivity;
+import com.project.sinabro.sideBarMenu.settings.ModifyMyInfoActivity;
 
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
@@ -113,7 +116,8 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
     private ArrayList<MapPOIItem> markers = new ArrayList<>();
 
     private LocationSettingsRequest mLocationSettingsRequest;
-    private Button currentLocation_btn, mapZoomIn_btn, mapZoomOut_btn, peopleScan_btn, editLocation_btn, bookmarkEmpty_btn, placeList_btn;
+    private Button currentLocation_btn, mapZoomIn_btn, mapZoomOut_btn, peopleScan_btn, editLocation_btn, placeList_btn;
+    private static Button bookmarkEmpty_btn, bookmarkFilled_btn;
 
     private ImageButton hamburger_ibtn;
 
@@ -145,6 +149,10 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
     private Module mModule = null;
     private float mImgScaleX, mImgScaleY, mIvScaleX, mIvScaleY, mStartX, mStartY;
 
+    private Dialog ask_add_or_cancel_bookmark_dialog;
+
+    Boolean bookmarked = true;
+
     //모델 에셋 경로 설정 함수
     public static String assetFilePath(Context context, String assetName) throws IOException {
         File file = new File(context.getFilesDir(), assetName);
@@ -169,6 +177,13 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        /** "즐겨찾기 추가/취소 확인" 다이얼로그 변수 초기화 및 설정 */
+        ask_add_or_cancel_bookmark_dialog = new Dialog(MainActivity.this);  // Dialog 초기화
+        ask_add_or_cancel_bookmark_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE); // 타이틀 제거
+        ask_add_or_cancel_bookmark_dialog.setContentView(R.layout.dialog_ask_add_or_cancel_bookmark); // xml 레이아웃 파일과 연결
+        // dialog 창의 root 레이아웃을 투명하게 조절 모서리(코너)를 둥글게 보이게 하기 위해
+        ask_add_or_cancel_bookmark_dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         /** 다음 카카오맵 지도를 띄우는 코드 */
         mapView = new MapView(this);
@@ -353,16 +368,23 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
             }
         });
 
-        /** 북마크 등록/제거 버튼 */
+        /** "북마크 등록" 버튼 */
         bookmarkEmpty_btn = findViewById(R.id.bookmarkEmpty_btn);
         bookmarkEmpty_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                MyBottomSheetDialog bottomSheetDialog = new MyBottomSheetDialog();                  // BottomSheetDialogFragment를 사용하기 위한 class 생성
-                bottomSheetDialog.show(getSupportFragmentManager(), "myBottomSheetDialog");
+                showDialog_ask_add_or_delete_bookmark();
             }
         });
 
+        /** "북마크 제거" 버튼 */
+        bookmarkFilled_btn = findViewById(R.id.bookmarkFilled_btn);
+        bookmarkFilled_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDialog_ask_add_or_delete_bookmark();
+            }
+        });
 
         //모델 로드..
         try {
@@ -379,7 +401,62 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
             Log.e("Object Detection", "Error reading assets", e);
             finish();
         }
+    }
 
+    public void updateBookmarkBtnState(Boolean bookmarked) {
+        if (bookmarked) {
+            bookmarkEmpty_btn.setVisibility(View.GONE);
+            bookmarkFilled_btn.setVisibility(View.VISIBLE);
+        } else {
+            bookmarkEmpty_btn.setVisibility(View.VISIBLE);
+            bookmarkFilled_btn.setVisibility(View.GONE);
+        }
+    }
+
+    /**
+     * (dialog_ask_add_or_cancel_bookmark) 다이얼로그를 디자인하는 함수
+     */
+    public void showDialog_ask_add_or_delete_bookmark() {
+        ask_add_or_cancel_bookmark_dialog.show(); // 다이얼로그 띄우기
+        // 다이얼로그 창이 나타나면서 외부 액티비티가 어두워지는데, 그 정도를 조절함
+        ask_add_or_cancel_bookmark_dialog.getWindow().setDimAmount(0.35f);
+
+        Button bookmarkFilled_btn = findViewById(R.id.bookmarkFilled_btn);
+        TextView dialog_tv = ask_add_or_cancel_bookmark_dialog.findViewById(R.id.dialog_tv);
+        if (bookmarkFilled_btn.getVisibility() == View.VISIBLE) {
+            dialog_tv.setText(getResources().getString(R.string.dialog_cancel_bookmark));
+            bookmarked = true;
+        } else {
+            dialog_tv.setText(getResources().getString(R.string.dialog_add_bookmark));
+            bookmarked = false;
+        }
+
+        // "아니오" 버튼
+        Button noBtn = ask_add_or_cancel_bookmark_dialog.findViewById(R.id.noBtn);
+        noBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ask_add_or_cancel_bookmark_dialog.dismiss(); // 다이얼로그 닫기
+            }
+        });
+
+        // "확인" 버튼
+        Button yesBtn = ask_add_or_cancel_bookmark_dialog.findViewById(R.id.yesBtn);
+        yesBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ask_add_or_cancel_bookmark_dialog.dismiss(); // 다이얼로그 닫기
+                if (bookmarked) {
+                    final Intent intent = new Intent(getApplicationContext(), RemoveBookmarkFromListActivity.class);
+                    intent.putExtra("fromMainActivity", true);
+                    startActivity(intent);
+                } else {
+                    final Intent intent = new Intent(getApplicationContext(), AddBookmarkToListActivity.class);
+                    intent.putExtra("fromMainActivity", true);
+                    startActivity(intent);
+                }
+            }
+        });
     }
 
     @Override

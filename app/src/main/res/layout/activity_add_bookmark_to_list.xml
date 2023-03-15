@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".sideBarMenu.bookmark.RemoveListActivity">
+
+    <!-- activity (header) RelativeLayout -->
+    <RelativeLayout
+        android:id="@+id/fragment_header_relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- 뒤로가기 버튼 -->
+        <ImageButton
+            android:id="@+id/back_iBtn"
+            android:layout_width="42.5dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="@color/transparent"
+            android:src="@drawable/back"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+        <!-- "즐겨찾기 리스트" 타이틀 -->
+        <TextView
+            android:id="@+id/bookmark_list_title_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="27.5dp"
+            android:letterSpacing="-0.01"
+            android:text="즐겨찾기 리스트"
+            android:textColor="@color/dark_grey"
+            android:textSize="17.5sp" />
+
+        <!-- "리스트 추가" TextView -->
+        <TextView
+            android:id="@+id/add_new_list_tv"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="29dp"
+            android:layout_marginEnd="10dp"
+            android:gravity="center"
+            android:letterSpacing="-0.01"
+            android:text="리스트 추가"
+            android:textColor="@color/dark_grey"
+            android:textSize="16sp" />
+    </RelativeLayout>
+
+    <!-- fragment (body) RelativeLayout -->
+    <RelativeLayout
+        android:id="@+id/fragment_body_relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/add_bookmark_to_list_btn"
+        android:layout_below="@+id/fragment_header_relativeLayout">
+
+        <ListView
+            android:id="@+id/remove_list_listView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:divider="#FFFFFF"
+            android:dividerHeight="0px"
+            android:scrollbars="none" />
+    </RelativeLayout>
+
+    <!-- "리스트 제거하기" 버튼 -->
+    <Button
+        android:id="@+id/add_bookmark_to_list_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="22.5dp"
+        android:backgroundTint="@color/blue"
+        android:letterSpacing="0"
+        android:outlineProvider="none"
+        android:paddingTop="17.5dp"
+        android:paddingBottom="17.5dp"
+        android:text="추가하기"
+        android:textColor="@color/white"
+        android:textSize="17.5sp"
+        app:cornerRadius="13dp" />
+</RelativeLayout>

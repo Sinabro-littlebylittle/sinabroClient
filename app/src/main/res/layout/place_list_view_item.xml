@@ -4,41 +4,48 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- 등록된 장소명 -->
-    <TextView
-        android:id="@+id/placeName_tv"
+    <RelativeLayout
+        android:id="@+id/placeName_relativeLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="29dp"
-        android:layout_marginTop="40dp"
-        android:maxWidth="250dp"
-        android:text="턱스(TUX)"
-        android:textColor="@color/black"
-        android:textSize="17.5sp" />
+        android:layout_marginStart="29dp"
+        android:layout_marginTop="40dp">
+
+        <!-- 등록된 장소명 -->
+        <TextView
+            android:id="@+id/placeName_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxWidth="250dp"
+            android:text="턱스(TUX)"
+            android:textColor="@color/black"
+            android:textSize="17.5sp" />
+
+        <!-- 우측 화살표 버튼 -->
+        <ImageButton
+            android:id="@+id/in_iBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="6.5dp"
+            android:layout_toRightOf="@+id/placeName_tv"
+            android:background="@color/transparent"
+            android:src="@drawable/arrow_right_grey" />
+
+    </RelativeLayout>
 
     <!-- 등록된 장소 상세주소 -->
     <TextView
         android:id="@+id/placeInfo_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/placeName_tv"
+        android:layout_below="@+id/placeName_relativeLayout"
         android:layout_marginLeft="29dp"
         android:layout_marginTop="2.5dp"
         android:maxWidth="250dp"
         android:text="1층 108호"
         android:textColor="@color/grey"
         android:textSize="13sp" />
-
-    <!-- 우측 화살표 버튼 -->
-    <ImageButton
-        android:id="@+id/in_iBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="6.5dp"
-        android:layout_marginTop="46dp"
-        android:layout_toRightOf="@+id/placeName_tv"
-        android:background="@color/transparent"
-        android:src="@drawable/arrow_right_grey" />
 
     <RelativeLayout
         android:layout_width="wrap_content"

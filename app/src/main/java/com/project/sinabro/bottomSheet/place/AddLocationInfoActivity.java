@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.project.sinabro.R;
+import com.project.sinabro.toast.ToastSuccess;
 
 public class AddLocationInfoActivity extends AppCompatActivity {
 
@@ -29,7 +30,7 @@ public class AddLocationInfoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_location_info);
 
-        // 뒤로가기 버튼 기능
+        /** 뒤로가기 버튼 기능 */
         back_iBtn = findViewById(R.id.back_iBtn);
         back_iBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,14 +61,6 @@ public class AddLocationInfoActivity extends AppCompatActivity {
         placeName_editText = findViewById(R.id.placeName_editText);
         detailAddress_editText = findViewById(R.id.detailAddress_editText);
 
-        if (modify_clicked) {
-            String placeName_value = intent.getStringExtra("placeName_value");
-            String detailAddress_value = intent.getStringExtra("detailAddress_value");
-
-            placeName_editText.setText(placeName_value);
-            detailAddress_editText.setText(detailAddress_value);
-        }
-
         addPlace_btn = findViewById(R.id.addPlace_btn);
         addPlace_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,6 +77,15 @@ public class AddLocationInfoActivity extends AppCompatActivity {
                 }
             }
         });
+
+        if (modify_clicked) {
+            String placeName_value = intent.getStringExtra("placeName_value");
+            String detailAddress_value = intent.getStringExtra("detailAddress_value");
+
+            addPlace_btn.setText("수정하기");
+            placeName_editText.setText(placeName_value);
+            detailAddress_editText.setText(detailAddress_value);
+        }
     }
 
     // (dialog_place_remove) 다이얼로그를 디자인하는 함수
@@ -106,6 +108,7 @@ public class AddLocationInfoActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 placeRemove_dialog.dismiss(); // 다이얼로그 닫기
+                new ToastSuccess(getResources().getString(R.string.toast_remove_place_info_success), AddLocationInfoActivity.this);
                 final Intent intent = new Intent(getApplicationContext(), PlaceListActivity.class);
                 startActivity(intent);
             }
