@@ -98,7 +98,7 @@
             app:iconPadding="0dp"
             app:iconTint="@color/deep_blue" />
 
-        <!-- 장소 등록/수정 버튼 -->
+        <!-- 장소 등록 버튼 -->
         <Button
             android:id="@+id/editLocation_btn"
             android:layout_width="70dp"
@@ -117,7 +117,7 @@
             app:iconPadding="0dp"
             app:iconTint="@color/deep_blue" />
 
-        <!-- 북마크 등록/제거 버튼 -->
+        <!-- 북마크 제거 버튼 -->
         <Button
             android:id="@+id/bookmarkEmpty_btn"
             android:layout_width="70dp"
@@ -135,6 +135,27 @@
             app:icon="@drawable/bookmark_empty"
             app:iconGravity="textStart"
             app:iconPadding="0dp"
+            app:iconTint="@color/deep_blue" />
+
+        <!-- 북마크 등록/제거 버튼 -->
+        <Button
+            android:id="@+id/bookmarkFilled_btn"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="60dp"
+            android:layout_toRightOf="@id/editLocation_btn"
+            android:backgroundTint="#e0ebfd"
+            android:elevation="7.5dp"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:onClick="onMapZoomIn"
+            android:stateListAnimator="@null"
+            app:cornerRadius="15dp"
+            app:icon="@drawable/bookmark_fill"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            android:visibility="gone"
             app:iconTint="@color/deep_blue" />
     </RelativeLayout>
 
