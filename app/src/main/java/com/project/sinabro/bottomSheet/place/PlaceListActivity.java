@@ -18,6 +18,7 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.project.sinabro.MainActivity;
 import com.project.sinabro.R;
 
 import java.util.ArrayList;
@@ -25,16 +26,35 @@ import java.util.ArrayList;
 public class PlaceListActivity extends AppCompatActivity {
 
     private ImageButton back_iBtn, dialogClose_iBtn;
-    private Button goAddPlace_btn, peopleScan_btn, editLocation_btn, bookmarkEmpty_btn;
+    private Button goAddPlace_btn, peopleScan_btn, editLocation_btn;
+    private static Button bookmarkEmpty_btn, bookmarkFilled_btn;
     private ListView listview;
     private ListViewAdapter adapter;
-    private Dialog placeInfo_dialog;
+    private Dialog placeInfo_dialog, ask_add_or_cancel_bookmark_dialog;
     private TextView roadNameAddress_tv, placeName_tv_inDialog, peopleCount_tv_inDialog, roadNameAddress_tv_inDialog, detailAddress_tv_inDialog;
+
+    private PlaceItem clickedPlaceItem;
+
+    Boolean bookmarked = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_place_list);
+
+        /** "장소정보 확인" 다이얼로그 변수 초기화 및 설정 */
+        placeInfo_dialog = new Dialog(PlaceListActivity.this);  // Dialog 초기화
+        placeInfo_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE); // 타이틀 제거
+        placeInfo_dialog.setContentView(R.layout.dialog_place_info); // xml 레이아웃 파일과 연결
+        // dialog 창의 root 레이아웃을 투명하게 조절 모서리(코너)를 둥글게 보이게 하기 위해
+        placeInfo_dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        /** "즐겨찾기 추가/취소 확인" 다이얼로그 변수 초기화 및 설정 */
+        ask_add_or_cancel_bookmark_dialog = new Dialog(PlaceListActivity.this);  // Dialog 초기화
+        ask_add_or_cancel_bookmark_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE); // 타이틀 제거
+        ask_add_or_cancel_bookmark_dialog.setContentView(R.layout.dialog_ask_add_or_cancel_bookmark); // xml 레이아웃 파일과 연결
+        // dialog 창의 root 레이아웃을 투명하게 조절 모서리(코너)를 둥글게 보이게 하기 위해
+        ask_add_or_cancel_bookmark_dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         // 뒤로가기 버튼 기능
         back_iBtn = findViewById(R.id.back_iBtn);
@@ -47,12 +67,6 @@ public class PlaceListActivity extends AppCompatActivity {
         });
 
         roadNameAddress_tv = findViewById(R.id.roadNameAddress_tv);
-
-        placeInfo_dialog = new Dialog(PlaceListActivity.this);  // Dialog 초기화
-        placeInfo_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE); // 타이틀 제거
-        placeInfo_dialog.setContentView(R.layout.dialog_place_info); // xml 레이아웃 파일과 연결
-        // dialog 창의 root 레이아웃을 투명하게 조절 모서리(코너)를 둥글게 보이게 하기 위해
-        placeInfo_dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         goAddPlace_btn = findViewById(R.id.goAddPlace_btn);
         goAddPlace_btn.setOnClickListener(new View.OnClickListener() {
@@ -152,16 +166,27 @@ public class PlaceListActivity extends AppCompatActivity {
         }
     }
 
-    // (dialog_place_remove) 다이얼로그를 디자인하는 함수
+    public void updateBookmarkBtnState(Boolean bookmarked) {
+        if (bookmarked) {
+            bookmarkEmpty_btn.setVisibility(View.GONE);
+            bookmarkFilled_btn.setVisibility(View.VISIBLE);
+        } else {
+            bookmarkEmpty_btn.setVisibility(View.VISIBLE);
+            bookmarkFilled_btn.setVisibility(View.GONE);
+        }
+    }
+
+    // (dialog_place_info) 다이얼로그를 디자인하는 함수
     public void showDialog_placeInfo(PlaceItem placeItem) {
+        clickedPlaceItem = placeItem;
         placeInfo_dialog.show(); // 다이얼로그 띄우기
         // 다이얼로그 창이 나타나면서 외부 액티비티가 어두워지는데, 그 정도를 조절함
         placeInfo_dialog.getWindow().setDimAmount(0.35f);
 
-        placeName_tv_inDialog = placeInfo_dialog.findViewById(R.id.placeName_tv_inDialog);
-        peopleCount_tv_inDialog = placeInfo_dialog.findViewById(R.id.peopleCount_tv_inDialog);
-        roadNameAddress_tv_inDialog = placeInfo_dialog.findViewById(R.id.roadNameAddress_tv_inDialog);
-        detailAddress_tv_inDialog = placeInfo_dialog.findViewById(R.id.detailAddress_tv_inDialog);
+        placeName_tv_inDialog = placeInfo_dialog.findViewById(R.id.placeName_tv);
+        peopleCount_tv_inDialog = placeInfo_dialog.findViewById(R.id.peopleCount_tv);
+        roadNameAddress_tv_inDialog = placeInfo_dialog.findViewById(R.id.roadNameAddress_tv);
+        detailAddress_tv_inDialog = placeInfo_dialog.findViewById(R.id.detailAddress_tv);
 
         placeName_tv_inDialog.setText(placeItem.getPlaceName());
         if (placeItem.getPeopleCnt() > 0) {
@@ -206,12 +231,68 @@ public class PlaceListActivity extends AppCompatActivity {
             }
         });
 
-        // 즐겨찾기 버튼
+        /** "북마크 등록" 버튼 */
         bookmarkEmpty_btn = placeInfo_dialog.findViewById(R.id.bookmarkEmpty_btn);
         bookmarkEmpty_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                placeInfo_dialog.dismiss(); // 다이얼로그 닫기
+                showDialog_ask_add_or_delete_bookmark();
+            }
+        });
+
+        /** "북마크 제거" 버튼 */
+        bookmarkFilled_btn = placeInfo_dialog.findViewById(R.id.bookmarkFilled_btn);
+        bookmarkFilled_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDialog_ask_add_or_delete_bookmark();
+            }
+        });
+    }
+
+    /**
+     * (dialog_ask_add_or_cancel_bookmark) 다이얼로그를 디자인하는 함수
+     */
+    public void showDialog_ask_add_or_delete_bookmark() {
+        placeInfo_dialog.dismiss();
+        ask_add_or_cancel_bookmark_dialog.show(); // 다이얼로그 띄우기
+        // 다이얼로그 창이 나타나면서 외부 액티비티가 어두워지는데, 그 정도를 조절함
+        ask_add_or_cancel_bookmark_dialog.getWindow().setDimAmount(0.35f);
+
+        Button bookmarkFilled_btn = placeInfo_dialog.findViewById(R.id.bookmarkFilled_btn);
+        TextView dialog_tv = ask_add_or_cancel_bookmark_dialog.findViewById(R.id.dialog_tv);
+        if (bookmarkFilled_btn.getVisibility() == View.VISIBLE) {
+            dialog_tv.setText(getResources().getString(R.string.dialog_cancel_bookmark));
+            bookmarked = true;
+        } else {
+            dialog_tv.setText(getResources().getString(R.string.dialog_add_bookmark));
+            bookmarked = false;
+        }
+
+        // "아니오" 버튼
+        Button noBtn = ask_add_or_cancel_bookmark_dialog.findViewById(R.id.noBtn);
+        noBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ask_add_or_cancel_bookmark_dialog.dismiss(); // 다이얼로그 닫기
+                showDialog_placeInfo(clickedPlaceItem);
+            }
+        });
+
+        // "확인" 버튼
+        Button yesBtn = ask_add_or_cancel_bookmark_dialog.findViewById(R.id.yesBtn);
+        yesBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ask_add_or_cancel_bookmark_dialog.dismiss(); // 다이얼로그 닫기
+                if (bookmarked) {
+                    final Intent intent = new Intent(getApplicationContext(), RemoveBookmarkFromListActivity.class);
+                    startActivity(intent);
+                } else {
+                    final Intent intent = new Intent(getApplicationContext(), AddBookmarkToListActivity.class);
+                    startActivity(intent);
+                }
+                showDialog_placeInfo(clickedPlaceItem);
             }
         });
     }
