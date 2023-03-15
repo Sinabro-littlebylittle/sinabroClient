@@ -10,7 +10,7 @@
 
     <!-- 등록된 장소명 -->
     <TextView
-        android:id="@+id/placeName_tv_inDialog"
+        android:id="@+id/placeName_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="29dp"
@@ -34,40 +34,54 @@
     <RelativeLayout
         android:id="@+id/peopleCount_relativeLayout"
         android:layout_width="wrap_content"
-        android:layout_height="25dp"
-        android:layout_below="@+id/placeName_tv_inDialog"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/placeName_tv"
         android:layout_marginStart="27.5dp"
         android:layout_marginTop="6dp"
-        android:layout_marginEnd="30dp"
-        android:background="@drawable/people_count_list_view_item_background"
-        android:elevation="5dp"
-        android:minWidth="50dp">
+        android:layout_marginEnd="30dp">
 
-        <ImageView
-            android:id="@+id/person_icon_iv"
+        <RelativeLayout
+            android:id="@+id/peopleCountDisplay_relativeLayout"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerInParent="true"
-            android:layout_marginStart="9dp"
-            android:background="@drawable/person" />
+            android:layout_height="25dp"
+            android:background="@drawable/people_count_list_view_item_background"
+            android:elevation="5dp"
+            android:minWidth="50dp">
+
+            <ImageView
+                android:id="@+id/person_icon_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerInParent="true"
+                android:layout_marginStart="9dp"
+                android:background="@drawable/person" />
+
+            <TextView
+                android:id="@+id/peopleCount_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4.5dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginRight="15dp"
+                android:layout_toRightOf="@+id/person_icon_iv"
+                android:elevation="5dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:maxWidth="110dp"
+                android:text="12"
+                android:textColor="@color/white"
+                android:textSize="17.5sp"
+                android:textStyle="bold" />
+        </RelativeLayout>
 
         <TextView
-            android:id="@+id/peopleCount_tv_inDialog"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="4.5dp"
-            android:layout_marginTop="0dp"
-            android:layout_marginRight="15dp"
-            android:layout_toRightOf="@+id/person_icon_iv"
-            android:elevation="5dp"
-            android:insetTop="0dp"
-            android:insetBottom="0dp"
-            android:maxWidth="110dp"
-            android:text="12"
-            android:textColor="@color/white"
-            android:textSize="17.5sp"
-            android:textStyle="bold" />
+            android:layout_marginStart="10dp"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/peopleCountDisplay_relativeLayout"
+            android:text="약 17분 전"/>
     </RelativeLayout>
 
     <RelativeLayout
@@ -87,7 +101,7 @@
 
         <!-- (위도, 경도) 기반 도로명 주소 -->
         <TextView
-            android:id="@+id/roadNameAddress_tv_inDialog"
+            android:id="@+id/roadNameAddress_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
@@ -102,7 +116,7 @@
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/roadNameAddress_tv_inDialog"
+            android:layout_below="@+id/roadNameAddress_tv"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="20dp">
 
@@ -117,7 +131,7 @@
 
             <!-- (위도, 경도) 기반 도로명 주소 -->
             <TextView
-                android:id="@+id/detailAddress_tv_inDialog"
+                android:id="@+id/detailAddress_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
@@ -135,8 +149,8 @@
         android:id="@+id/peopleCountControl_relativeLayout"
         android:layout_width="wrap_content"
         android:layout_height="80dp"
-        android:layout_marginTop="15dp"
         android:layout_below="@+id/detailAddress_RelativeLayout"
+        android:layout_marginTop="15dp"
         android:layout_marginBottom="12.5dp">
 
         <!-- 인원수 체크 버튼 -->
@@ -194,6 +208,27 @@
             app:icon="@drawable/bookmark_empty"
             app:iconGravity="textStart"
             app:iconPadding="0dp"
+            app:iconTint="@color/deep_blue" />
+
+        <!-- 북마크 등록/제거 버튼 -->
+        <Button
+            android:id="@+id/bookmarkFilled_btn"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="60dp"
+            android:layout_toRightOf="@id/editLocation_btn"
+            android:backgroundTint="#e0ebfd"
+            android:elevation="7.5dp"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:onClick="onMapZoomIn"
+            android:stateListAnimator="@null"
+            app:cornerRadius="15dp"
+            app:icon="@drawable/bookmark_fill"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            android:visibility="gone"
             app:iconTint="@color/deep_blue" />
     </RelativeLayout>
 </RelativeLayout>
