@@ -38,7 +38,7 @@
         <!-- "리스트 추가" TextView -->
         <TextView
             android:id="@+id/add_new_list_tv"
-            android:layout_width="80dp"
+            android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_alignParentEnd="true"
             android:layout_centerInParent="true"
