@@ -39,6 +39,9 @@
 
     <string name="current_and_new_password_same">현재와 동일한 비밀번호는 사용하실 수 없습니다</string>
 
+    <!-- String related to (Bookmark) -->
+    <string name="add_list_name_failed">2~14자 이내의 한/영 및 숫자만 가능합니다</string>
+
     <!-- Strings related to (Dialog) -->
     <string name="dialog_place_remove">장소를 삭제할까요?</string>
     <string name="dialog_ask_user_default_profile_image">기본 프로필 이미지를\n사용하시겠습니까? 😀</string>
@@ -47,6 +50,8 @@
     <string name="dialog_modify_my_info_complete_success">회원정보를 정상적으로\n수정하였습니다</string>
     <string name="dialog_modify_password_failed">비밀번호를 정확하게\n입력해주세요</string>
     <string name="dialog_modify_password_successs">비밀번호가 정상적으로\n변경되었습니다</string>
+    <string name="dialog_cancel_bookmark">즐겨찾기를 취소하시겠습니까?</string>
+    <string name="dialog_add_bookmark">즐겨찾기로 추가하시겠습니까?</string>
 
     <!-- Strings related to (Toast) -->
     <string name="toast_modify_user_image_success">이미지를 변경했어요 😀</string>
@@ -54,6 +59,13 @@
     <string name="toast_agree_required_failed">필수 동의가 필요해요</string>
     <string name="toast_modify_password_success">비밀번호를 변경했어요</string>
     <string name="toast_withdrawal_success">회원탈퇴를 완료했어요</string>
+    <string name="toast_remove_place_info_success">장소정보를 제거했어요</string>
+    <string name="toast_remove_list_success">리스트를 제거했어요</string>
+    <string name="toast_add_bookmark_to_list_success">리스트에 추가했어요</string>
+    <string name="toast_remove_list_failed">선택된 리스트가 없어요</string>
+    <string name="toast_add_list_success">리스트를 추가했어요</string>
+    <string name="toast_add_list_failed">리스트 색상이 필요해요</string>
+    <string name="toast_select_color_failed">색상 선택이 필요해요</string>
 
     <!-- Strings related to (our_policies_activity) -->
     <string name="our_policies_rule_title_1">제 1조, 총칙</string>
