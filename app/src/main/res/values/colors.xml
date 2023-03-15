@@ -30,6 +30,20 @@
     <color name="toast_bg">#888F9B</color>
     <color name="light_green">#59bd83</color>
 
+    <!-- color palette -->
+    <color name="num1">#FC5230</color>
+    <color name="num2">#FD9F28</color>
+    <color name="num3">#FFCD4A</color>
+    <color name="num4">#7DB249</color>
+    <color name="num5">#2FA599</color>
+    <color name="num6">#1187CF</color>
+    <color name="num7">#F8CCFF</color>
+    <color name="num8">#B283FF</color>
+    <color name="num9">#8F7C7C</color>
+    <color name="num10">#604949</color>
+    <color name="num11">#C6C6C6</color>
+    <color name="num12">#7E7E7E</color>
+
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
