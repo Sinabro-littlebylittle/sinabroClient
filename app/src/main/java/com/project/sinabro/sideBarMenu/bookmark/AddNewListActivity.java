@@ -112,6 +112,7 @@ public class AddNewListActivity extends AppCompatActivity {
                     Boolean calledView = intent.getBooleanExtra("fromBottomSheetDialog", false);
                     if (calledView) {
                         final Intent intent = new Intent(getApplicationContext(), AddBookmarkToListActivity.class);
+                        intent.putExtra("fromMainActivity", true);
                         intent.putExtra("newListIconColor", checkedColorInfo[0]);
                         intent.putExtra("newListName", String.valueOf(binding.listNameEditText.getText()));
                         startActivity(intent);
