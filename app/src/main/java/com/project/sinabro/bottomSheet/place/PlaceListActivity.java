@@ -89,7 +89,6 @@ public class PlaceListActivity extends AppCompatActivity {
         adapter.addItem(new PlaceItem("가나다라마바  사아자차카타하", "205호", -1));
         adapter.addItem(new PlaceItem("샘마루(SAMMaru)", "113호", -1));
         adapter.addItem(new PlaceItem("충북대학교 소프트웨어학부", "205호", -1));
-        adapter.addItem(new PlaceItem("충북대학교 소프트웨어학부", "203호", -1));
 
         final Intent intent = getIntent();
         Boolean input_value = intent.getBooleanExtra("input_value", false);
@@ -222,11 +221,10 @@ public class PlaceListActivity extends AppCompatActivity {
             public void onClick(View view) {
                 placeInfo_dialog.dismiss(); // 다이얼로그 닫기
                 final Intent intent = new Intent(getApplicationContext(), AddLocationInfoActivity.class);
-
                 intent.putExtra("modify_clicked", true);
+                intent.putExtra("forModify", true);
                 intent.putExtra("placeName_value", placeName_tv_inDialog.getText().toString());
                 intent.putExtra("detailAddress_value", detailAddress_tv_inDialog.getText().toString());
-
                 startActivity(intent);
             }
         });
