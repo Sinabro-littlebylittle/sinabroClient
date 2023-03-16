@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.textfield.TextInputEditText;
 import com.project.sinabro.R;
 import com.project.sinabro.toast.ToastSuccess;
+import com.project.sinabro.toast.ToastWarning;
 
 public class AddLocationInfoActivity extends AppCompatActivity {
 
@@ -66,10 +67,18 @@ public class AddLocationInfoActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 final Intent intent = new Intent(getApplicationContext(), PlaceListActivity.class);
-                if (placeName_editText.getText().toString().equals("") || detailAddress_editText.getText().toString().equals("")) {
-                    intent.putExtra("input_value", false);
+                Boolean forModify = getIntent().getBooleanExtra("forModify", false);
+                if (forModify) {
+                    placeRemove_dialog.dismiss(); // 다이얼로그 닫기
+                    new ToastSuccess(getResources().getString(R.string.toast_modify_list_success), AddLocationInfoActivity.this);
                     startActivity(intent);
+                    return;
+                }
+
+                if (placeName_editText.getText().toString().equals("") || detailAddress_editText.getText().toString().equals("")) {
+                    new ToastWarning(getResources().getString(R.string.toast_add_place_failed), AddLocationInfoActivity.this);
                 } else {
+                    new ToastSuccess(getResources().getString(R.string.toast_add_place_success), AddLocationInfoActivity.this);
                     intent.putExtra("input_value", true);
                     intent.putExtra("placeName_value", placeName_editText.getText().toString());
                     intent.putExtra("detailAddress_value", detailAddress_editText.getText().toString());
