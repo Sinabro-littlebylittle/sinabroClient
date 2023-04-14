@@ -53,11 +53,11 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_marginTop="45dp"
-        android:layout_marginEnd="3dp"
+        android:layout_marginEnd="5dp"
         android:gravity="center"
         android:text="?"
-        android:textSize="50sp"
-        android:textStyle="bold" />
+        android:textSize="40sp"
+         />
 
     <!-- 밀집도 정도(미등록 시: 없음) -->
     <TextView
@@ -66,11 +66,11 @@
         android:layout_height="30dp"
         android:layout_below="@+id/peopleCount_tv"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="-12.5dp"
+        android:layout_marginTop="-5dp"
         android:layout_marginEnd="29.5dp"
         android:gravity="center"
         android:text="정보 없음"
-        android:textSize="10sp"
+        android:textSize="12.5sp"
         android:textStyle="bold" />
 
     <RelativeLayout
@@ -166,7 +166,7 @@
         android:layout_height="32.5dp"
         android:layout_below="@+id/peopleCount_tv"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="7.5dp"
+        android:layout_marginTop="17.5dp"
         android:layout_marginEnd="24dp"
         android:layout_marginRight="20dp"
         android:layout_marginBottom="22.5dp"
