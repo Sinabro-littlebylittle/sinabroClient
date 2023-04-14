@@ -82,7 +82,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements MapView.CurrentLocationEventListener, MapView.MapViewEventListener, Runnable {
+public class MainActivity extends AppCompatActivity implements MapView.CurrentLocationEventListener, MapView.MapViewEventListener, MapView.POIItemEventListener, Runnable {
 
     /**
      * 위치 권한 요청 코드의 상숫값
@@ -114,9 +114,9 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
     private MapPOIItem marker;
 
     private ArrayList<MapPOIItem> markers = new ArrayList<>();
-
     private LocationSettingsRequest mLocationSettingsRequest;
     private Button currentLocation_btn, mapZoomIn_btn, mapZoomOut_btn, peopleScan_btn, editLocation_btn, placeList_btn;
+    private TextView placeName_tv, address_tv, peopleCount_tv, peopleDensityState_tv;
     private static Button bookmarkEmpty_btn, bookmarkFilled_btn;
 
     private ImageButton hamburger_ibtn;
@@ -142,6 +142,9 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
     private LocationManager locationManager;
     private static final int REQUEST_CODE_LOCATION = 2;
     private double selectedLatitude, selectedLongitude;
+    private int addedMakerCnt;
+    private String addedPlaceInfoState;
+    private String selectedPlaceName, selectedAddress;
 
     //모델관련 변수 선언
     private ResultView mResultView;
@@ -194,6 +197,15 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeadingWithoutMapMoving);
 
         /** 기존에 저장되어 있던 마커들을 다시 표시해 줌 */
+        // 106호 마커 추가
+        addMakerToMap(58, 36.62566258284979, 127.45478637711295, "106호", "충북대학교 소프트웨어학부", "많음");
+
+        // 102호 마커 추가
+        addMakerToMap(5, 36.6256607848595, 127.4540764484537, "102호", "충북대학교 소프트웨어학부", "적음");
+
+        // S1-5-123호
+        addMakerToMap(42, 36.625700634718335, 127.45544062002226, "123호", "충북대학교 자연대5호관", "보통");
+
 //        for (int k = 0; k < markers.size(); k++) {
 //            marker = new MapPOIItem();
 //            marker.setItemName("임시 장소(" + (k + 1) + ")");
@@ -316,6 +328,10 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
 //            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
 //            }
 //        });
+        placeName_tv = findViewById(R.id.placeName_tv);
+        address_tv = findViewById(R.id.address_tv);
+        peopleCount_tv = findViewById(R.id.peopleCount_tv);
+        peopleDensityState_tv = findViewById(R.id.peopleDensityState_tv);
 
         mResultView = findViewById(R.id.resultView);
 //        mResultView.setVisibility(View.INVISIBLE);
@@ -362,8 +378,14 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
 //                    }
 //                });
 //                // 이곳에 장소 등록 액티비티로 이어지는 코드를 추가하면 됩니다.
-
                 final Intent intent = new Intent(MainActivity.this, AddLocationInfoActivity.class);
+                if (Integer.parseInt(addedPlaceInfoState) == 0)
+                    intent.putExtra("forModify", false);
+                else
+                    intent.putExtra("forModify", true);
+
+                intent.putExtra("placeName_value", selectedPlaceName);
+                intent.putExtra("detailAddress_value", selectedAddress);
                 startActivity(intent);
             }
         });
@@ -401,6 +423,8 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
             Log.e("Object Detection", "Error reading assets", e);
             finish();
         }
+
+        mapView.setPOIItemEventListener(this);
     }
 
     public void updateBookmarkBtnState(Boolean bookmarked) {
@@ -644,6 +668,31 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         }
     }
 
+    /** 마커 등록 */
+    public void addMakerToMap(int peopleNum, double latitude, double longitude, String placeName, String address, String densityState) {
+        /** 현재는 DB와 연동되어 있지 않은 상태이기 때문에
+         *  장소 등록이 이뤄지지 않았을 때를 가정하여 코드를
+         *  작성하였습니다. 추후에 장소 등록 기능이 완성되면
+         *  해당 코드는 수정이 필요합니다. */
+        marker = new MapPOIItem();
+        //        marker.setItemName("새로운 장소(" + (markers.size() + 1) + ")");
+        marker.setItemName(peopleNum + "명");
+        marker.setTag(markers.size());
+        // 원하는 위치에 마커 추가
+        MapPoint mapPoint = MapPoint.mapPointWithGeoCoord(latitude, longitude); // 마커의 위도, 경도 설정
+        marker.setMapPoint(mapPoint);
+//            selectedLatitude = mapPoint.getMapPointGeoCoord().latitude;
+//            selectedLongitude = mapPoint.getMapPointGeoCoord().longitude;
+        marker.setMarkerType(MapPOIItem.MarkerType.BluePin); // 기본으로 제공하는 BluePin 마커 모양.
+        marker.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin); // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
+
+        String markerInfo = peopleNum + "/" + placeName + "/" + address + "/" + densityState + "/" + 1;
+        marker.setUserObject(markerInfo);
+        mapView.addPOIItem(marker);
+        markers.add(marker);
+        addedMakerCnt++;
+    }
+
     /**
      * 카카오맵 이벤트 리스너
      */
@@ -684,12 +733,13 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
          *  장소 등록이 이뤄지지 않았을 때를 가정하여 코드를
          *  작성하였습니다. 추후에 장소 등록 기능이 완성되면
          *  해당 코드는 수정이 필요합니다. */
+
         marker = new MapPOIItem();
-        if (markers.size() == 1) {
+        if (addedMakerCnt < markers.size()) {
             mapView.removePOIItem(markers.get(markers.size() - 1));
             markers.remove(markers.size() - 1);
         }
-        marker.setItemName("새로운 장소(" + (markers.size() + 1) + ")");
+        marker.setItemName("새로운 장소");
         marker.setTag(markers.size());
         marker.setMapPoint(mapPoint);
         selectedLatitude = mapPoint.getMapPointGeoCoord().latitude;
@@ -697,6 +747,14 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         marker.setMarkerType(MapPOIItem.MarkerType.YellowPin); // 기본으로 제공하는 BluePin 마커 모양.
         marker.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin); // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
 
+        peopleCount_tv.setText("?");
+        placeName_tv.setText("새로운 장소");
+        address_tv.setText("상세 주소");
+        peopleDensityState_tv.setText("정보 없음");
+        addedPlaceInfoState = "0";
+
+        String markerInfo = "?" + "/" + "새로운 장소" + "/" + "상세 주소" + "/" + "정보 없음/0";
+        marker.setUserObject(markerInfo);
         mapView.addPOIItem(marker);
         markers.add(marker);
 
@@ -728,4 +786,32 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
     public void onMapViewMoveFinished(MapView mapView, MapPoint mapPoint) {
     }
 
+    @Override
+    public void onPOIItemSelected(MapView mapView, MapPOIItem mapPOIItem) {
+        Object userObject = mapPOIItem.getUserObject();
+        String[] splittedStrings = userObject.toString().split("/");
+        peopleCount_tv.setText(splittedStrings[0]);
+        placeName_tv.setText(splittedStrings[1]);
+        address_tv.setText(splittedStrings[2]);
+        peopleDensityState_tv.setText(splittedStrings[3]);
+        addedPlaceInfoState = splittedStrings[4];
+
+        selectedPlaceName = splittedStrings[1];
+        selectedAddress = splittedStrings[2];
+
+        bottomSheetBehavior.setPeekHeight(85);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+    }
+
+    @Override
+    public void onCalloutBalloonOfPOIItemTouched(MapView mapView, MapPOIItem mapPOIItem) {
+    }
+
+    @Override
+    public void onCalloutBalloonOfPOIItemTouched(MapView mapView, MapPOIItem mapPOIItem, MapPOIItem.CalloutBalloonButtonType calloutBalloonButtonType) {
+    }
+
+    @Override
+    public void onDraggablePOIItemMoved(MapView mapView, MapPOIItem mapPOIItem, MapPoint mapPoint) {
+    }
 }
