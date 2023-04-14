@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -42,7 +43,7 @@ public class AddLocationInfoActivity extends AppCompatActivity {
         });
 
         final Intent intent = getIntent();
-        Boolean modify_clicked = intent.getBooleanExtra("modify_clicked", false);
+        Boolean forModify = intent.getBooleanExtra("forModify", false);
 
         placeRemove_dialog = new Dialog(AddLocationInfoActivity.this);  // Dialog 초기화
         placeRemove_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE); // 타이틀 제거
@@ -51,7 +52,7 @@ public class AddLocationInfoActivity extends AppCompatActivity {
         placeRemove_dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         placeRemove_tv = findViewById(R.id.placeRemove_tv);
-        if (modify_clicked) placeRemove_tv.setVisibility(View.VISIBLE);
+        if (forModify) placeRemove_tv.setVisibility(View.VISIBLE);
         placeRemove_tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -67,7 +68,6 @@ public class AddLocationInfoActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 final Intent intent = new Intent(getApplicationContext(), PlaceListActivity.class);
-                Boolean forModify = getIntent().getBooleanExtra("forModify", false);
                 if (forModify) {
                     placeRemove_dialog.dismiss(); // 다이얼로그 닫기
                     new ToastSuccess(getResources().getString(R.string.toast_modify_list_success), AddLocationInfoActivity.this);
@@ -87,7 +87,7 @@ public class AddLocationInfoActivity extends AppCompatActivity {
             }
         });
 
-        if (modify_clicked) {
+        if (forModify) {
             String placeName_value = intent.getStringExtra("placeName_value");
             String detailAddress_value = intent.getStringExtra("detailAddress_value");
 
