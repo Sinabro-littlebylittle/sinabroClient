@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -221,7 +222,6 @@ public class PlaceListActivity extends AppCompatActivity {
             public void onClick(View view) {
                 placeInfo_dialog.dismiss(); // 다이얼로그 닫기
                 final Intent intent = new Intent(getApplicationContext(), AddLocationInfoActivity.class);
-                intent.putExtra("modify_clicked", true);
                 intent.putExtra("forModify", true);
                 intent.putExtra("placeName_value", placeName_tv_inDialog.getText().toString());
                 intent.putExtra("detailAddress_value", detailAddress_tv_inDialog.getText().toString());
