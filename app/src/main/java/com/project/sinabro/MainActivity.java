@@ -342,13 +342,15 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         peopleScan_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (addedPlaceInfoState.equals("0")) {
+                    final Intent intent = new Intent(MainActivity.this, AddPlaceGuideActivity.class);
+                    startActivity(intent);
+                    return;
+                }
                 // 이곳에 카메라 촬영으로 이어지는 코드가 추가하면 됩니다.
-//                Log.d("테스트", "/////////들어옴//////////");
                 finish();
                 final Intent intent = new Intent(MainActivity.this, ObjectDetectionActivity.class);
                 startActivity(intent);
-//                final Intent intent = new Intent(MainActivity.this, AddPlaceGuideActivity.class);
-//                startActivity(intent);
             }
         });
 
@@ -759,6 +761,7 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
             mapView.removePOIItem(markers.get(markers.size() - 1));
             markers.remove(markers.size() - 1);
         }
+
         marker.setItemName("새로운 장소");
         marker.setTag(markers.size());
         marker.setMapPoint(mapPoint);
