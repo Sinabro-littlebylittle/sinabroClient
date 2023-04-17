@@ -112,6 +112,8 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
     private ViewGroup mapViewContainer;
     private MapPoint currPoint, prevPoint;
     private MapPOIItem marker;
+    static private MapPOIItem selectedMarker;
+
 
     private ArrayList<MapPOIItem> markers = new ArrayList<>();
     private LocationSettingsRequest mLocationSettingsRequest;
@@ -141,10 +143,10 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
      */
     private LocationManager locationManager;
     private static final int REQUEST_CODE_LOCATION = 2;
-    private double selectedLatitude, selectedLongitude;
+    static private double selectedLatitude, selectedLongitude;
     private int addedMakerCnt;
     private String addedPlaceInfoState;
-    private String selectedPlaceName, selectedAddress;
+    static private String selectedPeopleCount, selectedPlaceName, selectedAddress, selectedPeopleDensityState;
 
     //모델관련 변수 선언
     private ResultView mResultView;
@@ -154,7 +156,7 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
 
     private Dialog ask_add_or_cancel_bookmark_dialog;
 
-    Boolean bookmarked = true;
+    Boolean bookmarked = true, isDetected;
 
     //모델 에셋 경로 설정 함수
     public static String assetFilePath(Context context, String assetName) throws IOException {
@@ -342,11 +344,11 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
             public void onClick(View view) {
                 // 이곳에 카메라 촬영으로 이어지는 코드가 추가하면 됩니다.
 //                Log.d("테스트", "/////////들어옴//////////");
-//                finish();
-//                final Intent intent = new Intent(MainActivity.this, ObjectDetectionActivity.class);
-//                startActivity(intent);
-                final Intent intent = new Intent(MainActivity.this, AddPlaceGuideActivity.class);
+                finish();
+                final Intent intent = new Intent(MainActivity.this, ObjectDetectionActivity.class);
                 startActivity(intent);
+//                final Intent intent = new Intent(MainActivity.this, AddPlaceGuideActivity.class);
+//                startActivity(intent);
             }
         });
 
@@ -425,6 +427,26 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         }
 
         mapView.setPOIItemEventListener(this);
+
+        isDetected = getIntent().getBooleanExtra("isDetected", false);
+
+        if (isDetected) {
+            int peopleCountDetectionResult = getIntent().getIntExtra("peopleCountDetectionResult", -1);
+            peopleCount_tv.setText("" + peopleCountDetectionResult);
+            placeName_tv.setText(selectedPlaceName);
+            address_tv.setText(selectedAddress);
+            peopleDensityState_tv.setText(selectedPeopleDensityState);
+
+            MapPoint mapPoint = MapPoint.mapPointWithGeoCoord(selectedLatitude, selectedLongitude);
+            mapView.setMapCenterPoint(mapPoint, true);
+
+            selectedMarker.setItemName(peopleCountDetectionResult + "명");
+            marker.setTag(markers.size());
+            mapView.selectPOIItem(selectedMarker, true);
+
+            bottomSheetBehavior.setPeekHeight(85);
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+        }
     }
 
     public void updateBookmarkBtnState(Boolean bookmarked) {
@@ -590,10 +612,10 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
                 GetMyLocation getMyLocation = new GetMyLocation(context, activity);
                 Location userLocation = getMyLocation.getMyLocation();
                 if (userLocation != null) {
-                    double latitude = userLocation.getLatitude();
-                    double longitude = userLocation.getLongitude();
-                    System.out.println("////////////현재 내 위치값 : " + latitude + "," + longitude);
-                    currPoint = MapPoint.mapPointWithGeoCoord(latitude, longitude);
+                    double currLatitude = userLocation.getLatitude();
+                    double currLongitude = userLocation.getLongitude();
+                    System.out.println("////////////현재 내 위치값 : " + currLatitude + "," + currLongitude);
+                    currPoint = MapPoint.mapPointWithGeoCoord(currLatitude, currLongitude);
 
                     /** 중심점 변경 */
                     mapView.setMapCenterPoint(currPoint, true);
@@ -681,8 +703,6 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         // 원하는 위치에 마커 추가
         MapPoint mapPoint = MapPoint.mapPointWithGeoCoord(latitude, longitude); // 마커의 위도, 경도 설정
         marker.setMapPoint(mapPoint);
-//            selectedLatitude = mapPoint.getMapPointGeoCoord().latitude;
-//            selectedLongitude = mapPoint.getMapPointGeoCoord().longitude;
         marker.setMarkerType(MapPOIItem.MarkerType.BluePin); // 기본으로 제공하는 BluePin 마커 모양.
         marker.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin); // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
 
@@ -796,8 +816,15 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         peopleDensityState_tv.setText(splittedStrings[3]);
         addedPlaceInfoState = splittedStrings[4];
 
+        selectedPeopleCount = splittedStrings[0];
         selectedPlaceName = splittedStrings[1];
         selectedAddress = splittedStrings[2];
+        selectedPeopleDensityState = splittedStrings[3];
+
+        selectedLatitude = mapPOIItem.getMapPoint().getMapPointGeoCoord().latitude;
+        selectedLongitude = mapPOIItem.getMapPoint().getMapPointGeoCoord().longitude;
+
+        selectedMarker = mapPOIItem;
 
         bottomSheetBehavior.setPeekHeight(85);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
