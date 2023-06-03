@@ -1,35 +1,28 @@
-package com.project.sinabro.models.place;
-
-import com.google.gson.annotations.SerializedName;
+package com.project.sinabro.models;
 
 public class Place {
 
-    @SerializedName("_id")
     private String id;
-
-    @SerializedName("markerId")
     private String markerId;
-
-    @SerializedName("placeName")
     private String placeName;
-
-    @SerializedName("address")
     private String address;
-
-    @SerializedName("detailAddress")
     private String detailAddress;
+    private String latitude;
+    private String longitude;
 
     // 기본 생성자
     public Place() {
     }
 
     // 모든 필드를 매개변수로 받는 생성자
-    public Place(String id, String markerId, String placeName, String address, String detailAddress) {
+    public Place(String id, String markerId, String placeName, String address, String detailAddress, String latitude, String longitude) {
         this.id = id;
         this.markerId = markerId;
         this.placeName = placeName;
         this.address = address;
         this.detailAddress = detailAddress;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     // 각 필드에 대한 getter와 setter 메소드
@@ -72,4 +65,18 @@ public class Place {
     public void setDetailAddress(String detailAddress) {
         this.detailAddress = detailAddress;
     }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) { this.longitude = longitude; }
 }
