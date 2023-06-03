@@ -61,23 +61,23 @@
 
         <!-- 도로명 주소 레이블 -->
         <TextView
-            android:id="@+id/roadNameAddress_label_tv"
+            android:id="@+id/address_label_tv"
             android:layout_width="350dp"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginLeft="23dp"
             android:layout_marginTop="110dp"
             android:letterSpacing="-0.05"
-            android:text="현재 위치"
+            android:text="선택된 위치"
             android:textColor="@color/input_label"
             android:textSize="15sp" />
 
         <!-- (위도, 경도) 기반 도로명 주소 -->
         <TextView
-            android:id="@+id/roadNameAddress_tv"
+            android:id="@+id/address_tv"
             android:layout_width="350dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/roadNameAddress_label_tv"
+            android:layout_below="@+id/address_label_tv"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
             android:letterSpacing="-0.05"
@@ -90,7 +90,7 @@
             android:id="@+id/placeName_textInputLayout"
             android:layout_width="350dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/roadNameAddress_tv"
+            android:layout_below="@+id/address_tv"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="18.5dp"
             android:background="@drawable/edt_bg_selector"
@@ -108,7 +108,7 @@
                 android:layout_height="match_parent"
                 android:ellipsize="end"
                 android:inputType="textNoSuggestions"
-                android:maxLength="14"
+                android:maxLength="20"
                 android:paddingTop="12dp"
                 android:textColor="@color/dark_grey"
                 android:textCursorDrawable="@drawable/cursor_color"
@@ -137,7 +137,7 @@
                 android:layout_width="362.5dp"
                 android:layout_height="match_parent"
                 android:inputType="textNoSuggestions"
-                android:maxLength="14"
+                android:maxLength="20"
                 android:paddingTop="12dp"
                 android:textColor="@color/dark_grey"
                 android:textCursorDrawable="@drawable/cursor_color"
