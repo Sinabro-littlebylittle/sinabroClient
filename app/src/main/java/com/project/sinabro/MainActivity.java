@@ -29,6 +29,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -57,10 +58,14 @@ import com.project.sinabro.bottomSheet.place.AddLocationInfoActivity;
 import com.project.sinabro.bottomSheet.place.AddPlaceGuideActivity;
 import com.project.sinabro.bottomSheet.place.PlaceListActivity;
 import com.project.sinabro.bottomSheet.place.RemoveBookmarkFromListActivity;
+import com.project.sinabro.models.CoordinateToAddress;
+import com.project.sinabro.models.PeopleNumber;
+import com.project.sinabro.retrofit.KakaoAPI;
+import com.project.sinabro.retrofit.PeopleNumbersAPI;
+import com.project.sinabro.retrofit.RetrofitService;
+import com.project.sinabro.retrofit.RetrofitServiceForKakao;
 import com.project.sinabro.sideBarMenu.authentication.SignInActivity;
-import com.project.sinabro.sideBarMenu.authentication.SignUpStep2Activity;
-import com.project.sinabro.sideBarMenu.bookmark.PlaceInListActivity;
-import com.project.sinabro.sideBarMenu.settings.ModifyMyInfoActivity;
+import com.project.sinabro.toast.ToastWarning;
 
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
@@ -81,6 +86,12 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements MapView.CurrentLocationEventListener, MapView.MapViewEventListener, MapView.POIItemEventListener, Runnable {
 
@@ -108,8 +119,8 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
      * Callback for Location events.
      */
 
-    private MapView mapView;
-    private ViewGroup mapViewContainer;
+    private static MapView mapView;
+    private static ViewGroup mapViewContainer;
     private MapPoint currPoint, prevPoint;
     private MapPOIItem marker;
     static private MapPOIItem selectedMarker;
@@ -118,7 +129,7 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
     private ArrayList<MapPOIItem> markers = new ArrayList<>();
     private LocationSettingsRequest mLocationSettingsRequest;
     private Button currentLocation_btn, mapZoomIn_btn, mapZoomOut_btn, peopleScan_btn, editLocation_btn, placeList_btn;
-    private TextView placeName_tv, address_tv, peopleCount_tv, peopleDensityState_tv;
+    private TextView placeName_tv, detailAddress_tv, peopleCount_tv, updateElapsedTime_tv;
     private static Button bookmarkEmpty_btn, bookmarkFilled_btn;
 
     private ImageButton hamburger_ibtn;
@@ -143,10 +154,10 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
      */
     private LocationManager locationManager;
     private static final int REQUEST_CODE_LOCATION = 2;
-    static private double selectedLatitude, selectedLongitude;
+    private static double selectedLatitude, selectedLongitude;
     private int addedMakerCnt;
     private String addedPlaceInfoState;
-    static private String selectedPeopleCount, selectedPlaceName, selectedAddress, selectedPeopleDensityState;
+    static private String selectedPeopleCount, selectedPlaceName, selectedDetailAddress, selectedPlaceId, selectedMarkerId;
 
     //모델관련 변수 선언
     private ResultView mResultView;
@@ -157,6 +168,9 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
     private Dialog ask_add_or_cancel_bookmark_dialog;
 
     Boolean bookmarked = true, isDetected;
+
+    RetrofitService retrofitService = new RetrofitService();
+    PeopleNumbersAPI peopleNumbersAPI = retrofitService.getRetrofit().create(PeopleNumbersAPI.class);
 
     //모델 에셋 경로 설정 함수
     public static String assetFilePath(Context context, String assetName) throws IOException {
@@ -183,45 +197,57 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        /** "즐겨찾기 추가/취소 확인" 다이얼로그 변수 초기화 및 설정 */
-        ask_add_or_cancel_bookmark_dialog = new Dialog(MainActivity.this);  // Dialog 초기화
-        ask_add_or_cancel_bookmark_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE); // 타이틀 제거
-        ask_add_or_cancel_bookmark_dialog.setContentView(R.layout.dialog_ask_add_or_cancel_bookmark); // xml 레이아웃 파일과 연결
-        // dialog 창의 root 레이아웃을 투명하게 조절 모서리(코너)를 둥글게 보이게 하기 위해
-        ask_add_or_cancel_bookmark_dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        Call<List<PeopleNumber>> call = peopleNumbersAPI.getPlaceInformations();
+        call.enqueue(new Callback<List<PeopleNumber>>() {
+            @Override
+            public void onResponse(Call<List<PeopleNumber>> call, Response<List<PeopleNumber>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<PeopleNumber> placeInformations = response.body();
+                    if (!placeInformations.isEmpty()) {
+                        for (int k = 0; k < placeInformations.size(); k++) {
+                            int peopleNum = placeInformations.get(k).getPeopleCount();
+                            double latitude = Double.parseDouble(placeInformations.get(k).getPlaceId().getMarkerId().getLatitude());
+                            double longitude = Double.parseDouble(placeInformations.get(k).getPlaceId().getMarkerId().getLongitude());
+                            String placeName = placeInformations.get(k).getPlaceId().getPlaceName();
+                            String detailAddress = placeInformations.get(k).getPlaceId().getDetailAddress();
+                            long updateElapsedTime = placeInformations.get(k).getUpdateElapsedTime();
+                            String placeId = String.valueOf(placeInformations.get(k).getPlaceId().getId());
+                            String markerId = String.valueOf(placeInformations.get(k).getPlaceId().getMarkerId().getId());
+                            Log.d("데이터: ", "" + peopleNum + "/" + latitude + "/" + longitude + "/" + placeName + "/" + detailAddress + "/" + updateElapsedTime);
+                            addMakerToMap(peopleNum, latitude, longitude, placeName, detailAddress, updateElapsedTime, placeId, markerId);
+                        }
+                    } else {
+                        Log.d("데이터", "The list of places is empty");
+                    }
+                } else {
+                    Log.d("데이터", "Response was not successful or body is null");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<PeopleNumber>> call, Throwable t) {
+                Toast.makeText(MainActivity.this, "get failed..", Toast.LENGTH_SHORT).show();
+                Logger.getLogger(MainActivity.class.getName()).log(Level.SEVERE, "Error occured", t);
+            }
+        });
 
         /** 다음 카카오맵 지도를 띄우는 코드 */
-        mapView = new MapView(this);
+        if (mapView == null) {
+            mapView = new MapView(this);
+        }
+
+        if (mapViewContainer != null) {
+            mapViewContainer.removeView(mapView); // existing mapView is removed
+            mapView = new MapView(this);
+            MapPoint prevMapPoint = MapPoint.mapPointWithGeoCoord(selectedLatitude, selectedLongitude);
+            mapView.setMapCenterPoint(prevMapPoint, false);
+        }
         mapViewContainer = (ViewGroup) findViewById(R.id.map_view);
         mapViewContainer.addView(mapView);
+
         /** 현재 나의 위치에 점을 갱신하며 찍어줌 */
         mapView.setMapViewEventListener(this);
         mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeadingWithoutMapMoving);
-
-        /** 기존에 저장되어 있던 마커들을 다시 표시해 줌 */
-        // 106호 마커 추가
-        addMakerToMap(58, 36.62566258284979, 127.45478637711295, "106호", "충북대학교 소프트웨어학부", "많음");
-
-        // 102호 마커 추가
-        addMakerToMap(5, 36.6256607848595, 127.4540764484537, "102호", "충북대학교 소프트웨어학부", "적음");
-
-        // S1-5-123호
-        addMakerToMap(42, 36.625700634718335, 127.45544062002226, "123호", "충북대학교 자연대5호관", "보통");
-
-//        for (int k = 0; k < markers.size(); k++) {
-//            marker = new MapPOIItem();
-//            marker.setItemName("임시 장소(" + (k + 1) + ")");
-//            marker.setTag(k);
-//            /** DB에서 불러온 해당 마커의 위도 경도 값을 받아와서 설정해야 함 */
-//            // prevPoint = MapPoint.mapPointWithGeoCoord(36.628986, 127.456355);
-//            // marker.setMapPoint(prevPoint);
-//            marker.setMarkerType(MapPOIItem.MarkerType.RedPin);
-//            // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
-//            marker.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin);
-//
-//            mapView.addPOIItem(marker);
-//            markers.add(marker);
-//        }
 
         /** 앱 초기 실행 시 위치 권한 동의 여부에 따라서
          * (권한 획득 요청) 및 (현재 위치 표시)를 수행 */
@@ -238,8 +264,12 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
                 System.out.println("////////////현재 내 위치값 : " + latitude + "," + longitude);
                 currPoint = MapPoint.mapPointWithGeoCoord(latitude, longitude);
 
-                /** 중심점 변경 */
-                mapView.setMapCenterPoint(currPoint, true);
+                // 앱 초기 실행 시에만 현재 위치를 지도 중심점으로 위치시킴
+                if (selectedLongitude == 0) {
+                    /** 중심점 변경 */
+                    mapView.setMapCenterPoint(currPoint, true);
+                }
+
             }
         }
 
@@ -279,9 +309,17 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
             @Override
             public void onClick(View v) {
                 final Intent intent = new Intent(getApplicationContext(), PlaceListActivity.class);
+                intent.putExtra("markerId_value", selectedMarkerId);
                 startActivity(intent);
             }
         });
+
+        /** "즐겨찾기 추가/취소 확인" 다이얼로그 변수 초기화 및 설정 */
+        ask_add_or_cancel_bookmark_dialog = new Dialog(MainActivity.this);  // Dialog 초기화
+        ask_add_or_cancel_bookmark_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE); // 타이틀 제거
+        ask_add_or_cancel_bookmark_dialog.setContentView(R.layout.dialog_ask_add_or_cancel_bookmark); // xml 레이아웃 파일과 연결
+        // dialog 창의 root 레이아웃을 투명하게 조절 모서리(코너)를 둥글게 보이게 하기 위해
+        ask_add_or_cancel_bookmark_dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         /** ========================= Sidebar Navigation Drawer(사이드 메뉴바) ========================= */
         drawerlayout = findViewById(R.id.drawer_layout);
@@ -331,9 +369,9 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
 //            }
 //        });
         placeName_tv = findViewById(R.id.placeName_tv);
-        address_tv = findViewById(R.id.address_tv);
+        detailAddress_tv = findViewById(R.id.detailAddress_tv);
         peopleCount_tv = findViewById(R.id.peopleCount_tv);
-        peopleDensityState_tv = findViewById(R.id.peopleDensityState_tv);
+        updateElapsedTime_tv = findViewById(R.id.updateElapsedTime_tv);
 
         mResultView = findViewById(R.id.resultView);
 //        mResultView.setVisibility(View.INVISIBLE);
@@ -359,38 +397,67 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         editLocation_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                RetrofitService retrofitService = new RetrofitService();
-//                PlacesAPI placesAPI = retrofitService.getRetrofit().create(PlacesAPI.class);
-//
-//                Log.d(null, "위도: " + selectedLatitude + ", 경도: " + selectedLongitude);
-//                Places place = new Places();
-//                place.setPlace_name("테스트 장소명");
-//                place.setAddress("주소주소주소...");
-//                place.setLatitude(selectedLatitude);
-//                place.setLongitude(selectedLongitude);
-//
-//                placesAPI.save(place).enqueue(new Callback<Places>() {
-//                    @Override
-//                    public void onResponse(Call<Places> call, Response<Places> response) {
-//                        Toast.makeText(MainActivity.this, "save success!!", Toast.LENGTH_SHORT).show();
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Call<Places> call, Throwable t) {
-//                        Toast.makeText(MainActivity.this, "save failed..", Toast.LENGTH_SHORT).show();
-//                        Logger.getLogger(MainActivity.class.getName()).log(Level.SEVERE, "Error occured", t);
-//                    }
-//                });
-//                // 이곳에 장소 등록 액티비티로 이어지는 코드를 추가하면 됩니다.
+                Double latitude = Double.parseDouble("" + selectedLatitude);
+                Double longitude = Double.parseDouble("" + selectedLongitude);
+
+                // 위도와 경도가 한국 범위를 벗어났을 때
+                if (latitude <= 33.0 || latitude >= 38.0 || longitude <= 124.0 || longitude >= 132.0) {
+                    new ToastWarning(getResources().getString(R.string.toast_cannot_access_area), MainActivity.this);
+                    return;
+                }
+
+                // 이곳에 장소 등록 액티비티로 이어지는 코드를 추가하면 됩니다.
                 final Intent intent = new Intent(MainActivity.this, AddLocationInfoActivity.class);
-                if (Integer.parseInt(addedPlaceInfoState) == 0)
+                if (Integer.parseInt(addedPlaceInfoState) == 0) {
                     intent.putExtra("forModify", false);
-                else
+                } else
                     intent.putExtra("forModify", true);
 
-                intent.putExtra("placeName_value", selectedPlaceName);
-                intent.putExtra("detailAddress_value", selectedAddress);
-                startActivity(intent);
+                RetrofitServiceForKakao retrofitServiceForKakao = new RetrofitServiceForKakao();
+                KakaoAPI kakaoInterface = retrofitServiceForKakao.getRetrofit().create(KakaoAPI.class);
+                Call<CoordinateToAddress> call = kakaoInterface.getAddress("WGS84", longitude, latitude);
+                call.enqueue(new Callback<CoordinateToAddress>() {
+                    @Override
+                    public void onResponse(Call<CoordinateToAddress> call, Response<CoordinateToAddress> response) {
+                        if (response.isSuccessful()) {
+                            CoordinateToAddress responseData = response.body();
+                            List<CoordinateToAddress.Document> documents = responseData.getDocuments();
+                            if (!documents.isEmpty()) {
+                                CoordinateToAddress.Document document = documents.get(0);
+                                CoordinateToAddress.RoadAddress roadAddress = document.getRoadAddress();
+                                if (roadAddress != null) {
+                                    intent.putExtra("address_value", roadAddress.getAddressName());
+                                } else {
+                                    // If 'roadAddress' is null, try to get 'address' and its 'address_name'
+                                    CoordinateToAddress.Address address = document.getAddress();
+                                    if (address != null) {
+                                        intent.putExtra("address_value", address.getAddressName());
+                                    } else {
+                                        Toast.makeText(MainActivity.this, "No address found..", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+
+                                intent.putExtra("markerId_value", selectedMarkerId);
+                                intent.putExtra("latitude_value", latitude);
+                                intent.putExtra("longitude_value", longitude);
+                                intent.putExtra("placeName_value", selectedPlaceName);
+                                intent.putExtra("detailAddress_value", selectedDetailAddress);
+                                intent.putExtra("placeId_value", selectedPlaceId);
+                                intent.putExtra("markerId_value", selectedMarkerId);
+                                startActivity(intent);
+                            } else {
+                                new ToastWarning(getResources().getString(R.string.toast_cannot_access_area), MainActivity.this);
+                                return;
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<CoordinateToAddress> call, Throwable t) {
+                        Toast.makeText(MainActivity.this, "get failed..", Toast.LENGTH_SHORT).show();
+                        Logger.getLogger(AddLocationInfoActivity.class.getName()).log(Level.SEVERE, "Error occured", t);
+                    }
+                });
             }
         });
 
@@ -404,7 +471,9 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         });
 
         /** "북마크 제거" 버튼 */
-        bookmarkFilled_btn = findViewById(R.id.bookmarkFilled_btn);
+        bookmarkFilled_btn =
+
+                findViewById(R.id.bookmarkFilled_btn);
         bookmarkFilled_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -423,21 +492,25 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
             }
             PrePostProcessor.mClasses = new String[classes.size()];
             classes.toArray(PrePostProcessor.mClasses);
-        } catch (IOException e) {
+        } catch (
+                IOException e) {
             Log.e("Object Detection", "Error reading assets", e);
             finish();
         }
 
         mapView.setPOIItemEventListener(this);
 
-        isDetected = getIntent().getBooleanExtra("isDetected", false);
+        isDetected =
+
+                getIntent().
+
+                        getBooleanExtra("isDetected", false);
 
         if (isDetected) {
             int peopleCountDetectionResult = getIntent().getIntExtra("peopleCountDetectionResult", -1);
             peopleCount_tv.setText("" + peopleCountDetectionResult);
             placeName_tv.setText(selectedPlaceName);
-            address_tv.setText(selectedAddress);
-            peopleDensityState_tv.setText(selectedPeopleDensityState);
+            detailAddress_tv.setText(selectedDetailAddress);
 
             MapPoint mapPoint = MapPoint.mapPointWithGeoCoord(selectedLatitude, selectedLongitude);
             mapView.setMapCenterPoint(mapPoint, true);
@@ -449,6 +522,7 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
             bottomSheetBehavior.setPeekHeight(85);
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
         }
+
     }
 
     public void updateBookmarkBtnState(Boolean bookmarked) {
@@ -692,15 +766,15 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         }
     }
 
-    /** 마커 등록 */
-    public void addMakerToMap(int peopleNum, double latitude, double longitude, String placeName, String address, String densityState) {
-        /** 현재는 DB와 연동되어 있지 않은 상태이기 때문에
-         *  장소 등록이 이뤄지지 않았을 때를 가정하여 코드를
-         *  작성하였습니다. 추후에 장소 등록 기능이 완성되면
-         *  해당 코드는 수정이 필요합니다. */
+    /**
+     * 마커 등록
+     */
+    public void addMakerToMap(int peopleNum, double latitude, double longitude, String placeName, String detailAddress, long updateElapsedTime, String placeId, String markerId) {
         marker = new MapPOIItem();
-        //        marker.setItemName("새로운 장소(" + (markers.size() + 1) + ")");
-        marker.setItemName(peopleNum + "명");
+        if (peopleNum == -1)
+            marker.setItemName("정보 없음");
+        else
+            marker.setItemName(peopleNum + "명");
         marker.setTag(markers.size());
         // 원하는 위치에 마커 추가
         MapPoint mapPoint = MapPoint.mapPointWithGeoCoord(latitude, longitude); // 마커의 위도, 경도 설정
@@ -708,7 +782,7 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         marker.setMarkerType(MapPOIItem.MarkerType.BluePin); // 기본으로 제공하는 BluePin 마커 모양.
         marker.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin); // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
 
-        String markerInfo = peopleNum + "/" + placeName + "/" + address + "/" + densityState + "/" + 1;
+        String markerInfo = peopleNum + "/" + placeName + "/" + detailAddress + "/" + updateElapsedTime + "/" + placeId + "/" + markerId + "/" + 1;
         marker.setUserObject(markerInfo);
         mapView.addPOIItem(marker);
         markers.add(marker);
@@ -751,11 +825,6 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
      */
     @Override
     public void onMapViewSingleTapped(MapView mapView, MapPoint mapPoint) {
-        /** 현재는 DB와 연동되어 있지 않은 상태이기 때문에
-         *  장소 등록이 이뤄지지 않았을 때를 가정하여 코드를
-         *  작성하였습니다. 추후에 장소 등록 기능이 완성되면
-         *  해당 코드는 수정이 필요합니다. */
-
         marker = new MapPOIItem();
         if (addedMakerCnt < markers.size()) {
             mapView.removePOIItem(markers.get(markers.size() - 1));
@@ -771,12 +840,11 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         marker.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin); // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
 
         peopleCount_tv.setText("?");
-        placeName_tv.setText("새로운 장소");
-        address_tv.setText("상세 주소");
-        peopleDensityState_tv.setText("정보 없음");
+        placeName_tv.setText("장소명(새로운 장소)");
+        detailAddress_tv.setText("상세 주소");
         addedPlaceInfoState = "0";
 
-        String markerInfo = "?" + "/" + "새로운 장소" + "/" + "상세 주소" + "/" + "정보 없음/0";
+        String markerInfo = "-1" + "/" + "새로운 장소" + "/" + "상세 주소" + "/" + "-1/null/null/0";
         marker.setUserObject(markerInfo);
         mapView.addPOIItem(marker);
         markers.add(marker);
@@ -813,16 +881,33 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
     public void onPOIItemSelected(MapView mapView, MapPOIItem mapPOIItem) {
         Object userObject = mapPOIItem.getUserObject();
         String[] splittedStrings = userObject.toString().split("/");
-        peopleCount_tv.setText(splittedStrings[0]);
+        String peopleCount_str = Integer.parseInt(splittedStrings[0]) == -1 ? "?" : "" + splittedStrings[0];
+        peopleCount_tv.setText(peopleCount_str);
         placeName_tv.setText(splittedStrings[1]);
-        address_tv.setText(splittedStrings[2]);
-        peopleDensityState_tv.setText(splittedStrings[3]);
-        addedPlaceInfoState = splittedStrings[4];
+        detailAddress_tv.setText(splittedStrings[2]);
+        long updateElapsedTime = Integer.parseInt(splittedStrings[3]);
+        String updateElapsedTime_str;
+        if (updateElapsedTime == -1) {
+            updateElapsedTime_str = "정보 없음";
+        } else if (updateElapsedTime < 60) {
+            updateElapsedTime_str = "약 " + updateElapsedTime + "초 전";
+        } else if (updateElapsedTime < 3600) {
+            updateElapsedTime_str = updateElapsedTime / 60 + "분 전";
+        } else if (updateElapsedTime < 86400) {
+            updateElapsedTime_str = updateElapsedTime / 3600 + "시간 전";
+        } else if (updateElapsedTime < 86400 * 365) {
+            updateElapsedTime_str = updateElapsedTime / 86400 + "일 전";
+        } else {
+            updateElapsedTime_str = updateElapsedTime / 86400 * 365 + "일 전";
+        }
+        updateElapsedTime_tv.setText(updateElapsedTime_str);
+        addedPlaceInfoState = splittedStrings[6];
 
         selectedPeopleCount = splittedStrings[0];
         selectedPlaceName = splittedStrings[1];
-        selectedAddress = splittedStrings[2];
-        selectedPeopleDensityState = splittedStrings[3];
+        selectedDetailAddress = splittedStrings[2];
+        selectedPlaceId = splittedStrings[4];
+        selectedMarkerId = splittedStrings[5];
 
         selectedLatitude = mapPOIItem.getMapPoint().getMapPointGeoCoord().latitude;
         selectedLongitude = mapPOIItem.getMapPoint().getMapPointGeoCoord().longitude;
@@ -843,5 +928,10 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
 
     @Override
     public void onDraggablePOIItemMoved(MapView mapView, MapPOIItem mapPOIItem, MapPoint mapPoint) {
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 }
