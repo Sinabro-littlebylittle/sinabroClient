@@ -18,11 +18,22 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.project.sinabro.MainActivity;
 import com.project.sinabro.R;
+import com.project.sinabro.models.PeopleNumber;
+import com.project.sinabro.retrofit.PeopleNumbersAPI;
+import com.project.sinabro.retrofit.RetrofitService;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class PlaceListActivity extends AppCompatActivity {
 
@@ -32,11 +43,25 @@ public class PlaceListActivity extends AppCompatActivity {
     private ListView listview;
     private ListViewAdapter adapter;
     private Dialog placeInfo_dialog, ask_add_or_cancel_bookmark_dialog;
-    private TextView roadNameAddress_tv, placeName_tv_inDialog, peopleCount_tv_inDialog, roadNameAddress_tv_inDialog, detailAddress_tv_inDialog;
+    private TextView address_tv, placeName_tv_inDialog, peopleCount_tv_inDialog, address_tv_inDialog, detailAddress_tv_inDialog, updateElapsedTime_tv_inDialog;
 
     private PlaceItem clickedPlaceItem;
 
+    private String markerId, address;
+    private Double latitude, longitude;
+
     Boolean bookmarked = true;
+
+    RetrofitService retrofitService = new RetrofitService();
+    PeopleNumbersAPI peopleNumbersAPI = retrofitService.getRetrofit().create(PeopleNumbersAPI.class);
+
+    @Override
+    public void onBackPressed() {
+        // 프로그래머가 원하는 액티비티로 이동
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(intent);
+        finish(); // 현재 액티비티 종료
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,18 +87,26 @@ public class PlaceListActivity extends AppCompatActivity {
         back_iBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onBackPressed(); // 뒤로가기 기능 수행
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
                 finish(); // 현재 액티비티 종료
             }
         });
 
-        roadNameAddress_tv = findViewById(R.id.roadNameAddress_tv);
+        final Intent intent = getIntent();
+        markerId = intent.getStringExtra("markerId_value");
+
+        address_tv = findViewById(R.id.address_tv);
 
         goAddPlace_btn = findViewById(R.id.goAddPlace_btn);
         goAddPlace_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 final Intent intent = new Intent(getApplicationContext(), AddLocationInfoActivity.class);
+                intent.putExtra("markerId_value", markerId);
+                intent.putExtra("address_value", address);
+                intent.putExtra("latitude_value", latitude);
+                intent.putExtra("longitude_value", longitude);
                 startActivity(intent);
             }
         });
@@ -81,28 +114,43 @@ public class PlaceListActivity extends AppCompatActivity {
         listview = findViewById(R.id.placeList_listView);
         adapter = new ListViewAdapter();
 
-        //Adapter 안에 아이템의 정보 담기
-        adapter.addItem(new PlaceItem("충북대학교 중앙도서관", "3층", 5));
-        adapter.addItem(new PlaceItem("양성재 학생생활관", "식당", 1));
-        adapter.addItem(new PlaceItem("충북대학교가나다라마바사아자", "205호", 10));
-        adapter.addItem(new PlaceItem("가나다라마바사 아자차카타하가", "205호", 100));
-        adapter.addItem(new PlaceItem("가나다라마바사아자차카 타하가", "205호", -1));
-        adapter.addItem(new PlaceItem("가나다라마바  사아자차카타하", "205호", -1));
-        adapter.addItem(new PlaceItem("샘마루(SAMMaru)", "113호", -1));
-        adapter.addItem(new PlaceItem("충북대학교 소프트웨어학부", "205호", -1));
+        Call<List<PeopleNumber>> call = peopleNumbersAPI.getPlaceInformationsById(markerId);
+        call.enqueue(new Callback<List<PeopleNumber>>() {
+            @Override
+            public void onResponse(Call<List<PeopleNumber>> call, Response<List<PeopleNumber>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<PeopleNumber> placeInformations = response.body();
+                    if (!placeInformations.isEmpty()) {
+                        address = placeInformations.get(0).getPlaceId().getAddress();
+                        latitude = Double.valueOf(placeInformations.get(0).getPlaceId().getMarkerId().getLatitude());
+                        longitude = Double.valueOf(placeInformations.get(0).getPlaceId().getMarkerId().getLongitude());
+                        address_tv.setText(address);
+                        for (int k = 0; k < placeInformations.size(); k++) {
+                            int peopleNum = placeInformations.get(k).getPeopleCount();
+                            String placeName = placeInformations.get(k).getPlaceId().getPlaceName();
+                            String detailAddress = placeInformations.get(k).getPlaceId().getDetailAddress();
+                            long updateElapsedTime = placeInformations.get(k).getUpdateElapsedTime();
+                            String placeId = String.valueOf(placeInformations.get(k).getPlaceId().getId());
+                            //Adapter 안에 아이템의 정보 담기
+                            adapter.addItem(new PlaceItem(address, placeName, detailAddress, peopleNum, updateElapsedTime, placeId));
+                        }
 
-        final Intent intent = getIntent();
-        Boolean input_value = intent.getBooleanExtra("input_value", false);
+                        // 리스트뷰에 Adapter 설정
+                        listview.setAdapter(adapter);
+                    } else {
+                        Log.d("데이터", "The list of places is empty");
+                    }
+                } else {
+                    Log.d("데이터", "Response was not successful or body is null");
+                }
+            }
 
-        if (input_value) {
-            String placeName_value = intent.getStringExtra("placeName_value");
-            String detailAddress_value = intent.getStringExtra("detailAddress_value");
-
-            adapter.addItem(new PlaceItem(placeName_value, detailAddress_value, -1));
-        }
-
-        // 리스트뷰에 Adapter 설정
-        listview.setAdapter(adapter);
+            @Override
+            public void onFailure(Call<List<PeopleNumber>> call, Throwable t) {
+                Toast.makeText(PlaceListActivity.this, "get failed..", Toast.LENGTH_SHORT).show();
+                Logger.getLogger(MainActivity.class.getName()).log(Level.SEVERE, "Error occured", t);
+            }
+        });
     }
 
     /* 리스트뷰 어댑터 */
@@ -185,8 +233,9 @@ public class PlaceListActivity extends AppCompatActivity {
 
         placeName_tv_inDialog = placeInfo_dialog.findViewById(R.id.placeName_tv);
         peopleCount_tv_inDialog = placeInfo_dialog.findViewById(R.id.peopleCount_tv);
-        roadNameAddress_tv_inDialog = placeInfo_dialog.findViewById(R.id.roadNameAddress_tv);
+        address_tv_inDialog = placeInfo_dialog.findViewById(R.id.roadNameAddress_tv);
         detailAddress_tv_inDialog = placeInfo_dialog.findViewById(R.id.detailAddress_tv);
+        updateElapsedTime_tv_inDialog = placeInfo_dialog.findViewById(R.id.updateElapsedTime_tv);
 
         placeName_tv_inDialog.setText(placeItem.getPlaceName());
         if (placeItem.getPeopleCnt() > 0) {
@@ -194,8 +243,24 @@ public class PlaceListActivity extends AppCompatActivity {
         } else {
             peopleCount_tv_inDialog.setText("?");
         }
-        roadNameAddress_tv_inDialog.setText(roadNameAddress_tv.getText().toString());
+        address_tv_inDialog.setText(address_tv.getText().toString());
         detailAddress_tv_inDialog.setText(placeItem.getDetailAddress());
+        long updateElapsedTime = placeItem.getUpdateElapsedTime();
+        String updateElapsedTime_str;
+        if (updateElapsedTime == -1) {
+            updateElapsedTime_str = "정보 없음";
+        } else if (updateElapsedTime < 60) {
+            updateElapsedTime_str = "약 " + updateElapsedTime + "초 전";
+        } else if (updateElapsedTime < 3600) {
+            updateElapsedTime_str = updateElapsedTime / 60 + "분 전";
+        } else if (updateElapsedTime < 86400) {
+            updateElapsedTime_str = updateElapsedTime / 3600 + "시간 전";
+        } else if (updateElapsedTime < 86400 * 365) {
+            updateElapsedTime_str = updateElapsedTime / 86400 + "일 전";
+        } else {
+            updateElapsedTime_str = updateElapsedTime / 86400 * 365 + "일 전";
+        }
+        updateElapsedTime_tv_inDialog.setText(updateElapsedTime_str);
 
         // Dialog 닫기 버튼
         dialogClose_iBtn = placeInfo_dialog.findViewById(R.id.dialogClose_iBtn);
@@ -223,6 +288,9 @@ public class PlaceListActivity extends AppCompatActivity {
                 placeInfo_dialog.dismiss(); // 다이얼로그 닫기
                 final Intent intent = new Intent(getApplicationContext(), AddLocationInfoActivity.class);
                 intent.putExtra("forModify", true);
+                intent.putExtra("markerId_value", markerId);
+                intent.putExtra("placeId_value", placeItem.getPlaceId());
+                intent.putExtra("address_value", placeItem.getAddress());
                 intent.putExtra("placeName_value", placeName_tv_inDialog.getText().toString());
                 intent.putExtra("detailAddress_value", detailAddress_tv_inDialog.getText().toString());
                 startActivity(intent);

@@ -32,7 +32,7 @@
 
     <!-- 등록된 장소 정보 -->
     <TextView
-        android:id="@+id/roadNameAddress_tv"
+        android:id="@+id/address_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/placeList_tv"
@@ -40,7 +40,7 @@
         android:layout_marginTop="10dp"
         android:letterSpacing="-0.05"
         android:maxWidth="350dp"
-        android:text="충청북도 청주시 서원구 충대로1 충북대학교"
+        android:text="불러오는 중..."
         android:textColor="@color/grey"
         android:textSize="15sp" />
 
@@ -49,7 +49,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/goAddPlace_btn"
-        android:layout_below="@+id/roadNameAddress_tv"
+        android:layout_below="@+id/address_tv"
         android:layout_marginTop="15dp"
         android:divider="#FFFFFF"
         android:dividerHeight="0px"

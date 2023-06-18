@@ -11,21 +11,41 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.textfield.TextInputEditText;
+import com.project.sinabro.MainActivity;
 import com.project.sinabro.R;
+import com.project.sinabro.models.PeopleNumber;
+import com.project.sinabro.models.Place;
+import com.project.sinabro.retrofit.PlacesAPI;
+import com.project.sinabro.retrofit.RetrofitService;
 import com.project.sinabro.toast.ToastSuccess;
 import com.project.sinabro.toast.ToastWarning;
+
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class AddLocationInfoActivity extends AppCompatActivity {
 
     private Button addPlace_btn;
     private ImageButton back_iBtn;
-    private TextView placeRemove_tv;
+    private TextView placeRemove_tv, address_tv;
     private TextInputEditText placeName_editText, detailAddress_editText;
     private Dialog placeRemove_dialog;
+
+    Boolean forModify;
+    String markerId, placeId;
+
+    RetrofitService retrofitService = new RetrofitService();
+    PlacesAPI placesAPI = retrofitService.getRetrofit().create(PlacesAPI.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +63,9 @@ public class AddLocationInfoActivity extends AppCompatActivity {
         });
 
         final Intent intent = getIntent();
-        Boolean forModify = intent.getBooleanExtra("forModify", false);
+        forModify = intent.getBooleanExtra("forModify", false);
+        markerId = intent.getStringExtra("markerId_value");
+        placeId = intent.getStringExtra("placeId_value");
 
         placeRemove_dialog = new Dialog(AddLocationInfoActivity.this);  // Dialog 초기화
         placeRemove_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE); // 타이틀 제거
@@ -60,29 +82,70 @@ public class AddLocationInfoActivity extends AppCompatActivity {
             }
         });
 
+        address_tv = findViewById(R.id.address_tv);
+        String address = intent.getStringExtra("address_value");
+        String latitude = "" + intent.getDoubleExtra("latitude_value", 0);
+        String longitude = "" + intent.getDoubleExtra("longitude_value", 0);
+        address_tv.setText(address);
+
         placeName_editText = findViewById(R.id.placeName_editText);
         detailAddress_editText = findViewById(R.id.detailAddress_editText);
-
         addPlace_btn = findViewById(R.id.addPlace_btn);
         addPlace_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final Intent intent = new Intent(getApplicationContext(), PlaceListActivity.class);
-                if (forModify) {
-                    placeRemove_dialog.dismiss(); // 다이얼로그 닫기
-                    new ToastSuccess(getResources().getString(R.string.toast_modify_list_success), AddLocationInfoActivity.this);
-                    startActivity(intent);
+                if (placeName_editText.getText().toString().equals("") || detailAddress_editText.getText().toString().equals("")) {
+                    new ToastWarning(getResources().getString(R.string.toast_add_place_failed), AddLocationInfoActivity.this);
                     return;
                 }
 
-                if (placeName_editText.getText().toString().equals("") || detailAddress_editText.getText().toString().equals("")) {
-                    new ToastWarning(getResources().getString(R.string.toast_add_place_failed), AddLocationInfoActivity.this);
+                final Intent intent = new Intent(getApplicationContext(), PlaceListActivity.class);
+                Place place = new Place();
+                place.setPlaceName(placeName_editText.getText().toString());
+                place.setDetailAddress(detailAddress_editText.getText().toString());
+
+
+                if (forModify) {
+                    /** PATCH 기능 추가 예정 */
+                    placesAPI.updatePlace(placeId, place).enqueue(new Callback<Place>() {
+                        @Override
+                        public void onResponse(Call<Place> call, Response<Place> response) {
+                            if (response.isSuccessful() && response.body() != null) {
+                                Place placeInformation = response.body();
+                                intent.putExtra("markerId_value", markerId);
+                                new ToastSuccess(getResources().getString(R.string.toast_modify_list_success), AddLocationInfoActivity.this);
+                                startActivity(intent);
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Place> call, Throwable t) {
+                            Toast.makeText(AddLocationInfoActivity.this, "PATCH failed..", Toast.LENGTH_SHORT).show();
+                            Logger.getLogger(MainActivity.class.getName()).log(Level.SEVERE, "Error occured", t);
+                        }
+                    });
                 } else {
-                    new ToastSuccess(getResources().getString(R.string.toast_add_place_success), AddLocationInfoActivity.this);
-                    intent.putExtra("input_value", true);
-                    intent.putExtra("placeName_value", placeName_editText.getText().toString());
-                    intent.putExtra("detailAddress_value", detailAddress_editText.getText().toString());
-                    startActivity(intent);
+                    /** POST 기능 */
+                    place.setAddress(address_tv.getText().toString());
+                    place.setLatitude(latitude);
+                    place.setLongitude(longitude);
+                    placesAPI.addPlaceInformation(place).enqueue(new Callback<Place>() {
+                        @Override
+                        public void onResponse(Call<Place> call, Response<Place> response) {
+                            if (response.isSuccessful() && response.body() != null) {
+                                Place placeInformation = response.body();
+                                intent.putExtra("markerId_value", placeInformation.getMarkerId());
+                                new ToastSuccess(getResources().getString(R.string.toast_add_place_success), AddLocationInfoActivity.this);
+                                startActivity(intent);
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Place> call, Throwable t) {
+                            Toast.makeText(AddLocationInfoActivity.this, "save failed..", Toast.LENGTH_SHORT).show();
+                            Logger.getLogger(MainActivity.class.getName()).log(Level.SEVERE, "Error occured", t);
+                        }
+                    });
                 }
             }
         });
@@ -95,6 +158,7 @@ public class AddLocationInfoActivity extends AppCompatActivity {
             placeName_editText.setText(placeName_value);
             detailAddress_editText.setText(detailAddress_value);
         }
+
     }
 
     // (dialog_place_remove) 다이얼로그를 디자인하는 함수
@@ -117,9 +181,33 @@ public class AddLocationInfoActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 placeRemove_dialog.dismiss(); // 다이얼로그 닫기
-                new ToastSuccess(getResources().getString(R.string.toast_remove_place_info_success), AddLocationInfoActivity.this);
-                final Intent intent = new Intent(getApplicationContext(), PlaceListActivity.class);
-                startActivity(intent);
+                placesAPI.deletePlace(placeId).enqueue(new Callback<Integer>() {
+                    @Override
+                    public void onResponse(Call<Integer> call, Response<Integer> response) {
+                        if (response.isSuccessful()) {
+                            new ToastSuccess(getResources().getString(R.string.toast_remove_place_info_success), AddLocationInfoActivity.this);
+
+                            int remainPlacesNum = response.body();
+                            Log.d("잔여 장소 수: ", "" + remainPlacesNum);
+                            if (remainPlacesNum == 0) {
+                                Log.d("들어옴", "onResponse: ");
+                                final Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                startActivity(intent);
+                                finish(); // 현재 액티비티 종료
+                                return;
+                            }
+                            final Intent intent = new Intent(getApplicationContext(), PlaceListActivity.class);
+                            intent.putExtra("markerId_value", markerId);
+                            startActivity(intent);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Integer> call, Throwable t) {
+                        Toast.makeText(AddLocationInfoActivity.this, "PATCH failed..", Toast.LENGTH_SHORT).show();
+                        Logger.getLogger(MainActivity.class.getName()).log(Level.SEVERE, "Error occured", t);
+                    }
+                });
             }
         });
     }

@@ -27,21 +27,22 @@
         android:layout_width="260dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="55dp"
+        android:layout_marginTop="50dp"
         android:lineSpacingExtra="-7dp"
         android:maxHeight="80dp"
-        android:text="새로운 장소"
+        android:text="장소명(새로운 장소)"
         android:textColor="@color/deep_blue"
         android:textSize="25sp" />
 
     <!-- 상세 주소 -->
     <TextView
-        android:id="@+id/address_tv"
+        android:id="@+id/detailAddress_tv"
         android:layout_width="260dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/placeName_tv"
         android:layout_marginStart="30dp"
         android:layout_marginTop="5dp"
+        android:minHeight="55dp"
         android:text="상세 주소"
         android:textColor="@color/dark_grey"
         android:textSize="20sp" />
@@ -52,33 +53,30 @@
         android:layout_width="110dp"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="45dp"
+        android:layout_marginTop="40dp"
         android:layout_marginEnd="5dp"
         android:gravity="center"
         android:text="?"
-        android:textSize="40sp"
-         />
+        android:textSize="50sp" />
 
-    <!-- 밀집도 정도(미등록 시: 없음) -->
+    <!-- 인원수 정보 갱신 경과 시간(미등록 시: 정보 없음) -->
     <TextView
-        android:id="@+id/peopleDensityState_tv"
-        android:layout_width="60dp"
+        android:id="@+id/updateElapsedTime_tv"
+        android:layout_width="wrap_content"
         android:layout_height="30dp"
         android:layout_below="@+id/peopleCount_tv"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="-5dp"
         android:layout_marginEnd="29.5dp"
         android:gravity="center"
         android:text="정보 없음"
-        android:textSize="12.5sp"
         android:textStyle="bold" />
 
     <RelativeLayout
         android:id="@+id/peopleCountControl_relativeLayout"
         android:layout_width="wrap_content"
-        android:layout_height="82.5dp"
-        android:layout_below="@+id/address_tv"
-        android:layout_marginTop="35dp">
+        android:layout_height="wrap_content"
+        android:minHeight="100dp"
+        android:layout_alignParentBottom="true">
 
         <!-- 인원수 체크 버튼 -->
         <Button
@@ -151,11 +149,11 @@
             android:insetBottom="0dp"
             android:onClick="onMapZoomIn"
             android:stateListAnimator="@null"
+            android:visibility="gone"
             app:cornerRadius="15dp"
             app:icon="@drawable/bookmark_fill"
             app:iconGravity="textStart"
             app:iconPadding="0dp"
-            android:visibility="gone"
             app:iconTint="@color/deep_blue" />
     </RelativeLayout>
 
@@ -164,9 +162,8 @@
         android:id="@+id/placeList_btn"
         android:layout_width="70dp"
         android:layout_height="32.5dp"
-        android:layout_below="@+id/peopleCount_tv"
+        android:layout_below="@+id/updateElapsedTime_tv"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="17.5dp"
         android:layout_marginEnd="24dp"
         android:layout_marginRight="20dp"
         android:layout_marginBottom="22.5dp"

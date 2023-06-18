@@ -234,4 +234,7 @@ fabric.properties
 
 !/gradle/wrapper/gradle-wrapper.jar
 
+# 환경변수
+gradle.properties
+
 # End of https://www.toptal.com/developers/gitignore/api/java,android,androidstudio,macos,windows

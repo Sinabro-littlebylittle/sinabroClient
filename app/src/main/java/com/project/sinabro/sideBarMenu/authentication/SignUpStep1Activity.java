@@ -35,7 +35,6 @@ public class SignUpStep1Activity extends AppCompatActivity {
         binding.backIBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("뒤로 감", "아잉눈");
                 onBackPressed(); // 뒤로가기 기능 수행
                 finish(); // 현재 액티비티 종료
             }
