@@ -13,12 +13,12 @@ import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 public interface PeopleNumbersAPI {
-    @GET("/peopleNumbers/placeInformations")
+    @GET("/api/peopleNumbers/placeInformations")
     Call<List<PeopleNumber>> getPlaceInformations();
 
-    @GET("/peopleNumbers/{id}/placeInformations")
+    @GET("/api/peopleNumbers/{id}/placeInformations")
     Call<List<PeopleNumber>> getPlaceInformationsById(@Path("id") String id);
 
-    @POST("/peopleNumbers")
+    @POST("/api/peopleNumbers")
     Call<Place> addPeopleNumber(@Body PeopleNumber peopleNumber);
 }
