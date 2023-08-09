@@ -8,17 +8,16 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
-import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 
-public interface PeopleNumbersAPI {
-    @GET("/api/peopleNumbers/placeInformations")
+public interface headcountsAPI {
+    @GET("/api/headcounts/public/placeInformations")
     Call<List<PeopleNumber>> getPlaceInformations();
 
-    @GET("/api/peopleNumbers/{id}/placeInformations")
+    @GET("/api/headcounts/public/{id}/placeInformations")
     Call<List<PeopleNumber>> getPlaceInformationsById(@Path("id") String id);
 
-    @POST("/api/peopleNumbers")
+    @POST("/api/headcounts/private")
     Call<Place> addPeopleNumber(@Body PeopleNumber peopleNumber);
 }
