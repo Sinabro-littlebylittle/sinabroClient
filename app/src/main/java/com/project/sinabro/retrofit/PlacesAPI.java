@@ -8,20 +8,20 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
-import retrofit2.http.PATCH;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface PlacesAPI {
     @GET("/api/places")
     Call<List<Place>> getPlaces();
 
-    @POST("/api/places")
+    @POST("/api/places/private")
     Call<Place> addPlaceInformation(@Body Place place);
 
-    @PATCH("/api/places/{id}")
+    @PUT("/api/places/private/{id}")
     Call<Place> updatePlace(@Path("id") String id, @Body Place place);
 
-    @DELETE("/api/places/{id}")
+    @DELETE("/api/places/private/{id}")
     Call<Integer> deletePlace(@Path("id") String id);
 }
