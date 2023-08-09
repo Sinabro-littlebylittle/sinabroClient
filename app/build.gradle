@@ -41,7 +41,6 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 
     // Bottom Sheet Layout 사용을 위한 coordinatorlayout 외부 라이브러리 추가
-    implementation "androidx.coordinatorlayout:coordinatorlayout:1.1.0"
     implementation "androidx.coordinatorlayout:coordinatorlayout:1.2.0"
     implementation 'androidx.navigation:navigation-runtime:2.5.3'
 
