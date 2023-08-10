@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -18,14 +17,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.textfield.TextInputEditText;
 import com.project.sinabro.MainActivity;
 import com.project.sinabro.R;
-import com.project.sinabro.models.PeopleNumber;
 import com.project.sinabro.models.Place;
 import com.project.sinabro.retrofit.PlacesAPI;
 import com.project.sinabro.retrofit.RetrofitService;
 import com.project.sinabro.toast.ToastSuccess;
 import com.project.sinabro.toast.ToastWarning;
+import com.project.sinabro.utils.TokenManager;
 
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -44,13 +42,16 @@ public class AddLocationInfoActivity extends AppCompatActivity {
     Boolean forModify;
     String markerId, placeId;
 
-    RetrofitService retrofitService = new RetrofitService();
-    PlacesAPI placesAPI = retrofitService.getRetrofit().create(PlacesAPI.class);
+    private PlacesAPI placesAPI;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_location_info);
+
+        TokenManager tokenManager = TokenManager.getInstance(this);
+        RetrofitService retrofitService = new RetrofitService(tokenManager);
+        placesAPI = retrofitService.getRetrofit().create(PlacesAPI.class);
 
         /** 뒤로가기 버튼 기능 */
         back_iBtn = findViewById(R.id.back_iBtn);
@@ -188,9 +189,7 @@ public class AddLocationInfoActivity extends AppCompatActivity {
                             new ToastSuccess(getResources().getString(R.string.toast_remove_place_info_success), AddLocationInfoActivity.this);
 
                             int remainPlacesNum = response.body();
-                            Log.d("잔여 장소 수: ", "" + remainPlacesNum);
                             if (remainPlacesNum == 0) {
-                                Log.d("들어옴", "onResponse: ");
                                 final Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                                 startActivity(intent);
                                 finish(); // 현재 액티비티 종료
