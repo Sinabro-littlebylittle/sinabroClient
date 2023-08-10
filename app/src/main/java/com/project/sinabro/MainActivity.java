@@ -22,6 +22,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -60,17 +61,23 @@ import com.project.sinabro.bottomSheet.place.PlaceListActivity;
 import com.project.sinabro.bottomSheet.place.RemoveBookmarkFromListActivity;
 import com.project.sinabro.models.CoordinateToAddress;
 import com.project.sinabro.models.PeopleNumber;
+import com.project.sinabro.retrofit.AuthAPI;
 import com.project.sinabro.retrofit.KakaoAPI;
-import com.project.sinabro.retrofit.PeopleNumbersAPI;
+import com.project.sinabro.retrofit.headcountsAPI;
 import com.project.sinabro.retrofit.RetrofitService;
 import com.project.sinabro.retrofit.RetrofitServiceForKakao;
+import com.project.sinabro.retrofit.UserAPI;
 import com.project.sinabro.sideBarMenu.authentication.SignInActivity;
+import com.project.sinabro.sideBarMenu.settings.CheckPasswordActivity;
 import com.project.sinabro.toast.ToastWarning;
+import com.project.sinabro.utils.TokenManager;
 
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.pytorch.IValue;
 import org.pytorch.LiteModuleLoader;
 import org.pytorch.Module;
@@ -89,6 +96,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -129,7 +137,7 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
     private ArrayList<MapPOIItem> markers = new ArrayList<>();
     private LocationSettingsRequest mLocationSettingsRequest;
     private Button currentLocation_btn, mapZoomIn_btn, mapZoomOut_btn, peopleScan_btn, editLocation_btn, placeList_btn;
-    private TextView placeName_tv, detailAddress_tv, peopleCount_tv, updateElapsedTime_tv;
+    private TextView placeName_tv, detailAddress_tv, peopleCount_tv, updateElapsedTime_tv, username_tv;
     private static Button bookmarkEmpty_btn, bookmarkFilled_btn;
 
     private ImageButton hamburger_ibtn;
@@ -167,10 +175,12 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
 
     private Dialog ask_add_or_cancel_bookmark_dialog;
 
-    Boolean bookmarked = true, isDetected;
+    private TokenManager tokenManager;
+    private RetrofitService retrofitService;
+    headcountsAPI peopleNumbersAPI;
+    UserAPI userAPI;
 
-    RetrofitService retrofitService = new RetrofitService();
-    PeopleNumbersAPI peopleNumbersAPI = retrofitService.getRetrofit().create(PeopleNumbersAPI.class);
+    Boolean bookmarked = true, isDetected;
 
     //모델 에셋 경로 설정 함수
     public static String assetFilePath(Context context, String assetName) throws IOException {
@@ -196,6 +206,11 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        tokenManager = TokenManager.getInstance(this);
+        retrofitService = new RetrofitService(tokenManager);
+        peopleNumbersAPI = retrofitService.getRetrofit().create(headcountsAPI.class);
+        userAPI = retrofitService.getRetrofit().create(UserAPI.class);
 
         Call<List<PeopleNumber>> call = peopleNumbersAPI.getPlaceInformations();
         call.enqueue(new Callback<List<PeopleNumber>>() {
@@ -226,8 +241,8 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
 
             @Override
             public void onFailure(Call<List<PeopleNumber>> call, Throwable t) {
-                Toast.makeText(MainActivity.this, "get failed..", Toast.LENGTH_SHORT).show();
-                Logger.getLogger(MainActivity.class.getName()).log(Level.SEVERE, "Error occured", t);
+                // 서버 코드 및 네트워크 오류 등의 이유로 요청 실패
+                new ToastWarning(getResources().getString(R.string.toast_server_error), MainActivity.this);
             }
         });
 
@@ -328,35 +343,103 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         hamburger_ibtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // sidebar navigation을 보여줌
-                drawerlayout.openDrawer(GravityCompat.START);
-                // bottom sheet layout을 사라지게 함
-                bottomSheetBehavior.setPeekHeight(0);
-                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                Call<ResponseBody> call_userAPI_getUserSelfInfo = userAPI.getUserSelfInfo();
+                call_userAPI_getUserSelfInfo.enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        if (response.isSuccessful()) {
+                            try {
+                                JSONObject jsonObject = new JSONObject(response.body().string());
+                                tokenManager.saveUserInfo(jsonObject);
+                                String username = tokenManager.getUsername();
+                                username_tv.setText(username);
+
+
+                            } catch (JSONException | IOException e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            switch (response.code()) {
+                                case 401:
+                                    username_tv.setText("로그인해주세요.");
+                                    break;
+                                default:
+                                    new ToastWarning(getResources().getString(R.string.toast_none_status_code), MainActivity.this);
+                            }
+                        }
+
+                        // sidebar navigation을 보여줌
+                        drawerlayout.openDrawer(GravityCompat.START);
+                        // bottom sheet layout을 사라지게 함
+                        bottomSheetBehavior.setPeekHeight(0);
+                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        // 서버 코드 및 네트워크 오류 등의 이유로 요청 실패
+                        new ToastWarning(getResources().getString(R.string.toast_server_error), MainActivity.this);
+                    }
+                });
             }
         });
 
         /** Sidebar Navigation Header(헤더) */
         navigationView = findViewById(R.id.navigationView);
-        View header = navigationView.getHeaderView(0);
-        layout_navigation_header = header.findViewById(R.id.layout_navigation_header);
+        View headerView = navigationView.getHeaderView(0);
+        username_tv = headerView.findViewById(R.id.username_tv);
+
+        layout_navigation_header = headerView.findViewById(R.id.layout_navigation_header);
         layout_navigation_header.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
-                startActivity(intent);
+                Call<ResponseBody> call_userAPI_getUserSelfInfo = userAPI.getUserSelfInfo();
+                call_userAPI_getUserSelfInfo.enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        if (response.isSuccessful()) {
+                            try {
+                                JSONObject jsonObject = new JSONObject(response.body().string());
+                                tokenManager.saveUserInfo(jsonObject);
+                                Intent intent = new Intent(getApplicationContext(), CheckPasswordActivity.class);
+                                intent.putExtra("departActivityName", "MainActivity");
+                                intent.putExtra("destActivityName", "MyPageActivity");
+                                startActivity(intent);
+                            } catch (JSONException | IOException e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            switch (response.code()) {
+                                case 401:
+                                    final Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
+                                    startActivity(intent);
+                                    break;
+                                default:
+                                    new ToastWarning(getResources().getString(R.string.toast_none_status_code), MainActivity.this);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        // 서버 코드 및 네트워크 오류 등의 이유로 요청 실패
+                        new ToastWarning(getResources().getString(R.string.toast_server_error), MainActivity.this);
+                    }
+                });
             }
         });
 
         /** sidebar navigation 내의 menu item(메뉴) 클릭 시 해당 액티비티로
          *  넘어갈 수 있도록 하는 코드 */
-        NavigationView navigationView = findViewById(R.id.navigationView);
         NavController navController = Navigation.findNavController(this, R.id.navHostFragment);
         NavigationUI.setupWithNavController(navigationView, navController);
 
+
         /** ========================= bottom sheet 레이아웃 ========================= */
 //        bottomSheet_layout = (FrameLayout) findViewById(R.id.bottomSheet_layout);
-        bottomSheetBehavior = BottomSheetBehavior.from(findViewById(R.id.bottomSheet_layout));
+        bottomSheetBehavior = BottomSheetBehavior.from(
+
+                findViewById(R.id.bottomSheet_layout));
 //        bottomSheetBehavior.setPeekHeight(200);
 //        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
 //        bottomSheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
@@ -368,15 +451,30 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
 //            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
 //            }
 //        });
-        placeName_tv = findViewById(R.id.placeName_tv);
-        detailAddress_tv = findViewById(R.id.detailAddress_tv);
-        peopleCount_tv = findViewById(R.id.peopleCount_tv);
-        updateElapsedTime_tv = findViewById(R.id.updateElapsedTime_tv);
+        placeName_tv =
 
-        mResultView = findViewById(R.id.resultView);
+                findViewById(R.id.placeName_tv);
+
+        detailAddress_tv =
+
+                findViewById(R.id.detailAddress_tv);
+
+        peopleCount_tv =
+
+                findViewById(R.id.peopleCount_tv);
+
+        updateElapsedTime_tv =
+
+                findViewById(R.id.updateElapsedTime_tv);
+
+        mResultView =
+
+                findViewById(R.id.resultView);
 //        mResultView.setVisibility(View.INVISIBLE);
         /** 카메라 촬영 버튼 */
-        peopleScan_btn = findViewById(R.id.peopleScan_btn);
+        peopleScan_btn =
+
+                findViewById(R.id.peopleScan_btn);
         peopleScan_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -393,7 +491,9 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         });
 
         /** 장소 등록/수정 버튼 */
-        editLocation_btn = findViewById(R.id.editLocation_btn);
+        editLocation_btn =
+
+                findViewById(R.id.editLocation_btn);
         editLocation_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -462,7 +562,9 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         });
 
         /** "북마크 등록" 버튼 */
-        bookmarkEmpty_btn = findViewById(R.id.bookmarkEmpty_btn);
+        bookmarkEmpty_btn =
+
+                findViewById(R.id.bookmarkEmpty_btn);
         bookmarkEmpty_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -718,7 +820,8 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == REQUEST_PERMISSIONS_REQUEST_CODE) {
             if (grantResults.length <= 0) {
@@ -769,7 +872,8 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
     /**
      * 마커 등록
      */
-    public void addMakerToMap(int peopleNum, double latitude, double longitude, String placeName, String detailAddress, long updateElapsedTime, String placeId, String markerId) {
+    public void addMakerToMap(int peopleNum, double latitude, double longitude, String
+            placeName, String detailAddress, long updateElapsedTime, String placeId, String markerId) {
         marker = new MapPOIItem();
         if (peopleNum == -1)
             marker.setItemName("정보 없음");
@@ -923,15 +1027,12 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
     }
 
     @Override
-    public void onCalloutBalloonOfPOIItemTouched(MapView mapView, MapPOIItem mapPOIItem, MapPOIItem.CalloutBalloonButtonType calloutBalloonButtonType) {
+    public void onCalloutBalloonOfPOIItemTouched(MapView mapView, MapPOIItem
+            mapPOIItem, MapPOIItem.CalloutBalloonButtonType calloutBalloonButtonType) {
     }
 
     @Override
-    public void onDraggablePOIItemMoved(MapView mapView, MapPOIItem mapPOIItem, MapPoint mapPoint) {
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
+    public void onDraggablePOIItemMoved(MapView mapView, MapPOIItem mapPOIItem, MapPoint
+            mapPoint) {
     }
 }
