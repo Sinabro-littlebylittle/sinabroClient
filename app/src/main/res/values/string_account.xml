@@ -13,7 +13,8 @@
     <string name="sign_up_step1_email_validation_failed">이메일 확인을 완료해 주세요</string>
     <string name="sign_up_error_email">이메일을 정확하게 입력해주세요</string>
     <string name="sign_up_email_confirm_success">사용 가능한 이메일입니다</string>
-    <string name="sign_up_email_confirm_failed">이미 사용 중인 이메일입니다</string>
+    <string name="sign_up_email_already_exist">이미 사용 중인 이메일입니다</string>
+    <string name="sign_up_email_invalid_format">올바른 이메일 형식이 아닙니다</string>
     <string name="sign_up_step1_current_password_validation_failed">현재 비밀번호와 일치하지 않습니다</string>
     <string name="sign_up_step1_password_validation_failed">비밀번호 입력을 완료해 주세요</string>
     <string name="sign_up_step1_password_confirm_validation_failed">비밀번호가 일치하지 않습니다</string>
@@ -70,6 +71,11 @@
     <string name="toast_add_list_failed">리스트 색상이 필요해요</string>
     <string name="toast_select_color_failed">색상 선택이 필요해요</string>
     <string name="toast_cannot_access_area">서비스 불가 지역이에요</string>
+    <string name="toast_server_error">서버 에러가 발생했어요</string>
+    <string name="toast_none_status_code">NONE_STATUS_CODE_ERR</string>
+    <string name="toast_exist_email">이미 존재하는 이메일이에요</string>
+    <string name="toast_login_time_exceed">로그인 시간이 만료되었어요</string>
+    <string name="toast_bad_request">입력 데이터 형식에 문제가 있어요</string>
 
     <!-- Strings related to (our_policies_activity) -->
     <string name="our_policies_rule_title_1">제 1조, 총칙</string>

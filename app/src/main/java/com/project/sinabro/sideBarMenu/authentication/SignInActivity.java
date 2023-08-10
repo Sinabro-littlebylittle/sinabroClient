@@ -14,15 +14,31 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.makeramen.roundedimageview.RoundedImageView;
+import com.project.sinabro.MainActivity;
 import com.project.sinabro.R;
 import com.project.sinabro.databinding.ActivitySignInBinding;
+import com.project.sinabro.models.requests.LoginRequest;
+import com.project.sinabro.retrofit.AuthAPI;
+import com.project.sinabro.retrofit.RetrofitService;
 import com.project.sinabro.sideBarMenu.settings.HandleUserInformationActivity;
+import com.project.sinabro.sideBarMenu.settings.ModifyMyInfoActivity;
 import com.project.sinabro.sideBarMenu.settings.OthersUseUserInformationActivity;
 import com.project.sinabro.sideBarMenu.settings.StoreUserInformationActivity;
 import com.project.sinabro.sideBarMenu.settings.UseServiceAgreementActivity;
 import com.project.sinabro.textWatcher.EmailWatcher;
 import com.project.sinabro.textWatcher.PasswordWatcher;
 import com.project.sinabro.toast.ToastWarning;
+import com.project.sinabro.utils.TokenManager;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class SignInActivity extends AppCompatActivity {
 
@@ -34,11 +50,19 @@ public class SignInActivity extends AppCompatActivity {
 
     private Boolean check_policies_1_toggle = false, check_policies_2_toggle = false;
 
+    private TokenManager tokenManager;
+    private RetrofitService retrofitService;
+    AuthAPI authAPI;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivitySignInBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        tokenManager = TokenManager.getInstance(this);
+        retrofitService = new RetrofitService(tokenManager);
+        authAPI = retrofitService.getRetrofit().create(AuthAPI.class);
 
         /** "비밀번호 변경 실패 안내" 다이얼로그 변수 초기화 및 설정 */
         agree_our_policies_dialog = new Dialog(SignInActivity.this);  // Dialog 초기화
@@ -106,8 +130,44 @@ public class SignInActivity extends AppCompatActivity {
                     binding.passwordTextInputLayout.setErrorEnabled(true);
                     binding.passwordTextInputLayout.setBackgroundResource(R.drawable.edt_bg_only_helper_selected);
                 } else {
-                    /* 이곳에 API 호출 코드가 추가되어야 합니다. */
-                    binding.signInFailedTv.setVisibility(View.VISIBLE);
+                    String email = binding.emailEditText.getText().toString();
+                    String password = binding.passwordEditText.getText().toString();
+                    LoginRequest loginRequest = new LoginRequest(email, password);
+
+                    Call<ResponseBody> call = authAPI.login(loginRequest);
+                    call.enqueue(new Callback<ResponseBody>() {
+                        @Override
+                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                            if (response.isSuccessful()) {
+                                // 로그인 성공, 서버로부터 받은 JWT 토큰을 TokenManager에 저장
+                                try {
+                                    JSONObject jsonObject = new JSONObject(response.body().string());
+                                    String accessToken = jsonObject.optString("accessToken");
+                                    TokenManager.getInstance(getApplicationContext()).saveToken(accessToken);
+                                    final Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                } catch (JSONException | IOException e) {
+                                    e.printStackTrace();
+                                }
+                            } else {
+                                // 로그인 실패
+                                switch (response.code()) {
+                                    case 401:
+                                        binding.signInFailedTv.setVisibility(View.VISIBLE);
+                                        break;
+                                    default:
+                                        new ToastWarning(getResources().getString(R.string.toast_none_status_code), SignInActivity.this);
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<ResponseBody> call, Throwable t) {
+                            // 서버 코드 및 네트워크 오류 등의 이유로 요청 실패
+                            new ToastWarning(getResources().getString(R.string.toast_server_error), SignInActivity.this);
+                        }
+                    });
                 }
             }
         });
@@ -128,6 +188,12 @@ public class SignInActivity extends AppCompatActivity {
         RoundedImageView check_circle_roundedImageView = agree_our_policies_dialog.findViewById(R.id.check_circle_roundedImageView);
         RoundedImageView check_circle_roundedImageView2 = agree_our_policies_dialog.findViewById(R.id.check_circle_roundedImageView2);
 
+        // 동의 체크박스 UI 및 변수 초기화
+        check_circle_roundedImageView.setImageResource(R.drawable.check_circle_grey);
+        check_circle_roundedImageView2.setImageResource(R.drawable.check_circle_grey);
+        check_policies_1_toggle = false;
+        check_policies_2_toggle = false;
+
         // Dialog 닫기 버튼
         agree_our_policies_dialog.findViewById(R.id.dialogClose_iBtn).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -138,7 +204,6 @@ public class SignInActivity extends AppCompatActivity {
 
         // "첫 번째 항목 체크" 버튼 클릭 시
         agree_our_policies_dialog.findViewById(R.id.check_relativeLayout_1).
-
                 setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
