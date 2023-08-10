@@ -73,7 +73,7 @@
 
                         <!-- 이름 입력 란 -->
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/nickname_editText"
+                            android:id="@+id/username_editText"
                             android:layout_width="337.5dp"
                             android:layout_height="match_parent"
                             android:ellipsize="end"
