@@ -4,15 +4,28 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.project.sinabro.R;
 import com.project.sinabro.databinding.ActivitySignUpStep1Binding;
+import com.project.sinabro.models.UserInfo;
+import com.project.sinabro.retrofit.AuthAPI;
+import com.project.sinabro.retrofit.RetrofitService;
 import com.project.sinabro.textWatcher.EmailWatcher;
 import com.project.sinabro.textWatcher.PasswordConfirmWatcher;
 import com.project.sinabro.textWatcher.PasswordWatcher;
+import com.project.sinabro.toast.ToastWarning;
+import com.project.sinabro.utils.TokenManager;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class SignUpStep1Activity extends AppCompatActivity {
 
@@ -23,6 +36,13 @@ public class SignUpStep1Activity extends AppCompatActivity {
     private Boolean password_toggle = true,
             passwordConfirm_toggle = true;
 
+    private TokenManager tokenManager;
+    private RetrofitService retrofitService;
+    private AuthAPI authAPI;
+
+    private static final String EMAIL_REGEX =
+            "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +50,10 @@ public class SignUpStep1Activity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         emailConfirm = false;
+
+        tokenManager = TokenManager.getInstance(this);
+        retrofitService = new RetrofitService(tokenManager);
+        authAPI = retrofitService.getRetrofit().create(AuthAPI.class);
 
         /** 뒤로가기 버튼 기능 */
         binding.backIBtn.setOnClickListener(new View.OnClickListener() {
@@ -95,22 +119,61 @@ public class SignUpStep1Activity extends AppCompatActivity {
         binding.emailConfirmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /* 이곳에 API 호출 코드가 추가되어야 합니다. */
-
-                // 입력된 이메일이 DB 내에 존재하지 않을 때 (사용 가능) 관련 문구 표기하기
-                binding.emailTextInputLayout.setErrorEnabled(false);
-                binding.emailConfirmResultTv.setTextColor(getResources().getColor(R.color.blue));
-                binding.emailConfirmResultTv.setText(getResources().getString(R.string.sign_up_email_confirm_success));
-                binding.emailTextInputLayout.setBackgroundResource(R.drawable.edt_bg_selector);
-                binding.emailTextInputLayout.setPadding(-34, 20, 0, 20);
-                emailConfirm = true;
-
-                // 입력된 이메일이 DB 내에 이미 존재할 때 (사용 불가) 관련 문구 표기하기
-                // binding.emailConfirmResultTv.setTextColor(getResources().getColor(R.color.red));
-                // binding.emailConfirmResultTv.setText(getResources().getString(R.string.signup_email_confirm_failed));
-
                 binding.emailConfirmResultTv.setVisibility(View.VISIBLE);
                 binding.emailEditText.clearFocus();
+
+                String email = String.valueOf(binding.emailEditText.getText());
+
+                if (email.equals("")) {
+                    binding.emailConfirmResultTv.setTextColor(getResources().getColor(R.color.red));
+                    binding.emailConfirmResultTv.setText(getResources().getString(R.string.sign_in_email_failed));
+                    return;
+                }
+
+                Pattern pattern = Pattern.compile(EMAIL_REGEX);
+                Matcher matcher = pattern.matcher(email);
+
+                if (!matcher.matches()) {
+                    // 입력된 이메일이 올바르지 않은 이메일 형식을 경우에 경고 관련 문구 표시하기
+                    binding.emailConfirmResultTv.setText(getResources().getString(R.string.sign_up_email_invalid_format));
+                    return;
+                }
+
+                Call<ResponseBody> call = authAPI.checkExistEmail(binding.emailEditText.getText().toString());
+                call.enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        if (response.isSuccessful()) {
+                            // 입력된 이메일이 DB 내에 존재하지 않을 때 (사용 가능) 관련 문구 표기하기
+                            binding.emailTextInputLayout.setErrorEnabled(false);
+                            binding.emailConfirmResultTv.setTextColor(getResources().getColor(R.color.blue));
+                            binding.emailConfirmResultTv.setText(getResources().getString(R.string.sign_up_email_confirm_success));
+                            binding.emailTextInputLayout.setBackgroundResource(R.drawable.edt_bg_selector);
+                            binding.emailTextInputLayout.setPadding(-34, 20, 0, 20);
+                            emailConfirm = true;
+                        } else {
+                            binding.emailConfirmResultTv.setTextColor(getResources().getColor(R.color.red));
+                            switch (response.code()) {
+                                case 400:
+                                    // 입력된 이메일이 올바르지 않은 이메일 형식을 경우에 경고 관련 문구 표시하기
+                                    binding.emailConfirmResultTv.setText(getResources().getString(R.string.sign_up_email_invalid_format));
+                                    break;
+                                case 409:
+                                    // 입력된 이메일이 DB 내에 이미 존재할 때 (사용 불가) 관련 문구 표시하기
+                                    binding.emailConfirmResultTv.setText(getResources().getString(R.string.sign_up_email_already_exist));
+                                    break;
+                                default:
+                                    new ToastWarning(getResources().getString(R.string.toast_none_status_code), SignUpStep1Activity.this);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        // 서버 코드 및 네트워크 오류 등의 이유로 요청 실패
+                        new ToastWarning(getResources().getString(R.string.toast_server_error), SignUpStep1Activity.this);
+                    }
+                });
             }
         });
 
@@ -142,6 +205,8 @@ public class SignUpStep1Activity extends AppCompatActivity {
                 } else {
                     // "회원가입 2단계" 액티비티로 이동
                     final Intent intent = new Intent(getApplicationContext(), SignUpStep2Activity.class);
+                    intent.putExtra("email", binding.emailEditText.getText().toString());
+                    intent.putExtra("password", binding.passwordEditText.getText().toString());
                     startActivity(intent);
                 }
             }
