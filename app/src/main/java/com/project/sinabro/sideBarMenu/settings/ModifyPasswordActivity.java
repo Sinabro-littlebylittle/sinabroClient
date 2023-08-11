@@ -3,6 +3,7 @@ package com.project.sinabro.sideBarMenu.settings;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -13,9 +14,27 @@ import android.view.Window;
 
 import com.project.sinabro.R;
 import com.project.sinabro.databinding.ActivityModifyPasswordBinding;
+import com.project.sinabro.models.requests.ChangePasswordRequest;
+import com.project.sinabro.models.requests.LoginRequest;
+import com.project.sinabro.retrofit.AuthAPI;
+import com.project.sinabro.retrofit.RetrofitService;
+import com.project.sinabro.retrofit.UserAPI;
+import com.project.sinabro.sideBarMenu.authentication.SignInActivity;
 import com.project.sinabro.textWatcher.PasswordConfirmWatcher;
 import com.project.sinabro.textWatcher.PasswordWatcher;
 import com.project.sinabro.toast.ToastSuccess;
+import com.project.sinabro.toast.ToastWarning;
+import com.project.sinabro.utils.TokenManager;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ModifyPasswordActivity extends AppCompatActivity {
 
@@ -25,11 +44,21 @@ public class ModifyPasswordActivity extends AppCompatActivity {
 
     private Dialog modify_password_failed_dialog;
 
+    private TokenManager tokenManager;
+    private RetrofitService retrofitService;
+    AuthAPI authAPI;
+    UserAPI userAPI;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityModifyPasswordBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        tokenManager = TokenManager.getInstance(this);
+        retrofitService = new RetrofitService(tokenManager);
+        authAPI = retrofitService.getRetrofit().create(AuthAPI.class);
+        userAPI = retrofitService.getRetrofit().create(UserAPI.class);
 
         /** "비밀번호 변경 실패 안내" 다이얼로그 변수 초기화 및 설정 */
         modify_password_failed_dialog = new Dialog(ModifyPasswordActivity.this);  // Dialog 초기화
@@ -69,7 +98,6 @@ public class ModifyPasswordActivity extends AppCompatActivity {
         binding.passwordTextInputLayout.setEndIconOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("테스트", "" + current_password_toggle);
                 if (password_toggle) {
                     binding.passwordEditText.setTransformationMethod(null);
                     binding.passwordEditText.setPadding(34, 50, 0, 25);
@@ -122,12 +150,77 @@ public class ModifyPasswordActivity extends AppCompatActivity {
                     binding.passwordConfirmTextInputLayout.setErrorEnabled(true);
                     binding.passwordConfirmTextInputLayout.setBackgroundResource(R.drawable.edt_bg_only_helper_selected);
                 } else {
-                    // showDialog_modify_password_failed();
+                    LoginRequest loginRequest = new LoginRequest(tokenManager.getEmail(), binding.currentPasswordEditText.getText().toString());
+                    Call<ResponseBody> call = authAPI.login(loginRequest);
+                    call.enqueue(new Callback<ResponseBody>() {
+                        @Override
+                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                            if (response.isSuccessful()) {
+                                // 로그인 성공, 서버로부터 받은 JWT 토큰을 TokenManager에 저장
+                                try {
+                                    JSONObject jsonObject = new JSONObject(response.body().string());
+                                    String accessToken = jsonObject.optString("accessToken");
+                                    TokenManager.getInstance(getApplicationContext()).saveToken(accessToken);
 
-                    // 모든 입력이 정상적으로 완료되었을 때
-                    new ToastSuccess(getResources().getString(R.string.toast_modify_password_success), ModifyPasswordActivity.this);
-                    onBackPressed(); // 뒤로가기 기능 수행
-                    finish(); // 현재 액티비티 종료
+                                    Call<ResponseBody> call_change_password = userAPI.changePassword(new ChangePasswordRequest(binding.passwordEditText.getText().toString()));
+                                    call_change_password.enqueue(new Callback<ResponseBody>() {
+                                        @Override
+                                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                                            if (response.isSuccessful()) {
+                                                new ToastSuccess(getResources().getString(R.string.toast_modify_password_success), ModifyPasswordActivity.this);
+                                                onBackPressed(); // 뒤로가기 기능 수행
+                                                finish(); // 현재 액티비티 종료
+                                            } else {
+                                                switch (response.code()) {
+                                                    case 400:
+                                                        new ToastWarning(getResources().getString(R.string.toast_bad_request), ModifyPasswordActivity.this);
+                                                        break;
+                                                    case 401:
+                                                        new ToastWarning(getResources().getString(R.string.toast_login_time_exceed), ModifyPasswordActivity.this);
+                                                        // "로그인" 액티비티로 이동
+                                                        final Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
+                                                        startActivity(intent);
+                                                        break;
+                                                    default:
+                                                        new ToastWarning(getResources().getString(R.string.toast_none_status_code), ModifyPasswordActivity.this);
+                                                }
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onFailure(Call<ResponseBody> call, Throwable t) {
+                                            // 서버 코드 및 네트워크 오류 등의 이유로 요청 실패
+                                            new ToastWarning(getResources().getString(R.string.toast_server_error), ModifyPasswordActivity.this);
+                                        }
+                                    });
+                                } catch (JSONException | IOException e) {
+                                    e.printStackTrace();
+                                }
+                            } else {
+                                // 로그인 실패
+                                switch (response.code()) {
+                                    case 400:
+                                        new ToastWarning(getResources().getString(R.string.toast_login_time_exceed), ModifyPasswordActivity.this);
+                                        // "로그인" 액티비티로 이동
+                                        final Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
+                                        startActivity(intent);
+                                        break;
+                                    case 401:
+                                        showDialog_modify_password_failed();
+                                        break;
+                                    default:
+                                        new ToastWarning(getResources().getString(R.string.toast_none_status_code), ModifyPasswordActivity.this);
+                                }
+
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<ResponseBody> call, Throwable t) {
+                            // 서버 코드 및 네트워크 오류 등의 이유로 요청 실패
+                            new ToastWarning(getResources().getString(R.string.toast_server_error), ModifyPasswordActivity.this);
+                        }
+                    });
                 }
             }
         });
