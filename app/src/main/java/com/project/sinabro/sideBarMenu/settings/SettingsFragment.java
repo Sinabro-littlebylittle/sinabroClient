@@ -5,13 +5,32 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import com.project.sinabro.MainActivity;
 import com.project.sinabro.R;
+import com.project.sinabro.retrofit.RetrofitService;
+import com.project.sinabro.retrofit.UserAPI;
+import com.project.sinabro.sideBarMenu.authentication.SignInActivity;
+import com.project.sinabro.sideBarMenu.devInfo.OpenSourceLicenseActivity;
+import com.project.sinabro.toast.ToastWarning;
+import com.project.sinabro.utils.TokenManager;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -35,6 +54,11 @@ public class SettingsFragment extends Fragment {
             setting_notifications_relativeLayout, our_policies_relativeLayout,
             withdrawal_relativeLayout;
 
+    private TextView userName_tv;
+
+    private TokenManager tokenManager;
+    private RetrofitService retrofitService;
+    UserAPI userAPI;
 
     public SettingsFragment() {
         // Required empty public constructor
@@ -73,6 +97,35 @@ public class SettingsFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_settings_activity, container, false);
 
+        userName_tv = view.findViewById(R.id.userName_tv);
+
+        tokenManager = TokenManager.getInstance(getActivity());
+        retrofitService = new RetrofitService(tokenManager);
+        userAPI = retrofitService.getRetrofit().create(UserAPI.class);
+
+        Call<ResponseBody> call_userAPI_getUserSelfInfo = userAPI.getUserSelfInfo();
+        call_userAPI_getUserSelfInfo.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(response.body().string());
+                        tokenManager.saveUserInfo(jsonObject);
+                        String username = tokenManager.getUsername();
+                        userName_tv.setText(username);
+                    } catch (JSONException | IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                // 서버 코드 및 네트워크 오류 등의 이유로 요청 실패
+                new ToastWarning(getResources().getString(R.string.toast_server_error), getActivity());
+            }
+        });
+
         /** 뒤로가기 버튼 기능 */
         back_iBtn = (ImageButton) view.findViewById(R.id.back_iBtn);
         back_iBtn.setOnClickListener(new View.OnClickListener() {
@@ -88,9 +141,39 @@ public class SettingsFragment extends Fragment {
             public void onClick(View view) {
                 // "회원정보확인" 액티비티로 이동
                 // fragment이기 때문에 activity intent와는 다른 방식
-                Intent intent = new Intent(getActivity(), CheckPasswordActivity.class);
-                intent.putExtra("destActivityName", "MyPageActivity");
-                startActivity(intent);
+                Call<ResponseBody> call_userAPI_getUserSelfInfo = userAPI.getUserSelfInfo();
+                call_userAPI_getUserSelfInfo.enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        if (response.isSuccessful()) {
+                            try {
+                                JSONObject jsonObject = new JSONObject(response.body().string());
+                                tokenManager.saveUserInfo(jsonObject);
+                                Intent intent = new Intent(getActivity(), CheckPasswordActivity.class);
+                                intent.putExtra("departActivityName", "SettingsFragment");
+                                intent.putExtra("destActivityName", "MyPageActivity");
+                                startActivity(intent);
+                            } catch (JSONException | IOException e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            switch (response.code()) {
+                                case 401:
+                                    final Intent intent = new Intent(getActivity(), SignInActivity.class);
+                                    startActivity(intent);
+                                    break;
+                                default:
+                                    new ToastWarning(getResources().getString(R.string.toast_none_status_code), getActivity());
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        // 서버 코드 및 네트워크 오류 등의 이유로 요청 실패
+                        new ToastWarning(getResources().getString(R.string.toast_server_error), getActivity());
+                    }
+                });
             }
         });
 
