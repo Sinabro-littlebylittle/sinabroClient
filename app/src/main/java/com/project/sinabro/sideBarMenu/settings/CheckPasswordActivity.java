@@ -10,8 +10,23 @@ import android.view.View;
 
 import com.project.sinabro.R;
 import com.project.sinabro.databinding.ActivityCheckPasswordBinding;
-import com.project.sinabro.textWatcher.EmailWatcher;
+import com.project.sinabro.models.requests.LoginRequest;
+import com.project.sinabro.retrofit.AuthAPI;
+import com.project.sinabro.retrofit.RetrofitService;
+import com.project.sinabro.sideBarMenu.authentication.SignInActivity;
 import com.project.sinabro.textWatcher.PasswordWatcher;
+import com.project.sinabro.toast.ToastWarning;
+import com.project.sinabro.utils.TokenManager;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class CheckPasswordActivity extends AppCompatActivity {
 
@@ -21,11 +36,25 @@ public class CheckPasswordActivity extends AppCompatActivity {
 
     private Boolean password_toggle = true;
 
+    private TokenManager tokenManager;
+    private RetrofitService retrofitService;
+    private AuthAPI authAPI;
+
+    private static String departActivityName = "", destActivityName;
+    private static Boolean exitActivity = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityCheckPasswordBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        tokenManager = TokenManager.getInstance(this);
+        retrofitService = new RetrofitService(tokenManager);
+        authAPI = retrofitService.getRetrofit().create(AuthAPI.class);
+
+        intent = getIntent();
+        exitActivity = intent.getBooleanExtra("exitCheckPasswordActivity", false);
 
         /** 뒤로가기 버튼 기능 */
         binding.backIBtn.setOnClickListener(new View.OnClickListener() {
@@ -62,25 +91,69 @@ public class CheckPasswordActivity extends AppCompatActivity {
                     binding.passwordTextInputLayout.setError(getResources().getString(R.string.sign_in_password_failed));
                     binding.passwordTextInputLayout.setErrorEnabled(true);
                     binding.passwordTextInputLayout.setBackgroundResource(R.drawable.edt_bg_only_helper_selected);
-                } else {
-                    /* 이곳에 API 호출 코드가 추가되어야 합니다. */
-
-                    // 비밀번호 확인 실패 case
-                    // binding.signInFailedTv.setVisibility(View.VISIBLE);
-
-                    intent = getIntent();
-                    String destActivityName = intent.getStringExtra("destActivityName");
-                    if (destActivityName.equals("MyPageActivity")) {
-                        // "정보 수정" 액티비티로 이동
-                        final Intent intent = new Intent(getApplicationContext(), MyPageActivity.class);
-                        startActivity(intent);
-                    } else if (destActivityName.equals("WithdrawalStep1Activity")) {
-                        // "회원탈퇴 단계(1)" 액티비티로 이동
-                        final Intent intent = new Intent(getApplicationContext(), WithdrawalStep1Activity.class);
-                        startActivity(intent);
-                    }
+                    return;
                 }
+
+                LoginRequest loginRequest = new LoginRequest(tokenManager.getEmail(), binding.passwordEditText.getText().toString());
+                Call<ResponseBody> call = authAPI.login(loginRequest);
+                call.enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        if (response.isSuccessful()) {
+                            // 로그인 성공, 서버로부터 받은 JWT 토큰을 TokenManager에 저장
+                            try {
+                                JSONObject jsonObject = new JSONObject(response.body().string());
+                                String accessToken = jsonObject.optString("accessToken");
+                                TokenManager.getInstance(getApplicationContext()).saveToken(accessToken);
+                                destActivityName = intent.getStringExtra("destActivityName");
+                                departActivityName = intent.getStringExtra("departActivityName");
+                                if (destActivityName.equals("MyPageActivity")) {
+                                    // "정보 수정" 액티비티로 이동
+                                    final Intent intent = new Intent(getApplicationContext(), MyPageActivity.class);
+                                    intent.putExtra("departActivityName", departActivityName);
+                                    startActivity(intent);
+                                } else if (destActivityName.equals("WithdrawalStep1Activity")) {
+                                    // "회원탈퇴 단계(1)" 액티비티로 이동
+                                    final Intent intent = new Intent(getApplicationContext(), WithdrawalStep1Activity.class);
+                                    startActivity(intent);
+                                }
+                            } catch (JSONException | IOException e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            // 로그인 실패
+                            switch (response.code()) {
+                                case 400:
+                                    new ToastWarning(getResources().getString(R.string.toast_bad_request), CheckPasswordActivity.this);
+                                    // "로그인" 액티비티로 이동
+                                    final Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
+                                    startActivity(intent);
+                                    break;
+                                case 401:
+                                    binding.signInFailedTv.setVisibility(View.VISIBLE);
+                                    break;
+                                default:
+                                    new ToastWarning(getResources().getString(R.string.toast_none_status_code), CheckPasswordActivity.this);
+                            }
+
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        // 서버 코드 및 네트워크 오류 등의 이유로 요청 실패
+                        new ToastWarning(getResources().getString(R.string.toast_server_error), CheckPasswordActivity.this);
+                    }
+                });
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (exitActivity) {
+            finish(); // 현재 액티비티 종료
+        }
     }
 }
