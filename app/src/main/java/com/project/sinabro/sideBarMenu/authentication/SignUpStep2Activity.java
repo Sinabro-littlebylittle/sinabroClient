@@ -15,15 +15,26 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 
 import com.project.sinabro.R;
 import com.project.sinabro.databinding.ActivitySignUpStep2Binding;
+import com.project.sinabro.models.UserInfo;
+import com.project.sinabro.retrofit.AuthAPI;
+import com.project.sinabro.retrofit.RetrofitService;
 import com.project.sinabro.textWatcher.NicknameWatcher;
+import com.project.sinabro.toast.ToastWarning;
+import com.project.sinabro.utils.TokenManager;
 
 import java.io.InputStream;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class SignUpStep2Activity extends AppCompatActivity {
 
@@ -34,11 +45,27 @@ public class SignUpStep2Activity extends AppCompatActivity {
 
     private Bitmap bitmap;
 
+    private Intent intent;
+
+    private String email, password;
+
+    private TokenManager tokenManager;
+    private RetrofitService retrofitService;
+    private AuthAPI authAPI;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivitySignUpStep2Binding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        tokenManager = TokenManager.getInstance(this);
+        retrofitService = new RetrofitService(tokenManager);
+        authAPI = retrofitService.getRetrofit().create(AuthAPI.class);
+
+        intent = getIntent();
+        email = intent.getStringExtra("email");
+        password = intent.getStringExtra("password");
 
         /** "기본 프로필 이미지 이용 안내" 다이얼로그 변수 초기화 및 설정 */
         askUserUseDefaultProfileImage_dialog = new Dialog(SignUpStep2Activity.this);  // Dialog 초기화
@@ -96,7 +123,7 @@ public class SignUpStep2Activity extends AppCompatActivity {
                 }
 
                 // 모든 입력이 정상적으로 완료되었을 때 "회원가입 완료 안내" 다이얼로그 띄우기
-                showDialog_reset_password_success();
+                showDialog_sign_up_success();
             }
         });
     }
@@ -186,8 +213,39 @@ public class SignUpStep2Activity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 askUserUseDefaultProfileImage_dialog.dismiss(); // 다이얼로그 닫기
-                // "회원가입 완료 안내" 다이얼로그 띄우기
-                showDialog_reset_password_success();
+
+                UserInfo userInfo = new UserInfo();
+                userInfo.setEmail(email);
+                userInfo.setPassword(password);
+                userInfo.setUsername(binding.nicknameEditText.getText().toString());
+                userInfo.setRole("member");
+
+                Call<UserInfo> call = authAPI.signUp(userInfo);
+                call.enqueue(new Callback<UserInfo>() {
+                    @Override
+                    public void onResponse(Call<UserInfo> call, Response<UserInfo> response) {
+                        if (response.isSuccessful()) {
+                            // "회원가입 완료 안내" 다이얼로그 띄우기
+                            showDialog_sign_up_success();
+                        } else {
+                            switch (response.code()) {
+                                case 400:
+                                    // 가입하려는 계정의 이메일이 이미 존재하는 경우 서버 측에서 에러 반환
+                                    new ToastWarning(getResources().getString(R.string.toast_exist_email), SignUpStep2Activity.this);
+                                    break;
+                                default:
+                                    new ToastWarning(getResources().getString(R.string.toast_none_status_code), SignUpStep2Activity.this);
+                            }
+
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<UserInfo> call, Throwable t) {
+                        // 서버 코드 및 네트워크 오류 등의 이유로 요청 실패
+                        new ToastWarning(getResources().getString(R.string.toast_server_error), SignUpStep2Activity.this);
+                    }
+                });
             }
         });
     }
@@ -195,7 +253,7 @@ public class SignUpStep2Activity extends AppCompatActivity {
     /**
      * (dialog_sign_up_success) 다이얼로그를 디자인하는 함수
      */
-    public void showDialog_reset_password_success() {
+    public void showDialog_sign_up_success() {
         signUpSuccess_dialog.show(); // 다이얼로그 띄우기
         // 다이얼로그 창이 나타나면서 외부 액티비티가 어두워지는데, 그 정도를 조절함
         signUpSuccess_dialog.getWindow().setDimAmount(0.35f);
