@@ -12,15 +12,32 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
+import com.project.sinabro.MainActivity;
 import com.project.sinabro.R;
 import com.project.sinabro.databinding.ActivityMyPageBinding;
+import com.project.sinabro.retrofit.AuthAPI;
+import com.project.sinabro.retrofit.RetrofitService;
+import com.project.sinabro.retrofit.UserAPI;
+import com.project.sinabro.sideBarMenu.authentication.SignInActivity;
 import com.project.sinabro.toast.ToastSuccess;
+import com.project.sinabro.toast.ToastWarning;
+import com.project.sinabro.utils.TokenManager;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.io.InputStream;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MyPageActivity extends AppCompatActivity {
 
@@ -28,17 +45,95 @@ public class MyPageActivity extends AppCompatActivity {
 
     private Bitmap bitmap;
 
+    private TokenManager tokenManager;
+    private RetrofitService retrofitService;
+    UserAPI userAPI;
+
+    private Intent intent;
+
+    @Override
+    public void onBackPressed() {
+        // 프로그래머가 원하는 액티비티로 이동
+        intent = getIntent();
+        String departActivityName = intent.getStringExtra("departActivityName");
+        if (departActivityName.equals("MainActivity")) {
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(intent);
+            finish(); // 현재 액티비티 종료
+        } else if (departActivityName.equals("SettingsFragment")) {
+            Intent intent = new Intent(getApplicationContext(), CheckPasswordActivity.class);
+            intent.putExtra("exitCheckPasswordActivity", true);
+            startActivity(intent);
+            finish(); // 현재 액티비티 종료
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMyPageBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        tokenManager = TokenManager.getInstance(this);
+        retrofitService = new RetrofitService(tokenManager);
+        userAPI = retrofitService.getRetrofit().create(UserAPI.class);
+
+        Call<ResponseBody> call_userAPI_getUserSelfInfo = userAPI.getUserSelfInfo();
+        call_userAPI_getUserSelfInfo.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(response.body().string());
+                        tokenManager.saveUserInfo(jsonObject);
+                        String username = tokenManager.getUsername();
+                        String email = tokenManager.getEmail();
+                        binding.myPageFragmentTitleTv.setText(username + "님의 정보");
+                        binding.usernameTv.setText(username);
+                        binding.emailTv.setText(email);
+                    } catch (JSONException | IOException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    switch (response.code()) {
+                        case 401:
+                        case 404:
+                        case 415:
+                            new ToastWarning(getResources().getString(R.string.toast_login_time_exceed), MyPageActivity.this);
+                            // "로그인" 액티비티로 이동
+                            final Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
+                            startActivity(intent);
+                            finish(); // 현재 액티비티 종료
+                            break;
+                        default:
+                            new ToastWarning(getResources().getString(R.string.toast_none_status_code), MyPageActivity.this);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                // 서버 코드 및 네트워크 오류 등의 이유로 요청 실패
+                new ToastWarning(getResources().getString(R.string.toast_server_error), MyPageActivity.this);
+            }
+        });
+
         binding.backIBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onBackPressed(); // 뒤로가기 기능 수행
-                finish(); // 현재 액티비티 종료
+                // 원하는 액티비티로 이동
+                intent = getIntent();
+                String departActivityName = intent.getStringExtra("departActivityName");
+                if (departActivityName.equals("MainActivity")) {
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    startActivity(intent);
+                    finish(); // 현재 액티비티 종료
+                } else if (departActivityName.equals("SettingsFragment")) {
+                    Intent intent = new Intent(getApplicationContext(), CheckPasswordActivity.class);
+                    intent.putExtra("exitCheckPasswordActivity", true);
+                    startActivity(intent);
+                    finish(); // 현재 액티비티 종료
+                }
             }
         });
 
@@ -48,6 +143,8 @@ public class MyPageActivity extends AppCompatActivity {
             public void onClick(View view) {
                 // "정보 수정" 액티비티로 이동
                 final Intent intent = new Intent(getApplicationContext(), ModifyMyInfoActivity.class);
+                intent.putExtra("username", binding.usernameTv.getText().toString());
+                intent.putExtra("email", binding.emailTv.getText().toString());
                 startActivity(intent);
             }
         });
