@@ -31,7 +31,6 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="27.5dp"
             android:letterSpacing="-0.01"
-            android:text="홍길동님의 정보"
             android:textColor="@color/dark_grey"
             android:textSize="17.5sp" />
 
@@ -130,10 +129,11 @@
                             android:textSize="16.5sp" />
 
                         <TextView
+                            android:id="@+id/username_tv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
-                            android:text="홍길동"
+                            android:text="정보 없음"
                             android:textSize="16.5sp" />
                     </RelativeLayout>
 
@@ -155,6 +155,7 @@
                             android:textSize="16.5sp" />
 
                         <TextView
+                            android:id="@+id/email_tv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
