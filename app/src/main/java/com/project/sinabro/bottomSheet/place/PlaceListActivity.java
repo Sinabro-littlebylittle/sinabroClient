@@ -23,8 +23,9 @@ import android.widget.Toast;
 import com.project.sinabro.MainActivity;
 import com.project.sinabro.R;
 import com.project.sinabro.models.PeopleNumber;
-import com.project.sinabro.retrofit.PeopleNumbersAPI;
+import com.project.sinabro.retrofit.headcountsAPI;
 import com.project.sinabro.retrofit.RetrofitService;
+import com.project.sinabro.utils.TokenManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,9 +53,6 @@ public class PlaceListActivity extends AppCompatActivity {
 
     Boolean bookmarked = true;
 
-    RetrofitService retrofitService = new RetrofitService();
-    PeopleNumbersAPI peopleNumbersAPI = retrofitService.getRetrofit().create(PeopleNumbersAPI.class);
-
     @Override
     public void onBackPressed() {
         // 프로그래머가 원하는 액티비티로 이동
@@ -67,6 +65,10 @@ public class PlaceListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_place_list);
+
+        TokenManager tokenManager = TokenManager.getInstance(this);
+        RetrofitService retrofitService = new RetrofitService(tokenManager);
+        headcountsAPI peopleNumbersAPI = retrofitService.getRetrofit().create(headcountsAPI.class);
 
         /** "장소정보 확인" 다이얼로그 변수 초기화 및 설정 */
         placeInfo_dialog = new Dialog(PlaceListActivity.this);  // Dialog 초기화
