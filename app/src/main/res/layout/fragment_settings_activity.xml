@@ -76,7 +76,7 @@
                     android:layout_marginStart="22.5dp"
                     android:layout_marginTop="1dp"
                     android:layout_toRightOf="@+id/userImage_roundedImageView"
-                    android:text="홍길동"
+                    android:text="정보 없음"
                     android:textColor="@color/text_blue"
                     android:textSize="17.5sp"
                     android:textStyle="bold" />
