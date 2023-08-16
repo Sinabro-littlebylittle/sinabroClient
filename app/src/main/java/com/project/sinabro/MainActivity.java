@@ -69,6 +69,7 @@ import com.project.sinabro.retrofit.RetrofitServiceForKakao;
 import com.project.sinabro.retrofit.UserAPI;
 import com.project.sinabro.sideBarMenu.authentication.SignInActivity;
 import com.project.sinabro.sideBarMenu.settings.CheckPasswordActivity;
+import com.project.sinabro.sideBarMenu.settings.MyPageActivity;
 import com.project.sinabro.toast.ToastWarning;
 import com.project.sinabro.utils.TokenManager;
 
@@ -500,15 +501,46 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
                                 CoordinateToAddress.Document document = documents.get(0);
                                 CoordinateToAddress.RoadAddress roadAddress = document.getRoadAddress();
 
-                                if (addedPlaceInfoState.equals("0")) {
-                                    final Intent intent = new Intent(MainActivity.this, AddPlaceGuideActivity.class);
-                                    startActivity(intent);
-                                    return;
-                                }
-                                // 이곳에 카메라 촬영으로 이어지는 코드가 추가하면 됩니다.
-                                finish();
-                                final Intent intent = new Intent(MainActivity.this, ObjectDetectionActivity.class);
-                                startActivity(intent);
+                                Call<ResponseBody> call_userAPI_getUserSelfInfo = userAPI.getUserSelfInfo();
+                                call_userAPI_getUserSelfInfo.enqueue(new Callback<ResponseBody>() {
+                                    @Override
+                                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                                        if (response.isSuccessful()) {
+                                            try {
+                                                JSONObject jsonObject = new JSONObject(response.body().string());
+                                                tokenManager.saveUserInfo(jsonObject);
+
+                                                if (addedPlaceInfoState.equals("0")) {
+                                                    final Intent intent = new Intent(MainActivity.this, AddPlaceGuideActivity.class);
+                                                    startActivity(intent);
+                                                    return;
+                                                }
+
+                                                // 이곳에 카메라 촬영으로 이어지는 코드가 추가하면 됩니다.
+                                                finish();
+                                                final Intent intent = new Intent(MainActivity.this, ObjectDetectionActivity.class);
+                                                startActivity(intent);
+                                            } catch (JSONException | IOException e) {
+                                                e.printStackTrace();
+                                            }
+                                        } else {
+                                            switch (response.code()) {
+                                                case 401:
+                                                    final Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
+                                                    startActivity(intent);
+                                                    break;
+                                                default:
+                                                    new ToastWarning(getResources().getString(R.string.toast_none_status_code), MainActivity.this);
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                                        // 서버 코드 및 네트워크 오류 등의 이유로 요청 실패
+                                        new ToastWarning(getResources().getString(R.string.toast_server_error), MainActivity.this);
+                                    }
+                                });
                             } else {
                                 new ToastWarning(getResources().getString(R.string.toast_cannot_access_area), MainActivity.this);
                                 return;
@@ -518,8 +550,8 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
 
                     @Override
                     public void onFailure(Call<CoordinateToAddress> call, Throwable t) {
-                        Toast.makeText(MainActivity.this, "get failed..", Toast.LENGTH_SHORT).show();
-                        Logger.getLogger(AddLocationInfoActivity.class.getName()).log(Level.SEVERE, "Error occured", t);
+                        // 서버 코드 및 네트워크 오류 등의 이유로 요청 실패
+                        new ToastWarning(getResources().getString(R.string.toast_server_error), MainActivity.this);
                     }
                 });
             }
@@ -579,7 +611,37 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
                                 intent.putExtra("detailAddress_value", selectedDetailAddress);
                                 intent.putExtra("placeId_value", selectedPlaceId);
                                 intent.putExtra("markerId_value", selectedMarkerId);
-                                startActivity(intent);
+
+                                Call<ResponseBody> call_userAPI_getUserSelfInfo = userAPI.getUserSelfInfo();
+                                call_userAPI_getUserSelfInfo.enqueue(new Callback<ResponseBody>() {
+                                    @Override
+                                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                                        if (response.isSuccessful()) {
+                                            try {
+                                                JSONObject jsonObject = new JSONObject(response.body().string());
+                                                tokenManager.saveUserInfo(jsonObject);
+                                                startActivity(intent);
+                                            } catch (JSONException | IOException e) {
+                                                e.printStackTrace();
+                                            }
+                                        } else {
+                                            switch (response.code()) {
+                                                case 401:
+                                                    final Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
+                                                    startActivity(intent);
+                                                    break;
+                                                default:
+                                                    new ToastWarning(getResources().getString(R.string.toast_none_status_code), MainActivity.this);
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                                        // 서버 코드 및 네트워크 오류 등의 이유로 요청 실패
+                                        new ToastWarning(getResources().getString(R.string.toast_server_error), MainActivity.this);
+                                    }
+                                });
                             } else {
                                 new ToastWarning(getResources().getString(R.string.toast_cannot_access_area), MainActivity.this);
                                 return;
@@ -589,8 +651,8 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
 
                     @Override
                     public void onFailure(Call<CoordinateToAddress> call, Throwable t) {
-                        Toast.makeText(MainActivity.this, "get failed..", Toast.LENGTH_SHORT).show();
-                        Logger.getLogger(AddLocationInfoActivity.class.getName()).log(Level.SEVERE, "Error occured", t);
+                        // 서버 코드 및 네트워크 오류 등의 이유로 요청 실패
+                        new ToastWarning(getResources().getString(R.string.toast_server_error), MainActivity.this);
                     }
                 });
             }
@@ -624,7 +686,38 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
                             if (!documents.isEmpty()) {
                                 CoordinateToAddress.Document document = documents.get(0);
                                 CoordinateToAddress.RoadAddress roadAddress = document.getRoadAddress();
-                                showDialog_ask_add_or_delete_bookmark();
+
+                                Call<ResponseBody> call_userAPI_getUserSelfInfo = userAPI.getUserSelfInfo();
+                                call_userAPI_getUserSelfInfo.enqueue(new Callback<ResponseBody>() {
+                                    @Override
+                                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                                        if (response.isSuccessful()) {
+                                            try {
+                                                JSONObject jsonObject = new JSONObject(response.body().string());
+                                                tokenManager.saveUserInfo(jsonObject);
+
+                                                showDialog_ask_add_or_delete_bookmark();
+                                            } catch (JSONException | IOException e) {
+                                                e.printStackTrace();
+                                            }
+                                        } else {
+                                            switch (response.code()) {
+                                                case 401:
+                                                    final Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
+                                                    startActivity(intent);
+                                                    break;
+                                                default:
+                                                    new ToastWarning(getResources().getString(R.string.toast_none_status_code), MainActivity.this);
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                                        // 서버 코드 및 네트워크 오류 등의 이유로 요청 실패
+                                        new ToastWarning(getResources().getString(R.string.toast_server_error), MainActivity.this);
+                                    }
+                                });
                             } else {
                                 new ToastWarning(getResources().getString(R.string.toast_cannot_access_area), MainActivity.this);
                                 return;
@@ -634,8 +727,8 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
 
                     @Override
                     public void onFailure(Call<CoordinateToAddress> call, Throwable t) {
-                        Toast.makeText(MainActivity.this, "get failed..", Toast.LENGTH_SHORT).show();
-                        Logger.getLogger(AddLocationInfoActivity.class.getName()).log(Level.SEVERE, "Error occured", t);
+                        // 서버 코드 및 네트워크 오류 등의 이유로 요청 실패
+                        new ToastWarning(getResources().getString(R.string.toast_server_error), MainActivity.this);
                     }
                 });
             }
@@ -648,7 +741,72 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         bookmarkFilled_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showDialog_ask_add_or_delete_bookmark();
+                Double latitude = Double.parseDouble("" + selectedLatitude);
+                Double longitude = Double.parseDouble("" + selectedLongitude);
+
+                // 위도와 경도가 한국 범위를 벗어났을 때
+                if (latitude <= 33.0 || latitude >= 38.0 || longitude <= 124.0 || longitude >= 132.0) {
+                    new ToastWarning(getResources().getString(R.string.toast_cannot_access_area), MainActivity.this);
+                    return;
+                }
+
+                RetrofitServiceForKakao retrofitServiceForKakao = new RetrofitServiceForKakao();
+                KakaoAPI kakaoInterface = retrofitServiceForKakao.getRetrofit().create(KakaoAPI.class);
+                Call<CoordinateToAddress> call = kakaoInterface.getAddress("WGS84", longitude, latitude);
+                call.enqueue(new Callback<CoordinateToAddress>() {
+                    @Override
+                    public void onResponse(Call<CoordinateToAddress> call, Response<CoordinateToAddress> response) {
+                        if (response.isSuccessful()) {
+                            CoordinateToAddress responseData = response.body();
+                            List<CoordinateToAddress.Document> documents = responseData.getDocuments();
+                            if (!documents.isEmpty()) {
+                                CoordinateToAddress.Document document = documents.get(0);
+                                CoordinateToAddress.RoadAddress roadAddress = document.getRoadAddress();
+
+                                Call<ResponseBody> call_userAPI_getUserSelfInfo = userAPI.getUserSelfInfo();
+                                call_userAPI_getUserSelfInfo.enqueue(new Callback<ResponseBody>() {
+                                    @Override
+                                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                                        if (response.isSuccessful()) {
+                                            try {
+                                                JSONObject jsonObject = new JSONObject(response.body().string());
+                                                tokenManager.saveUserInfo(jsonObject);
+
+                                                showDialog_ask_add_or_delete_bookmark();
+                                            } catch (JSONException | IOException e) {
+                                                e.printStackTrace();
+                                            }
+                                        } else {
+                                            switch (response.code()) {
+                                                case 401:
+                                                    final Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
+                                                    startActivity(intent);
+                                                    break;
+                                                default:
+                                                    new ToastWarning(getResources().getString(R.string.toast_none_status_code), MainActivity.this);
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                                        // 서버 코드 및 네트워크 오류 등의 이유로 요청 실패
+                                        new ToastWarning(getResources().getString(R.string.toast_server_error), MainActivity.this);
+                                    }
+                                });
+                            } else {
+                                new ToastWarning(getResources().getString(R.string.toast_cannot_access_area), MainActivity.this);
+                                return;
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<CoordinateToAddress> call, Throwable t) {
+                        // 서버 코드 및 네트워크 오류 등의 이유로 요청 실패
+                        new ToastWarning(getResources().getString(R.string.toast_server_error), MainActivity.this);
+                    }
+                });
             }
         });
 

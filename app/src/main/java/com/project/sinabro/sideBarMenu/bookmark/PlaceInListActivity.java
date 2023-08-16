@@ -73,15 +73,15 @@ public class PlaceInListActivity extends AppCompatActivity {
         adapter = new ListViewAdapter();
 
         //Adapter 안에 아이템의 정보 담기
-        adapter.addItem(new PlaceItem("충북대학교 중앙도서관", "3층", 5));
-        adapter.addItem(new PlaceItem("양성재 학생생활관", "식당", 1));
-        adapter.addItem(new PlaceItem("충북대학교가나다라마바사아자", "205호", 10));
-        adapter.addItem(new PlaceItem("가나다라마바사 아자차카타하가", "205호", 100));
-        adapter.addItem(new PlaceItem("가나다라마바사아자차카 타하가", "205호", -1));
-        adapter.addItem(new PlaceItem("가나다라마바  사아자차카타하", "205호", -1));
-        adapter.addItem(new PlaceItem("샘마루(SAMMaru)", "113호", -1));
-        adapter.addItem(new PlaceItem("충북대학교 소프트웨어학부", "205호", -1));
-        adapter.addItem(new PlaceItem("충북대학교 소프트웨어학부", "203호", -1));
+//        adapter.addItem(new PlaceItem("충북대학교 중앙도서관", "3층", 5));
+//        adapter.addItem(new PlaceItem("양성재 학생생활관", "식당", 1));
+//        adapter.addItem(new PlaceItem("충북대학교가나다라마바사아자", "205호", 10));
+//        adapter.addItem(new PlaceItem("가나다라마바사 아자차카타하가", "205호", 100));
+//        adapter.addItem(new PlaceItem("가나다라마바사아자차카 타하가", "205호", -1));
+//        adapter.addItem(new PlaceItem("가나다라마바  사아자차카타하", "205호", -1));
+//        adapter.addItem(new PlaceItem("샘마루(SAMMaru)", "113호", -1));
+//        adapter.addItem(new PlaceItem("충북대학교 소프트웨어학부", "205호", -1));
+//        adapter.addItem(new PlaceItem("충북대학교 소프트웨어학부", "203호", -1));
 
 //        final Intent intent = getIntent();
 //        Boolean input_value = intent.getBooleanExtra("input_value", false);

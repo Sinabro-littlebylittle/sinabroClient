@@ -20,6 +20,8 @@ import com.project.sinabro.R;
 import com.project.sinabro.models.Place;
 import com.project.sinabro.retrofit.PlacesAPI;
 import com.project.sinabro.retrofit.RetrofitService;
+import com.project.sinabro.sideBarMenu.authentication.SignInActivity;
+import com.project.sinabro.sideBarMenu.settings.MyPageActivity;
 import com.project.sinabro.toast.ToastSuccess;
 import com.project.sinabro.toast.ToastWarning;
 import com.project.sinabro.utils.TokenManager;
@@ -116,13 +118,25 @@ public class AddLocationInfoActivity extends AppCompatActivity {
                                 intent.putExtra("markerId_value", markerId);
                                 new ToastSuccess(getResources().getString(R.string.toast_modify_list_success), AddLocationInfoActivity.this);
                                 startActivity(intent);
+                            } else {
+                                switch (response.code()) {
+                                    case 401:
+                                        new ToastWarning(getResources().getString(R.string.toast_login_time_exceed), AddLocationInfoActivity.this);
+                                        // "로그인" 액티비티로 이동
+                                        final Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
+                                        startActivity(intent);
+                                        finish(); // 현재 액티비티 종료
+                                        break;
+                                    default:
+                                        new ToastWarning(getResources().getString(R.string.toast_none_status_code), AddLocationInfoActivity.this);
+                                }
                             }
                         }
 
                         @Override
                         public void onFailure(Call<Place> call, Throwable t) {
-                            Toast.makeText(AddLocationInfoActivity.this, "PATCH failed..", Toast.LENGTH_SHORT).show();
-                            Logger.getLogger(MainActivity.class.getName()).log(Level.SEVERE, "Error occured", t);
+                            // 서버 코드 및 네트워크 오류 등의 이유로 요청 실패
+                            new ToastWarning(getResources().getString(R.string.toast_server_error), AddLocationInfoActivity.this);
                         }
                     });
                 } else {
@@ -138,13 +152,25 @@ public class AddLocationInfoActivity extends AppCompatActivity {
                                 intent.putExtra("markerId_value", placeInformation.getMarkerId());
                                 new ToastSuccess(getResources().getString(R.string.toast_add_place_success), AddLocationInfoActivity.this);
                                 startActivity(intent);
+                            } else {
+                                switch (response.code()) {
+                                    case 401:
+                                        new ToastWarning(getResources().getString(R.string.toast_login_time_exceed), AddLocationInfoActivity.this);
+                                        // "로그인" 액티비티로 이동
+                                        final Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
+                                        startActivity(intent);
+                                        finish(); // 현재 액티비티 종료
+                                        break;
+                                    default:
+                                        new ToastWarning(getResources().getString(R.string.toast_none_status_code), AddLocationInfoActivity.this);
+                                }
                             }
                         }
 
                         @Override
                         public void onFailure(Call<Place> call, Throwable t) {
-                            Toast.makeText(AddLocationInfoActivity.this, "save failed..", Toast.LENGTH_SHORT).show();
-                            Logger.getLogger(MainActivity.class.getName()).log(Level.SEVERE, "Error occured", t);
+                            // 서버 코드 및 네트워크 오류 등의 이유로 요청 실패
+                            new ToastWarning(getResources().getString(R.string.toast_server_error), AddLocationInfoActivity.this);
                         }
                     });
                 }
@@ -198,13 +224,25 @@ public class AddLocationInfoActivity extends AppCompatActivity {
                             final Intent intent = new Intent(getApplicationContext(), PlaceListActivity.class);
                             intent.putExtra("markerId_value", markerId);
                             startActivity(intent);
+                        } else {
+                            switch (response.code()) {
+                                case 401:
+                                    new ToastWarning(getResources().getString(R.string.toast_login_time_exceed), AddLocationInfoActivity.this);
+                                    // "로그인" 액티비티로 이동
+                                    final Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
+                                    startActivity(intent);
+                                    finish(); // 현재 액티비티 종료
+                                    break;
+                                default:
+                                    new ToastWarning(getResources().getString(R.string.toast_none_status_code), AddLocationInfoActivity.this);
+                            }
                         }
                     }
 
                     @Override
                     public void onFailure(Call<Integer> call, Throwable t) {
-                        Toast.makeText(AddLocationInfoActivity.this, "PATCH failed..", Toast.LENGTH_SHORT).show();
-                        Logger.getLogger(MainActivity.class.getName()).log(Level.SEVERE, "Error occured", t);
+                        // 서버 코드 및 네트워크 오류 등의 이유로 요청 실패
+                        new ToastWarning(getResources().getString(R.string.toast_server_error), AddLocationInfoActivity.this);
                     }
                 });
             }
