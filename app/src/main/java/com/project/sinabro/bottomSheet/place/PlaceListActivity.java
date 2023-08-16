@@ -25,6 +25,7 @@ import com.project.sinabro.R;
 import com.project.sinabro.models.PeopleNumber;
 import com.project.sinabro.retrofit.headcountsAPI;
 import com.project.sinabro.retrofit.RetrofitService;
+import com.project.sinabro.toast.ToastWarning;
 import com.project.sinabro.utils.TokenManager;
 
 import java.util.ArrayList;
@@ -149,8 +150,8 @@ public class PlaceListActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<List<PeopleNumber>> call, Throwable t) {
-                Toast.makeText(PlaceListActivity.this, "get failed..", Toast.LENGTH_SHORT).show();
-                Logger.getLogger(MainActivity.class.getName()).log(Level.SEVERE, "Error occured", t);
+                // 서버 코드 및 네트워크 오류 등의 이유로 요청 실패
+                new ToastWarning(getResources().getString(R.string.toast_server_error), PlaceListActivity.this);
             }
         });
     }
