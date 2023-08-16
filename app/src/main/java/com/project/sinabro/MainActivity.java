@@ -69,6 +69,7 @@ import com.project.sinabro.retrofit.RetrofitServiceForKakao;
 import com.project.sinabro.retrofit.UserAPI;
 import com.project.sinabro.sideBarMenu.authentication.SignInActivity;
 import com.project.sinabro.sideBarMenu.settings.CheckPasswordActivity;
+import com.project.sinabro.sideBarMenu.settings.MyPageActivity;
 import com.project.sinabro.toast.ToastWarning;
 import com.project.sinabro.utils.TokenManager;
 
@@ -500,12 +501,6 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
                                 CoordinateToAddress.Document document = documents.get(0);
                                 CoordinateToAddress.RoadAddress roadAddress = document.getRoadAddress();
 
-                                if (addedPlaceInfoState.equals("0")) {
-                                    final Intent intent = new Intent(MainActivity.this, AddPlaceGuideActivity.class);
-                                    startActivity(intent);
-                                    return;
-                                }
-
                                 Call<ResponseBody> call_userAPI_getUserSelfInfo = userAPI.getUserSelfInfo();
                                 call_userAPI_getUserSelfInfo.enqueue(new Callback<ResponseBody>() {
                                     @Override
@@ -514,6 +509,12 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
                                             try {
                                                 JSONObject jsonObject = new JSONObject(response.body().string());
                                                 tokenManager.saveUserInfo(jsonObject);
+
+                                                if (addedPlaceInfoState.equals("0")) {
+                                                    final Intent intent = new Intent(MainActivity.this, AddPlaceGuideActivity.class);
+                                                    startActivity(intent);
+                                                    return;
+                                                }
 
                                                 // 이곳에 카메라 촬영으로 이어지는 코드가 추가하면 됩니다.
                                                 finish();
@@ -549,8 +550,8 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
 
                     @Override
                     public void onFailure(Call<CoordinateToAddress> call, Throwable t) {
-                        Toast.makeText(MainActivity.this, "get failed..", Toast.LENGTH_SHORT).show();
-                        Logger.getLogger(AddLocationInfoActivity.class.getName()).log(Level.SEVERE, "Error occured", t);
+                        // 서버 코드 및 네트워크 오류 등의 이유로 요청 실패
+                        new ToastWarning(getResources().getString(R.string.toast_server_error), MainActivity.this);
                     }
                 });
             }
@@ -650,8 +651,8 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
 
                     @Override
                     public void onFailure(Call<CoordinateToAddress> call, Throwable t) {
-                        Toast.makeText(MainActivity.this, "get failed..", Toast.LENGTH_SHORT).show();
-                        Logger.getLogger(AddLocationInfoActivity.class.getName()).log(Level.SEVERE, "Error occured", t);
+                        // 서버 코드 및 네트워크 오류 등의 이유로 요청 실패
+                        new ToastWarning(getResources().getString(R.string.toast_server_error), MainActivity.this);
                     }
                 });
             }
@@ -726,8 +727,8 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
 
                     @Override
                     public void onFailure(Call<CoordinateToAddress> call, Throwable t) {
-                        Toast.makeText(MainActivity.this, "get failed..", Toast.LENGTH_SHORT).show();
-                        Logger.getLogger(AddLocationInfoActivity.class.getName()).log(Level.SEVERE, "Error occured", t);
+                        // 서버 코드 및 네트워크 오류 등의 이유로 요청 실패
+                        new ToastWarning(getResources().getString(R.string.toast_server_error), MainActivity.this);
                     }
                 });
             }
@@ -802,8 +803,8 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
 
                     @Override
                     public void onFailure(Call<CoordinateToAddress> call, Throwable t) {
-                        Toast.makeText(MainActivity.this, "get failed..", Toast.LENGTH_SHORT).show();
-                        Logger.getLogger(AddLocationInfoActivity.class.getName()).log(Level.SEVERE, "Error occured", t);
+                        // 서버 코드 및 네트워크 오류 등의 이유로 요청 실패
+                        new ToastWarning(getResources().getString(R.string.toast_server_error), MainActivity.this);
                     }
                 });
             }
