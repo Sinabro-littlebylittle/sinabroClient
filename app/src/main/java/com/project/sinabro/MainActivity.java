@@ -478,15 +478,50 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         peopleScan_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (addedPlaceInfoState.equals("0")) {
-                    final Intent intent = new Intent(MainActivity.this, AddPlaceGuideActivity.class);
-                    startActivity(intent);
+                Double latitude = Double.parseDouble("" + selectedLatitude);
+                Double longitude = Double.parseDouble("" + selectedLongitude);
+
+                // 위도와 경도가 한국 범위를 벗어났을 때
+                if (latitude <= 33.0 || latitude >= 38.0 || longitude <= 124.0 || longitude >= 132.0) {
+                    new ToastWarning(getResources().getString(R.string.toast_cannot_access_area), MainActivity.this);
                     return;
                 }
-                // 이곳에 카메라 촬영으로 이어지는 코드가 추가하면 됩니다.
-                finish();
-                final Intent intent = new Intent(MainActivity.this, ObjectDetectionActivity.class);
-                startActivity(intent);
+
+                RetrofitServiceForKakao retrofitServiceForKakao = new RetrofitServiceForKakao();
+                KakaoAPI kakaoInterface = retrofitServiceForKakao.getRetrofit().create(KakaoAPI.class);
+                Call<CoordinateToAddress> call = kakaoInterface.getAddress("WGS84", longitude, latitude);
+                call.enqueue(new Callback<CoordinateToAddress>() {
+                    @Override
+                    public void onResponse(Call<CoordinateToAddress> call, Response<CoordinateToAddress> response) {
+                        if (response.isSuccessful()) {
+                            CoordinateToAddress responseData = response.body();
+                            List<CoordinateToAddress.Document> documents = responseData.getDocuments();
+                            if (!documents.isEmpty()) {
+                                CoordinateToAddress.Document document = documents.get(0);
+                                CoordinateToAddress.RoadAddress roadAddress = document.getRoadAddress();
+
+                                if (addedPlaceInfoState.equals("0")) {
+                                    final Intent intent = new Intent(MainActivity.this, AddPlaceGuideActivity.class);
+                                    startActivity(intent);
+                                    return;
+                                }
+                                // 이곳에 카메라 촬영으로 이어지는 코드가 추가하면 됩니다.
+                                finish();
+                                final Intent intent = new Intent(MainActivity.this, ObjectDetectionActivity.class);
+                                startActivity(intent);
+                            } else {
+                                new ToastWarning(getResources().getString(R.string.toast_cannot_access_area), MainActivity.this);
+                                return;
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<CoordinateToAddress> call, Throwable t) {
+                        Toast.makeText(MainActivity.this, "get failed..", Toast.LENGTH_SHORT).show();
+                        Logger.getLogger(AddLocationInfoActivity.class.getName()).log(Level.SEVERE, "Error occured", t);
+                    }
+                });
             }
         });
 
@@ -568,7 +603,41 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         bookmarkEmpty_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showDialog_ask_add_or_delete_bookmark();
+                Double latitude = Double.parseDouble("" + selectedLatitude);
+                Double longitude = Double.parseDouble("" + selectedLongitude);
+
+                // 위도와 경도가 한국 범위를 벗어났을 때
+                if (latitude <= 33.0 || latitude >= 38.0 || longitude <= 124.0 || longitude >= 132.0) {
+                    new ToastWarning(getResources().getString(R.string.toast_cannot_access_area), MainActivity.this);
+                    return;
+                }
+
+                RetrofitServiceForKakao retrofitServiceForKakao = new RetrofitServiceForKakao();
+                KakaoAPI kakaoInterface = retrofitServiceForKakao.getRetrofit().create(KakaoAPI.class);
+                Call<CoordinateToAddress> call = kakaoInterface.getAddress("WGS84", longitude, latitude);
+                call.enqueue(new Callback<CoordinateToAddress>() {
+                    @Override
+                    public void onResponse(Call<CoordinateToAddress> call, Response<CoordinateToAddress> response) {
+                        if (response.isSuccessful()) {
+                            CoordinateToAddress responseData = response.body();
+                            List<CoordinateToAddress.Document> documents = responseData.getDocuments();
+                            if (!documents.isEmpty()) {
+                                CoordinateToAddress.Document document = documents.get(0);
+                                CoordinateToAddress.RoadAddress roadAddress = document.getRoadAddress();
+                                showDialog_ask_add_or_delete_bookmark();
+                            } else {
+                                new ToastWarning(getResources().getString(R.string.toast_cannot_access_area), MainActivity.this);
+                                return;
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<CoordinateToAddress> call, Throwable t) {
+                        Toast.makeText(MainActivity.this, "get failed..", Toast.LENGTH_SHORT).show();
+                        Logger.getLogger(AddLocationInfoActivity.class.getName()).log(Level.SEVERE, "Error occured", t);
+                    }
+                });
             }
         });
 
