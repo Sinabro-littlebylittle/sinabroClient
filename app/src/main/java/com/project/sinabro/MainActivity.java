@@ -22,7 +22,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -60,8 +59,7 @@ import com.project.sinabro.bottomSheet.place.AddPlaceGuideActivity;
 import com.project.sinabro.bottomSheet.place.PlaceListActivity;
 import com.project.sinabro.bottomSheet.place.RemoveBookmarkFromListActivity;
 import com.project.sinabro.models.CoordinateToAddress;
-import com.project.sinabro.models.PeopleNumber;
-import com.project.sinabro.retrofit.AuthAPI;
+import com.project.sinabro.models.Headcount;
 import com.project.sinabro.retrofit.KakaoAPI;
 import com.project.sinabro.retrofit.headcountsAPI;
 import com.project.sinabro.retrofit.RetrofitService;
@@ -69,7 +67,6 @@ import com.project.sinabro.retrofit.RetrofitServiceForKakao;
 import com.project.sinabro.retrofit.UserAPI;
 import com.project.sinabro.sideBarMenu.authentication.SignInActivity;
 import com.project.sinabro.sideBarMenu.settings.CheckPasswordActivity;
-import com.project.sinabro.sideBarMenu.settings.MyPageActivity;
 import com.project.sinabro.toast.ToastWarning;
 import com.project.sinabro.utils.TokenManager;
 
@@ -94,8 +91,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -138,7 +133,7 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
     private ArrayList<MapPOIItem> markers = new ArrayList<>();
     private LocationSettingsRequest mLocationSettingsRequest;
     private Button currentLocation_btn, mapZoomIn_btn, mapZoomOut_btn, peopleScan_btn, editLocation_btn, placeList_btn;
-    private TextView placeName_tv, detailAddress_tv, peopleCount_tv, updateElapsedTime_tv, username_tv;
+    private TextView placeName_tv, detailAddress_tv, peopleCount_tv, headcountUnit_tv, updateElapsedTime_tv, username_tv;
     private static Button bookmarkEmpty_btn, bookmarkFilled_btn;
 
     private ImageButton hamburger_ibtn;
@@ -213,15 +208,15 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         peopleNumbersAPI = retrofitService.getRetrofit().create(headcountsAPI.class);
         userAPI = retrofitService.getRetrofit().create(UserAPI.class);
 
-        Call<List<PeopleNumber>> call = peopleNumbersAPI.getPlaceInformations();
-        call.enqueue(new Callback<List<PeopleNumber>>() {
+        Call<List<Headcount>> call = peopleNumbersAPI.getPlaceInformations();
+        call.enqueue(new Callback<List<Headcount>>() {
             @Override
-            public void onResponse(Call<List<PeopleNumber>> call, Response<List<PeopleNumber>> response) {
+            public void onResponse(Call<List<Headcount>> call, Response<List<Headcount>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    List<PeopleNumber> placeInformations = response.body();
+                    List<Headcount> placeInformations = response.body();
                     if (!placeInformations.isEmpty()) {
                         for (int k = 0; k < placeInformations.size(); k++) {
-                            int peopleNum = placeInformations.get(k).getPeopleCount();
+                            int peopleNum = placeInformations.get(k).getHeadcount();
                             double latitude = Double.parseDouble(placeInformations.get(k).getPlaceId().getMarkerId().getLatitude());
                             double longitude = Double.parseDouble(placeInformations.get(k).getPlaceId().getMarkerId().getLongitude());
                             String placeName = placeInformations.get(k).getPlaceId().getPlaceName();
@@ -241,7 +236,7 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
             }
 
             @Override
-            public void onFailure(Call<List<PeopleNumber>> call, Throwable t) {
+            public void onFailure(Call<List<Headcount>> call, Throwable t) {
                 // 서버 코드 및 네트워크 오류 등의 이유로 요청 실패
                 new ToastWarning(getResources().getString(R.string.toast_server_error), MainActivity.this);
             }
@@ -463,6 +458,8 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         peopleCount_tv =
 
                 findViewById(R.id.peopleCount_tv);
+
+        headcountUnit_tv = findViewById(R.id.headcountUnit_tv);
 
         updateElapsedTime_tv =
 
@@ -828,30 +825,6 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         }
 
         mapView.setPOIItemEventListener(this);
-
-        isDetected =
-
-                getIntent().
-
-                        getBooleanExtra("isDetected", false);
-
-        if (isDetected) {
-            int peopleCountDetectionResult = getIntent().getIntExtra("peopleCountDetectionResult", -1);
-            peopleCount_tv.setText("" + peopleCountDetectionResult);
-            placeName_tv.setText(selectedPlaceName);
-            detailAddress_tv.setText(selectedDetailAddress);
-
-            MapPoint mapPoint = MapPoint.mapPointWithGeoCoord(selectedLatitude, selectedLongitude);
-            mapView.setMapCenterPoint(mapPoint, true);
-
-            selectedMarker.setItemName(peopleCountDetectionResult + "명");
-            marker.setTag(markers.size());
-            mapView.selectPOIItem(selectedMarker, true);
-
-            bottomSheetBehavior.setPeekHeight(85);
-            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-        }
-
     }
 
     public void updateBookmarkBtnState(Boolean bookmarked) {
@@ -1171,6 +1144,8 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         marker.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin); // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
 
         peopleCount_tv.setText("?");
+        headcountUnit_tv.setVisibility(View.GONE);
+        updateElapsedTime_tv.setText("정보 없음");
         placeName_tv.setText("장소명(새로운 장소)");
         detailAddress_tv.setText("상세 주소");
         addedPlaceInfoState = "0";
@@ -1214,6 +1189,8 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         String[] splittedStrings = userObject.toString().split("/");
         String peopleCount_str = Integer.parseInt(splittedStrings[0]) == -1 ? "?" : "" + splittedStrings[0];
         peopleCount_tv.setText(peopleCount_str);
+        if (peopleCount_str.equals("?")) headcountUnit_tv.setVisibility(View.GONE);
+        else headcountUnit_tv.setVisibility(View.VISIBLE);
         placeName_tv.setText(splittedStrings[1]);
         detailAddress_tv.setText(splittedStrings[2]);
         long updateElapsedTime = Integer.parseInt(splittedStrings[3]);
