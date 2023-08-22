@@ -4,6 +4,8 @@ import com.project.sinabro.models.Place;
 
 import java.util.List;
 
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -23,5 +25,5 @@ public interface PlacesAPI {
     Call<Place> updatePlace(@Path("id") String id, @Body Place place);
 
     @DELETE("/api/places/private/{id}")
-    Call<Integer> deletePlace(@Path("id") String id);
+    Call<ResponseBody> deletePlace(@Path("id") String id);
 }

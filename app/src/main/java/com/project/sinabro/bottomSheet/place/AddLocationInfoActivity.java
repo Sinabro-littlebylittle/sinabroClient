@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -26,9 +27,14 @@ import com.project.sinabro.toast.ToastSuccess;
 import com.project.sinabro.toast.ToastWarning;
 import com.project.sinabro.utils.TokenManager;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -208,22 +214,26 @@ public class AddLocationInfoActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 placeRemove_dialog.dismiss(); // 다이얼로그 닫기
-                placesAPI.deletePlace(placeId).enqueue(new Callback<Integer>() {
+                placesAPI.deletePlace(placeId).enqueue(new Callback<ResponseBody>() {
                     @Override
-                    public void onResponse(Call<Integer> call, Response<Integer> response) {
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         if (response.isSuccessful()) {
                             new ToastSuccess(getResources().getString(R.string.toast_remove_place_info_success), AddLocationInfoActivity.this);
-
-                            int remainPlacesNum = response.body();
-                            if (remainPlacesNum == 0) {
-                                final Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                            try {
+                                JSONObject jsonObject = new JSONObject(response.body().string());
+                                int remainingPlacesCnt = jsonObject.optInt("remainingPlacesCnt");
+                                if (remainingPlacesCnt == 0) {
+                                    final Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                    startActivity(intent);
+                                    finish(); // 현재 액티비티 종료
+                                    return;
+                                }
+                                final Intent intent = new Intent(getApplicationContext(), PlaceListActivity.class);
+                                intent.putExtra("markerId_value", markerId);
                                 startActivity(intent);
-                                finish(); // 현재 액티비티 종료
-                                return;
+                            } catch (JSONException | IOException e) {
+                                e.printStackTrace();
                             }
-                            final Intent intent = new Intent(getApplicationContext(), PlaceListActivity.class);
-                            intent.putExtra("markerId_value", markerId);
-                            startActivity(intent);
                         } else {
                             switch (response.code()) {
                                 case 401:
@@ -240,7 +250,7 @@ public class AddLocationInfoActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onFailure(Call<Integer> call, Throwable t) {
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
                         // 서버 코드 및 네트워크 오류 등의 이유로 요청 실패
                         new ToastWarning(getResources().getString(R.string.toast_server_error), AddLocationInfoActivity.this);
                     }
