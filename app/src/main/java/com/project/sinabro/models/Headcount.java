@@ -2,7 +2,7 @@ package com.project.sinabro.models;
 
 import com.google.gson.annotations.SerializedName;
 
-public class PeopleNumber {
+public class Headcount {
 
     @SerializedName("_id")
     private String id;
@@ -10,8 +10,8 @@ public class PeopleNumber {
     @SerializedName("placeId")
     private PlaceId placeId;
 
-    @SerializedName("peopleCount")
-    private int peopleCount;
+    @SerializedName("headcount")
+    private int headcount;
 
     @SerializedName("createdTime")
     private String createdTime;
@@ -35,12 +35,12 @@ public class PeopleNumber {
         this.placeId = placeId;
     }
 
-    public int getPeopleCount() {
-        return peopleCount;
+    public int getHeadcount() {
+        return headcount;
     }
 
-    public void setPeopleCount(int peopleCount) {
-        this.peopleCount = peopleCount;
+    public void setHeadcount(int headcount) {
+        this.headcount = headcount;
     }
 
     public String getCreatedTime() {
