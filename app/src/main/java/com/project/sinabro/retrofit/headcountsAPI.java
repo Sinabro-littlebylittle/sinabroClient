@@ -1,7 +1,7 @@
 package com.project.sinabro.retrofit;
 
 import com.project.sinabro.models.Place;
-import com.project.sinabro.models.PeopleNumber;
+import com.project.sinabro.models.Headcount;
 
 import java.util.List;
 
@@ -13,11 +13,11 @@ import retrofit2.http.Path;
 
 public interface headcountsAPI {
     @GET("/api/headcounts/public/placeInformations")
-    Call<List<PeopleNumber>> getPlaceInformations();
+    Call<List<Headcount>> getPlaceInformations();
 
     @GET("/api/headcounts/public/{id}/placeInformations")
-    Call<List<PeopleNumber>> getPlaceInformationsById(@Path("id") String id);
+    Call<List<Headcount>> getPlaceInformationsById(@Path("id") String id);
 
     @POST("/api/headcounts/private")
-    Call<Place> addPeopleNumber(@Body PeopleNumber peopleNumber);
+    Call<Place> addPeopleNumber(@Body Headcount peopleNumber);
 }

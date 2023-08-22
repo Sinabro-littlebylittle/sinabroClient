@@ -18,11 +18,10 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.project.sinabro.MainActivity;
 import com.project.sinabro.R;
-import com.project.sinabro.models.PeopleNumber;
+import com.project.sinabro.models.Headcount;
 import com.project.sinabro.retrofit.headcountsAPI;
 import com.project.sinabro.retrofit.RetrofitService;
 import com.project.sinabro.toast.ToastWarning;
@@ -30,8 +29,6 @@ import com.project.sinabro.utils.TokenManager;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -117,19 +114,19 @@ public class PlaceListActivity extends AppCompatActivity {
         listview = findViewById(R.id.placeList_listView);
         adapter = new ListViewAdapter();
 
-        Call<List<PeopleNumber>> call = peopleNumbersAPI.getPlaceInformationsById(markerId);
-        call.enqueue(new Callback<List<PeopleNumber>>() {
+        Call<List<Headcount>> call = peopleNumbersAPI.getPlaceInformationsById(markerId);
+        call.enqueue(new Callback<List<Headcount>>() {
             @Override
-            public void onResponse(Call<List<PeopleNumber>> call, Response<List<PeopleNumber>> response) {
+            public void onResponse(Call<List<Headcount>> call, Response<List<Headcount>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    List<PeopleNumber> placeInformations = response.body();
+                    List<Headcount> placeInformations = response.body();
                     if (!placeInformations.isEmpty()) {
                         address = placeInformations.get(0).getPlaceId().getAddress();
                         latitude = Double.valueOf(placeInformations.get(0).getPlaceId().getMarkerId().getLatitude());
                         longitude = Double.valueOf(placeInformations.get(0).getPlaceId().getMarkerId().getLongitude());
                         address_tv.setText(address);
                         for (int k = 0; k < placeInformations.size(); k++) {
-                            int peopleNum = placeInformations.get(k).getPeopleCount();
+                            int peopleNum = placeInformations.get(k).getHeadcount();
                             String placeName = placeInformations.get(k).getPlaceId().getPlaceName();
                             String detailAddress = placeInformations.get(k).getPlaceId().getDetailAddress();
                             long updateElapsedTime = placeInformations.get(k).getUpdateElapsedTime();
@@ -149,7 +146,7 @@ public class PlaceListActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<List<PeopleNumber>> call, Throwable t) {
+            public void onFailure(Call<List<Headcount>> call, Throwable t) {
                 // 서버 코드 및 네트워크 오류 등의 이유로 요청 실패
                 new ToastWarning(getResources().getString(R.string.toast_server_error), PlaceListActivity.this);
             }
