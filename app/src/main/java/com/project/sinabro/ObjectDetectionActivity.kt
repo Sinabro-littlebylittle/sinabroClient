@@ -46,6 +46,8 @@ class ObjectDetectionActivity : AppCompatActivity() {
 
     private lateinit var cameraExecutor: ExecutorService
 
+    private lateinit var aLoadingDialog: ALoadingDialog
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewBinding = ActivityObjectDetectionBinding.inflate(layoutInflater)
@@ -132,11 +134,10 @@ class ObjectDetectionActivity : AppCompatActivity() {
                                 .show()
                             Log.d(TAG, msg)
 
+                            // play loading animation
+                            aLoadingDialog = ALoadingDialog(this)
+                            aLoadingDialog.show()
 
-                            //서버에 파일 전송
-                            val path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES).absolutePath +
-                                    File.separator + "CameraX-Video" + File.separator + mediaStoreOutputOptions.contentValues.getAsString(MediaStore.MediaColumns.DISPLAY_NAME)+".mp4"
-                            val file = File(path)
 
                             //해당 비디오 재생
 //                            Toast.makeText(this, "i will out", Toast.LENGTH_SHORT).show()
@@ -144,7 +145,10 @@ class ObjectDetectionActivity : AppCompatActivity() {
 //                            myIntent.putExtra("path", path)
 //                            startActivity(myIntent)
 
-                            // 응답
+                            //서버에 파일 전송
+                            val path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES).absolutePath +
+                                    File.separator + "CameraX-Video" + File.separator + mediaStoreOutputOptions.contentValues.getAsString(MediaStore.MediaColumns.DISPLAY_NAME)+".mp4"
+                            val file = File(path)
                             val retrofitService = RetrofitServiceForHeadCount()
                             val modelAPI = retrofitService.retrofit.create(ModelAPI::class.java)
 
