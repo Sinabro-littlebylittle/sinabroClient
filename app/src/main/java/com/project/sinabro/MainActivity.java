@@ -97,7 +97,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity implements MapView.CurrentLocationEventListener, MapView.MapViewEventListener, MapView.POIItemEventListener, Runnable {
+public class MainActivity extends AppCompatActivity implements MapView.CurrentLocationEventListener, MapView.MapViewEventListener, MapView.POIItemEventListener {
 
     /**
      * 위치 권한 요청 코드의 상숫값
@@ -164,7 +164,6 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
     static private String selectedPeopleCount, selectedPlaceName, selectedDetailAddress, selectedPlaceId, selectedMarkerId;
 
     //모델관련 변수 선언
-    private ResultView mResultView;
     private Bitmap mBitmap = null;
     private Module mModule = null;
     private float mImgScaleX, mImgScaleY, mIvScaleX, mIvScaleY, mStartX, mStartY;
@@ -459,15 +458,13 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
 
                 findViewById(R.id.peopleCount_tv);
 
-        headcountUnit_tv = findViewById(R.id.headcountUnit_tv);
-
         updateElapsedTime_tv =
 
                 findViewById(R.id.updateElapsedTime_tv);
 
-        mResultView =
-
-                findViewById(R.id.resultView);
+//        mResultView =
+//
+//                findViewById(R.id.resultView);
 //        mResultView.setVisibility(View.INVISIBLE);
         /** 카메라 촬영 버튼 */
         peopleScan_btn =
@@ -806,25 +803,6 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
                 });
             }
         });
-
-        //모델 로드..
-        try {
-            mModule = LiteModuleLoader.load(MainActivity.assetFilePath(getApplicationContext(), "yolov5s.torchscript.ptl"));
-            BufferedReader br = new BufferedReader(new InputStreamReader(getAssets().open("classes.txt")));
-            String line;
-            List<String> classes = new ArrayList<>();
-            while ((line = br.readLine()) != null) {
-                classes.add(line);
-            }
-            PrePostProcessor.mClasses = new String[classes.size()];
-            classes.toArray(PrePostProcessor.mClasses);
-        } catch (
-                IOException e) {
-            Log.e("Object Detection", "Error reading assets", e);
-            finish();
-        }
-
-        mapView.setPOIItemEventListener(this);
     }
 
     public void updateBookmarkBtnState(Boolean bookmarked) {
@@ -921,25 +899,6 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
                     break;
             }
         }
-    }
-
-    @Override
-    public void run() {
-        Bitmap resizedBitmap = Bitmap.createScaledBitmap(mBitmap, PrePostProcessor.mInputWidth, PrePostProcessor.mInputHeight, true);
-        final Tensor inputTensor = TensorImageUtils.bitmapToFloat32Tensor(resizedBitmap, PrePostProcessor.NO_MEAN_RGB, PrePostProcessor.NO_STD_RGB);
-        IValue[] outputTuple = mModule.forward(IValue.from(inputTensor)).toTuple();
-        final Tensor outputTensor = outputTuple[0].toTensor();
-        final float[] outputs = outputTensor.getDataAsFloatArray();
-        final ArrayList<Result> results = PrePostProcessor.outputsToNMSPredictions(outputs, mImgScaleX, mImgScaleY, mIvScaleX, mIvScaleY, mStartX, mStartY);
-
-        runOnUiThread(() -> {
-            //mButtonDetect.setEnabled(true);
-            //mButtonDetect.setText(getString(R.string.detect));
-            //mProgressBar.setVisibility(ProgressBar.INVISIBLE);
-            mResultView.setResults(results);
-            mResultView.invalidate();
-            mResultView.setVisibility(View.VISIBLE);
-        });
     }
 
     private void init() {
