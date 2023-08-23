@@ -168,6 +168,8 @@ class ObjectDetectionActivity : AppCompatActivity() {
                                         if (!responseBody.isNullOrEmpty()) {
                                             try {
                                                 val serverValue: Int = responseBody.toInt()
+                                                // 인원수 계수 확인 및 등록 페이지로 이동
+                                                val intent = Intent(this@ObjectDetectionActivity, PlayActivity::class.java)
                                                 intent.putExtra("serverValue", serverValue)
                                                 startActivity(intent)
                                             } catch (e: NumberFormatException) {
