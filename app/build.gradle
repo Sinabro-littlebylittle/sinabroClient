@@ -1,5 +1,6 @@
 plugins {
     id 'com.android.application'
+    id 'kotlin-android'
 }
 
 android {
@@ -27,6 +28,10 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
     }
 
     buildFeatures {
@@ -67,9 +72,14 @@ dependencies {
     implementation "androidx.cardview:cardview:1.0.0"
 
     //Object Detection Model 추가 위해 라이브러리 추가
-    def camerax_version = "1.0.0-alpha05"
-    implementation "androidx.camera:camera-core:$camerax_version"
-    implementation "androidx.camera:camera-camera2:$camerax_version"
+    def camerax_version = "1.1.0-beta01"
+    implementation "androidx.camera:camera-core:${camerax_version}"
+    implementation "androidx.camera:camera-camera2:${camerax_version}"
+    implementation "androidx.camera:camera-lifecycle:${camerax_version}"
+    implementation "androidx.camera:camera-video:${camerax_version}"
+
+    implementation "androidx.camera:camera-view:${camerax_version}"
+    implementation "androidx.camera:camera-extensions:${camerax_version}"
 
     implementation 'org.pytorch:pytorch_android_torchvision_lite:1.12.2'
     implementation 'org.pytorch:pytorch_android_lite:1.12.2'
@@ -91,4 +101,8 @@ dependencies {
 
     // 요소 애니메이션 적용을 위한 라이브러리 추가
     implementation 'com.daimajia.androidanimations:library:2.4@aar'
+
+    //implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlin_version}"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlin_version}"
+
 }

@@ -33,10 +33,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity" />
-        <activity
-            android:name=".ObjectDetectionActivity"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait" />
+        <activity android:name=".ObjectDetectionActivity"/>
         <activity android:name=".bottomSheet.place.AddLocationInfoActivity" />
         <activity android:name=".bottomSheet.place.AddPlaceGuideActivity" />
         <activity android:name=".bottomSheet.place.PlaceListActivity" />

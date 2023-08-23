@@ -35,4 +35,8 @@
     <string name="mit_license_label">* MIT License</string>
     <string name="mit_license_url">https://github.com/Sinabro-littlebylittle/sinabroClient/blob/main/LICENSE</string>
 
+    <!-- 영상 스캔 관련 string  -->
+    <string name="start_capture">스캔</string>
+    <string name="stop_capture">스캔 완료</string>
+
 </resources>

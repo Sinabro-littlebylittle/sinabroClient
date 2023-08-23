@@ -1,55 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@android:color/black"
-    android:fitsSystemWindows="true">
+    android:layout_height="match_parent">
 
-    <RelativeLayout
+    <androidx.camera.view.PreviewView
+        android:id="@+id/viewFinder"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="-16dp"
+        tools:layout_editor_absoluteY="0dp" />
 
-        <ViewStub
-            android:id="@+id/object_detection_texture_view_stub"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout="@layout/texture_view"
-            app:layout_constraintBottom_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+    <Button
+        android:id="@+id/scanbutton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="15dp"
+        android:backgroundTint="@color/blue"
+        android:elevation="2dp"
+        android:letterSpacing="0"
+        android:outlineProvider="none"
+        android:paddingTop="17.5dp"
+        android:paddingBottom="17.5dp"
+        android:text="@string/start_capture"
+        android:textColor="@color/white"
+        android:textSize="17.5sp"
+        app:cornerRadius="100dp"
+        app:layout_constraintBottom_toBottomOf="@+id/viewFinder"
+        tools:layout_editor_absoluteX="50dp" />
 
-        <com.project.sinabro.ResultView
-            android:id="@+id/resultView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <!-- "리스트 제거하기" 버튼 -->
-        <Button
-            android:id="@+id/scanbutton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginLeft="32.5dp"
-            android:layout_marginRight="32.5dp"
-            android:layout_marginBottom="22.5dp"
-            android:backgroundTint="@color/blue"
-            android:letterSpacing="0"
-            android:outlineProvider="none"
-            android:paddingTop="17.5dp"
-            android:paddingBottom="17.5dp"
-            android:text="스캔 완료"
-            android:textColor="@color/white"
-            android:textSize="17.5sp"
-            app:cornerRadius="100dp" />
-    </RelativeLayout>
-
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/vertical_centerline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".50" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
