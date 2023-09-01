@@ -32,13 +32,13 @@
 
             <!-- "즐겨찾기" 메뉴명 -->
             <TextView
-                android:id="@+id/my_page_fragment_title_tv"
+                android:id="@+id/bookmark_fragment_title_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="27.5dp"
                 android:letterSpacing="-0.01"
-                android:text="즐겨찾기"
+                android:text="즐겨찾기 리스트"
                 android:textColor="@color/dark_grey"
                 android:textSize="17.5sp" />
 
@@ -67,11 +67,25 @@
             android:layout_above="@+id/addNewList_btn"
             android:layout_below="@+id/fragment_header_relativeLayout">
 
+            <!-- 로딩 메시지 -->
+            <TextView
+                android:id="@+id/loading_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="29dp"
+                android:layout_marginTop="10dp"
+                android:letterSpacing="-0.05"
+                android:maxWidth="350dp"
+                android:text="불러오는 중..."
+                android:textColor="@color/grey"
+                android:textSize="15sp" />
+
             <ListView
-                android:id="@+id/list_listView"
+                android:id="@+id/bookmarkList_listView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
+                android:layout_below="@+id/loading_tv"
                 android:divider="#FFFFFF"
                 android:dividerHeight="0px"
                 android:scrollbars="none" />
