@@ -3,10 +3,11 @@ package com.project.sinabro.sideBarMenu.bookmark;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -14,18 +15,22 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.project.sinabro.R;
-import com.project.sinabro.bottomSheet.place.PlaceItem;
-import com.project.sinabro.bottomSheet.place.PlaceListActivity;
-import com.project.sinabro.sideBarMenu.settings.ModifyMyInfoActivity;
-import com.project.sinabro.sideBarMenu.settings.SettingNotificationsActivity;
-
-import org.w3c.dom.Text;
+import com.project.sinabro.models.Bookmark;
+import com.project.sinabro.retrofit.RetrofitService;
+import com.project.sinabro.retrofit.interfaceAPIs.BookmarksAPI;
+import com.project.sinabro.sideBarMenu.authentication.SignInActivity;
+import com.project.sinabro.toast.ToastWarning;
+import com.project.sinabro.utils.TokenManager;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 /**
@@ -42,7 +47,7 @@ public class BookmarkFragment extends Fragment {
 
     private ImageButton back_iBtn;
 
-    private TextView remove_list_tv;
+    private TextView remove_list_tv, loading_tv;
 
     static private ListView listview;
 
@@ -50,13 +55,21 @@ public class BookmarkFragment extends Fragment {
 
     private Button addNewList_btn;
 
+    private List<Bookmark> bookmarkList = new ArrayList<>();
+
     int newListIconColor;
 
     String newListName;
 
+    private TokenManager tokenManager;
+    private RetrofitService retrofitService;
+    static BookmarksAPI bookmarksAPI;
+
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private View view;
 
     public BookmarkFragment() {
         // Required empty public constructor
@@ -94,7 +107,11 @@ public class BookmarkFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_bookmark_activity, container, false);
+        view = inflater.inflate(R.layout.fragment_bookmark_activity, container, false);
+
+        tokenManager = TokenManager.getInstance(getContext());
+        retrofitService = new RetrofitService(tokenManager);
+        bookmarksAPI = retrofitService.getRetrofit().create(BookmarksAPI.class);
 
         /** 뒤로가기 버튼 기능 */
         back_iBtn = (ImageButton) view.findViewById(R.id.back_iBtn);
@@ -105,46 +122,87 @@ public class BookmarkFragment extends Fragment {
             }
         });
 
-        /** 취소 TextView 클릭 시 */
+        /** 삭제 TextView 클릭 시 */
         remove_list_tv = (TextView) view.findViewById(R.id.remove_list_tv);
         remove_list_tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), RemoveListActivity.class);
+                if (bookmarkList.isEmpty()) {
+                    new ToastWarning(getResources().getString(R.string.toast_cannot_remove_list), getActivity());
+                    return;
+                }
+
+                Intent intent = new Intent(getActivity(), RemoveBookmarkListActivity.class);
                 startActivity(intent);
             }
         });
+
+        loading_tv = view.findViewById(R.id.loading_tv);
 
         /** "리스트 추가하기" 버튼 클릭 시 */
         addNewList_btn = (Button) view.findViewById(R.id.addNewList_btn);
         addNewList_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), AddNewListActivity.class);
+                Intent intent = new Intent(getActivity(), AddNewBookmarkListActivity.class);
                 startActivity(intent);
             }
         });
 
-        listview = view.findViewById(R.id.list_listView);
-        adapter = new ListViewAdapter();
-
-        //Adapter 안에 아이템의 정보 담기
-        adapter.addItem(new ListItem(R.color.num1, "청주 맛집"));
-        adapter.addItem(new ListItem(R.color.num2, "충북대학교"));
-        adapter.addItem(new ListItem(R.color.num3, "나중에 갈 곳"));
-        adapter.addItem(new ListItem(R.color.num4, "기타"));
-
-        listview.setAdapter(adapter);
+        listview = view.findViewById(R.id.bookmarkList_listView);
 
         return view;
     }
 
-    public void updateScreen() {
-        if (getArguments() != null) {
-            newListIconColor = getArguments().getInt("newListIconColor");
-            newListName = getArguments().getString("newListName");
-            adapter.addItem(new ListItem(newListIconColor, newListName));
-        }
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        loading_tv.setVisibility(View.VISIBLE);
+
+        adapter = new ListViewAdapter();
+
+        Call<List<Bookmark>> call_bookmarksAPI_getBookmarkList = bookmarksAPI.getBookmarkList();
+        call_bookmarksAPI_getBookmarkList.enqueue(new Callback<List<Bookmark>>() {
+            @Override
+            public void onResponse(Call<List<Bookmark>> call, Response<List<Bookmark>> response) {
+                if (response.isSuccessful()) {
+                    bookmarkList = response.body();
+                    if (!bookmarkList.isEmpty()) {
+                        for (int k = 0; k < bookmarkList.size(); k++) {
+                            //Adapter 안에 아이템의 정보 담기
+                            adapter.addItem(new
+
+                                    BookmarkListItem(bookmarkList.get(k).getId(), bookmarkList.get(k).getUserId(), bookmarkList.get(k).getBookmarkName(), bookmarkList.get(k).getIconColor(), bookmarkList.get(k).getBookmarkedPlaceId()));
+                        }
+
+                        listview.setAdapter(adapter);
+                        loading_tv.setVisibility(View.GONE);
+                    }
+                } else {
+                    switch (response.code()) {
+                        case 401:
+                            final Intent intent = new Intent(getContext(), SignInActivity.class);
+                            startActivity(intent);
+                            getActivity().onBackPressed();
+                            break;
+                        case 404:
+                            loading_tv.setText("정보 없음");
+                            Animation animation = AnimationUtils.loadAnimation(getContext(), com.project.sinabro.R.anim.ripple_animation);
+                            addNewList_btn.startAnimation(animation);
+                            break;
+                        default:
+                            new ToastWarning(getResources().getString(R.string.toast_none_status_code), getActivity());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Bookmark>> call, Throwable t) {
+                // 서버 코드 및 네트워크 오류 등의 이유로 요청 실패
+                new ToastWarning(getResources().getString(R.string.toast_server_error), getActivity());
+            }
+        });
 
         // 리스트뷰에 Adapter 설정
         listview.setAdapter(adapter);
@@ -152,14 +210,14 @@ public class BookmarkFragment extends Fragment {
 
     /* 리스트뷰 어댑터 */
     public class ListViewAdapter extends BaseAdapter {
-        ArrayList<ListItem> items = new ArrayList<ListItem>();
+        ArrayList<BookmarkListItem> items = new ArrayList<BookmarkListItem>();
 
         @Override
         public int getCount() {
             return items.size();
         }
 
-        public void addItem(ListItem item) {
+        public void addItem(BookmarkListItem item) {
             items.add(item);
         }
 
@@ -176,7 +234,7 @@ public class BookmarkFragment extends Fragment {
         @Override
         public View getView(int position, View convertView, ViewGroup viewGroup) {
             final Context context = viewGroup.getContext();
-            final ListItem listItem = items.get(position);
+            final BookmarkListItem listItem = items.get(position);
 
             if (convertView == null) {
                 LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -188,20 +246,21 @@ public class BookmarkFragment extends Fragment {
             }
 
             TextView listName_tv = convertView.findViewById(R.id.listName_tv);
-            listName_tv.setText(listItem.getListName());
+            listName_tv.setText(listItem.getBookmarkName());
 
             RoundedImageView list_color_circle_roundedImageView = convertView.findViewById(R.id.list_color_circle_roundedImageView);
-            list_color_circle_roundedImageView.setImageResource(listItem.getListIconColorValue());
+            list_color_circle_roundedImageView.setImageResource(listItem.getIconColor());
 
             // 리스트 정보 수정 아이콘 버튼 클릭 시
             convertView.findViewById(R.id.modify_list_info_roundedImageView).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(getActivity(), AddNewListActivity.class);
+                    Intent intent = new Intent(getActivity(), AddNewBookmarkListActivity.class);
                     intent.putExtra("forModify", true);
                     intent.putExtra("modify_clicked", true);
-                    intent.putExtra("newListIconColor", listItem.getListIconColorValue());
-                    intent.putExtra("newListName", listName_tv.getText().toString());
+                    intent.putExtra("listIconColor", listItem.getIconColor());
+                    intent.putExtra("listName", listName_tv.getText().toString());
+                    intent.putExtra("bookmarkId", listItem.getId());
                     startActivity(intent);
                 }
             });
@@ -210,9 +269,10 @@ public class BookmarkFragment extends Fragment {
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                     // "리스트 세부" 액티비티로 이동
-                    Intent intent = new Intent(getActivity(), PlaceInListActivity.class);
+                    // "리스트 세부" 액티비티로 이동
+                    Intent intent = new Intent(getActivity(), BookmarkedPlacesInListActivity.class);
                     intent.putExtra("listName", listName_tv.getText().toString());
+                    intent.putExtra("bookmarkId", listItem.getId());
                     startActivity(intent);
                 }
             });
