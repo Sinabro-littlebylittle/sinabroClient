@@ -38,6 +38,8 @@
         <activity android:name=".bottomSheet.place.AddLocationInfoActivity" />
         <activity android:name=".bottomSheet.place.AddPlaceGuideActivity" />
         <activity android:name=".bottomSheet.place.PlaceListActivity" />
+        <activity android:name=".bottomSheet.place.AddBookmarkToListActivity" />
+        <activity android:name=".bottomSheet.place.RemoveBookmarkFromListActivity" />
         <activity android:name=".sideBarMenu.authentication.SignUpStep1Activity" />
         <activity android:name=".sideBarMenu.authentication.SignUpStep2Activity" />
         <activity android:name=".sideBarMenu.authentication.SignInActivity" />
@@ -55,11 +57,9 @@
         <activity android:name=".sideBarMenu.settings.OthersUseUserInformationActivity" />
         <activity android:name=".sideBarMenu.settings.StoreUserInformationActivity" />
         <activity android:name=".sideBarMenu.settings.HandleUserInformationActivity" />
-        <activity android:name=".sideBarMenu.bookmark.RemoveListActivity" />
-        <activity android:name=".sideBarMenu.bookmark.AddNewListActivity" />
-        <activity android:name=".sideBarMenu.bookmark.PlaceInListActivity" />
-        <activity android:name=".bottomSheet.place.AddBookmarkToListActivity" />
-        <activity android:name=".bottomSheet.place.RemoveBookmarkFromListActivity" />
+        <activity android:name=".sideBarMenu.bookmark.RemoveBookmarkListActivity" />
+        <activity android:name=".sideBarMenu.bookmark.AddNewBookmarkListActivity" />
+        <activity android:name=".sideBarMenu.bookmark.BookmarkedPlacesInListActivity" />
 
         <meta-data
             android:name="com.kakao.sdk.AppKey"
