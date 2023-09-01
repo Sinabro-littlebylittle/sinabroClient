@@ -20,13 +20,24 @@ import com.makeramen.roundedimageview.RoundedImageView;
 import com.project.sinabro.MainActivity;
 import com.project.sinabro.R;
 import com.project.sinabro.databinding.ActivityRemoveBookmarkFromListBinding;
-import com.project.sinabro.sideBarMenu.bookmark.ListItem;
-import com.project.sinabro.sideBarMenu.bookmark.PlaceInListActivity;
-import com.project.sinabro.sideBarMenu.bookmark.RemoveListActivity;
+import com.project.sinabro.models.Bookmark;
+import com.project.sinabro.retrofit.RetrofitService;
+import com.project.sinabro.retrofit.interfaceAPIs.BookmarksAPI;
+import com.project.sinabro.sideBarMenu.authentication.SignInActivity;
+import com.project.sinabro.sideBarMenu.bookmark.BookmarkListItem;
+import com.project.sinabro.sideBarMenu.bookmark.BookmarkedPlacesInListActivity;
+import com.project.sinabro.sideBarMenu.bookmark.RemoveBookmarkListActivity;
 import com.project.sinabro.toast.ToastSuccess;
 import com.project.sinabro.toast.ToastWarning;
+import com.project.sinabro.utils.TokenManager;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class RemoveBookmarkFromListActivity extends AppCompatActivity {
 
@@ -36,13 +47,30 @@ public class RemoveBookmarkFromListActivity extends AppCompatActivity {
 
     private Dialog ask_add_or_cancel_bookmark_dialog, placeInfo_dialog;
 
-    int checked_toggle_cnt = 0;
+    private List<String> bookmarkIds = new ArrayList<>();
+
+    private TokenManager tokenManager;
+    private RetrofitService retrofitService;
+    private BookmarksAPI bookmarksAPI;
+
+    private Intent intent;
+
+    private String placeId;
+
+    List<Bookmark> bookmarkList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityRemoveBookmarkFromListBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        tokenManager = TokenManager.getInstance(getApplicationContext());
+        retrofitService = new RetrofitService(tokenManager);
+        bookmarksAPI = retrofitService.getRetrofit().create(BookmarksAPI.class);
+
+        final Intent intent = getIntent();
+        placeId = intent.getStringExtra("placeId");
 
         /** "리스트 제거 확인 안내" 다이얼로그 변수 초기화 및 설정 */
         ask_add_or_cancel_bookmark_dialog = new Dialog(RemoveBookmarkFromListActivity.this);  // Dialog 초기화
@@ -62,7 +90,6 @@ public class RemoveBookmarkFromListActivity extends AppCompatActivity {
         binding.backIBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onBackPressed(); // 뒤로가기 기능 수행
                 finish(); // 현재 액티비티 종료
             }
         });
@@ -71,7 +98,7 @@ public class RemoveBookmarkFromListActivity extends AppCompatActivity {
         binding.removeListBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (checked_toggle_cnt == 0) {
+                if (bookmarkIds.size() == 0) {
                     new ToastWarning(getResources().getString(R.string.toast_remove_list_failed), RemoveBookmarkFromListActivity.this);
                     return;
                 }
@@ -80,29 +107,18 @@ public class RemoveBookmarkFromListActivity extends AppCompatActivity {
                 showDialog_ask_accept_add_or_remove_list();
             }
         });
-
-        adapter = new ListViewAdapter();
-
-        //Adapter 안에 아이템의 정보 담기
-        adapter.addItem(new ListItem(R.color.num1, "청주 맛집"));
-        adapter.addItem(new ListItem(R.color.num2, "충북대학교"));
-        adapter.addItem(new ListItem(R.color.num3, "나중에 갈 곳"));
-        adapter.addItem(new ListItem(R.color.num4, "기타"));
-
-        // 리스트뷰에 Adapter 설정
-        binding.removeListListView.setAdapter(adapter);
     }
 
     /* 리스트뷰 어댑터 */
     public class ListViewAdapter extends BaseAdapter {
-        ArrayList<ListItem> items = new ArrayList<ListItem>();
+        ArrayList<BookmarkListItem> items = new ArrayList<BookmarkListItem>();
 
         @Override
         public int getCount() {
             return items.size();
         }
 
-        public void addItem(ListItem item) {
+        public void addItem(BookmarkListItem item) {
             items.add(item);
         }
 
@@ -119,7 +135,7 @@ public class RemoveBookmarkFromListActivity extends AppCompatActivity {
         @Override
         public View getView(int position, View convertView, ViewGroup viewGroup) {
             final Context context = viewGroup.getContext();
-            final ListItem listItem = items.get(position);
+            final BookmarkListItem listItem = items.get(position);
 
             if (convertView == null) {
                 LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -131,10 +147,10 @@ public class RemoveBookmarkFromListActivity extends AppCompatActivity {
             }
 
             TextView listName_tv = convertView.findViewById(R.id.listName_tv);
-            listName_tv.setText(listItem.getListName());
+            listName_tv.setText(listItem.getBookmarkName());
 
             RoundedImageView list_color_circle_roundedImageView = convertView.findViewById(R.id.list_color_circle_roundedImageView);
-            list_color_circle_roundedImageView.setImageResource(listItem.getListIconColorValue());
+            list_color_circle_roundedImageView.setImageResource(listItem.getIconColor());
 
             final Boolean[] check_policies_toggle = {false};
 
@@ -144,10 +160,16 @@ public class RemoveBookmarkFromListActivity extends AppCompatActivity {
                 public void onClick(View view) {
                     if (check_policies_toggle[0]) {
                         check_circle_roundedImageView.setImageResource(R.drawable.check_circle_empty);
-                        checked_toggle_cnt--;
+
+                        // 삭제 대상 리스트 내에서 선택된 리스트의 markerId값 제거
+                        if (bookmarkIds.contains(listItem.getId()))
+                            bookmarkIds.remove(listItem.getId());
                     } else {
                         check_circle_roundedImageView.setImageResource(R.drawable.check_circle_green);
-                        checked_toggle_cnt++;
+
+                        // 아이디 추가
+                        if (!bookmarkIds.contains(listItem.getId()))
+                            bookmarkIds.add(listItem.getId());
                     }
                     check_policies_toggle[0] = !check_policies_toggle[0];
                 }
@@ -157,8 +179,10 @@ public class RemoveBookmarkFromListActivity extends AppCompatActivity {
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    final Intent intent = new Intent(getApplicationContext(), PlaceInListActivity.class);
+                    // "리스트 세부" 액티비티로 이동
+                    Intent intent = new Intent(getApplicationContext(), BookmarkedPlacesInListActivity.class);
                     intent.putExtra("listName", listName_tv.getText().toString());
+                    intent.putExtra("bookmarkId", listItem.getId());
                     startActivity(intent);
                 }
             });
@@ -184,35 +208,95 @@ public class RemoveBookmarkFromListActivity extends AppCompatActivity {
         });
 
         TextView dialog_tv = ask_add_or_cancel_bookmark_dialog.findViewById(R.id.dialog_tv);
-        dialog_tv.setText(checked_toggle_cnt + "개의 리스트가 선택되었습니다.\n정말로 삭제하시겠습니까?");
+        dialog_tv.setText(bookmarkIds.size() + "개의 리스트가 선택되었습니다.\n정말로 삭제하시겠습니까?");
 
         // "확인" 버튼 클릭 시 이벤트 처리 코드
         ask_add_or_cancel_bookmark_dialog.findViewById(R.id.yesBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ask_add_or_cancel_bookmark_dialog.dismiss(); // 다이얼로그 닫기
-                new ToastSuccess(getResources().getString(R.string.toast_remove_list_success), RemoveBookmarkFromListActivity.this);
 
-                Boolean calledView = getIntent().getBooleanExtra("fromMainActivity", false);
-                Boolean calledView2 = getIntent().getBooleanExtra("fromPlaceInList", false);
-
-                if(calledView) {
-                    MainActivity mainActivity = new MainActivity();
-                    mainActivity.updateBookmarkBtnState(false);
-                } else {
-                    if (calledView2) {
-                        PlaceInListActivity placeInListActivity = new PlaceInListActivity();
-                        placeInListActivity.updateBookmarkBtnState(false);
-                    } else {
-                        PlaceListActivity placeListActivity = new PlaceListActivity();
-                        placeListActivity.updateBookmarkBtnState(false);
+                Call<ResponseBody> call_bookmarksAPI_deleteBookmarkedPlaceInBookmarkListForPlace = bookmarksAPI.deleteBookmarkedPlaceInBookmarkListForPlace(placeId, bookmarkIds);
+                call_bookmarksAPI_deleteBookmarkedPlaceInBookmarkListForPlace.enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        if (response.isSuccessful()) {
+                            if (bookmarkList.size() == bookmarkIds.size()) {
+                                MainActivity mainActivity = new MainActivity();
+                                mainActivity.updateBookmarkBtnState(false);
+                            }
+                            new ToastSuccess(getResources().getString(R.string.toast_remove_bookmark_from_lists), RemoveBookmarkFromListActivity.this);
+                            finish(); // 현재 액티비티 종료
+                        } else {
+                            switch (response.code()) {
+                                case 401:
+                                    new ToastWarning(getResources().getString(R.string.toast_login_time_exceed), RemoveBookmarkFromListActivity.this);
+                                    final Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
+                                    startActivity(intent);
+                                    break;
+                                default:
+                                    new ToastWarning(getResources().getString(R.string.toast_none_status_code), RemoveBookmarkFromListActivity.this);
+                            }
+                        }
                     }
 
-                }
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        // 서버 코드 및 네트워크 오류 등의 이유로 요청 실패
+                        new ToastWarning(getResources().getString(R.string.toast_server_error), RemoveBookmarkFromListActivity.this);
+                    }
+                });
+            }
+        });
+    }
 
-                // "뒤로가기" 기능을 통해, 즐겨찾기 리스트 fragment로 이동
-                onBackPressed(); // 뒤로가기 기능 수행
-                finish(); // 현재 액티비티 종료
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        adapter = new ListViewAdapter();
+
+        Call<List<Bookmark>> call_bookmarksAPI_getBookmarkedListsForPlace = bookmarksAPI.getBookmarkedListsForPlace(placeId);
+        call_bookmarksAPI_getBookmarkedListsForPlace.enqueue(new Callback<List<Bookmark>>() {
+            @Override
+            public void onResponse(Call<List<Bookmark>> call, Response<List<Bookmark>> response) {
+                if (response.isSuccessful()) {
+                    bookmarkList = response.body();
+                    if (!bookmarkList.isEmpty()) {
+                        for (int k = 0; k < bookmarkList.size(); k++) {
+                            //Adapter 안에 아이템의 정보 담기
+                            adapter.addItem(new
+                                    BookmarkListItem(bookmarkList.get(k).getId(), bookmarkList.get(k).getUserId(), bookmarkList.get(k).getBookmarkName(), bookmarkList.get(k).getIconColor(), bookmarkList.get(k).getBookmarkedPlaceId()));
+                        }
+
+                        // 리스트뷰에 Adapter 설정
+                        binding.removeListListView.setAdapter(adapter);
+                        binding.loadingTv.setVisibility(View.GONE);
+                    }
+                } else {
+                    switch (response.code()) {
+                        case 401:
+                            new ToastWarning(getResources().getString(R.string.toast_login_time_exceed), RemoveBookmarkFromListActivity.this);
+                            final Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
+                            startActivity(intent);
+                            break;
+                        case 404:
+                            MainActivity mainActivity = new MainActivity();
+                            mainActivity.updateBookmarkBtnState(false);
+                            binding.removeListListView.setVisibility(View.GONE);
+                            binding.loadingTv.setVisibility(View.VISIBLE);
+                            binding.loadingTv.setText("정보 없음");
+                            break;
+                        default:
+                            new ToastWarning(getResources().getString(R.string.toast_none_status_code), RemoveBookmarkFromListActivity.this);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Bookmark>> call, Throwable t) {
+                // 서버 코드 및 네트워크 오류 등의 이유로 요청 실패
+                new ToastWarning(getResources().getString(R.string.toast_server_error), RemoveBookmarkFromListActivity.this);
             }
         });
     }
