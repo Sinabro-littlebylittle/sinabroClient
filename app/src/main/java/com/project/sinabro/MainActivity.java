@@ -58,13 +58,15 @@ import com.project.sinabro.bottomSheet.place.AddLocationInfoActivity;
 import com.project.sinabro.bottomSheet.place.AddPlaceGuideActivity;
 import com.project.sinabro.bottomSheet.place.PlaceListActivity;
 import com.project.sinabro.bottomSheet.place.RemoveBookmarkFromListActivity;
+import com.project.sinabro.models.Bookmark;
 import com.project.sinabro.models.CoordinateToAddress;
 import com.project.sinabro.models.Headcount;
-import com.project.sinabro.retrofit.KakaoAPI;
-import com.project.sinabro.retrofit.headcountsAPI;
+import com.project.sinabro.retrofit.interfaceAPIs.BookmarksAPI;
+import com.project.sinabro.retrofit.interfaceAPIs.KakaoAPI;
+import com.project.sinabro.retrofit.interfaceAPIs.HeadcountsAPI;
 import com.project.sinabro.retrofit.RetrofitService;
 import com.project.sinabro.retrofit.RetrofitServiceForKakao;
-import com.project.sinabro.retrofit.UserAPI;
+import com.project.sinabro.retrofit.interfaceAPIs.UserAPI;
 import com.project.sinabro.sideBarMenu.authentication.SignInActivity;
 import com.project.sinabro.sideBarMenu.settings.CheckPasswordActivity;
 import com.project.sinabro.toast.ToastWarning;
@@ -172,8 +174,9 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
 
     private TokenManager tokenManager;
     private RetrofitService retrofitService;
-    headcountsAPI peopleNumbersAPI;
-    UserAPI userAPI;
+    private HeadcountsAPI peopleNumbersAPI;
+    private UserAPI userAPI;
+    private BookmarksAPI bookmarksAPI;
 
     Boolean bookmarked = true, isDetected;
 
@@ -204,8 +207,9 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
 
         tokenManager = TokenManager.getInstance(this);
         retrofitService = new RetrofitService(tokenManager);
-        peopleNumbersAPI = retrofitService.getRetrofit().create(headcountsAPI.class);
+        peopleNumbersAPI = retrofitService.getRetrofit().create(HeadcountsAPI.class);
         userAPI = retrofitService.getRetrofit().create(UserAPI.class);
+        bookmarksAPI = retrofitService.getRetrofit().create(BookmarksAPI.class);
 
         Call<List<Headcount>> call = peopleNumbersAPI.getPlaceInformations();
         call.enqueue(new Callback<List<Headcount>>() {
@@ -226,11 +230,15 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
                             Log.d("데이터: ", "" + peopleNum + "/" + latitude + "/" + longitude + "/" + placeName + "/" + detailAddress + "/" + updateElapsedTime);
                             addMakerToMap(peopleNum, latitude, longitude, placeName, detailAddress, updateElapsedTime, placeId, markerId);
                         }
-                    } else {
-                        Log.d("데이터", "The list of places is empty");
                     }
                 } else {
-                    Log.d("데이터", "Response was not successful or body is null");
+                    switch (response.code()) {
+                        case 404:
+                            new ToastWarning(getResources().getString(R.string.toast_none_place), MainActivity.this);
+                            break;
+                        default:
+                            new ToastWarning(getResources().getString(R.string.toast_none_status_code), MainActivity.this);
+                    }
                 }
             }
 
@@ -393,16 +401,10 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         if (response.isSuccessful()) {
-                            try {
-                                JSONObject jsonObject = new JSONObject(response.body().string());
-                                tokenManager.saveUserInfo(jsonObject);
-                                Intent intent = new Intent(getApplicationContext(), CheckPasswordActivity.class);
-                                intent.putExtra("departActivityName", "MainActivity");
-                                intent.putExtra("destActivityName", "MyPageActivity");
-                                startActivity(intent);
-                            } catch (JSONException | IOException e) {
-                                e.printStackTrace();
-                            }
+                            Intent intent = new Intent(getApplicationContext(), CheckPasswordActivity.class);
+                            intent.putExtra("departActivityName", "MainActivity");
+                            intent.putExtra("destActivityName", "MyPageActivity");
+                            startActivity(intent);
                         } else {
                             switch (response.code()) {
                                 case 401:
@@ -482,6 +484,8 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
                     return;
                 }
 
+                final Intent intent = new Intent(MainActivity.this, ObjectDetectionActivity.class);
+
                 RetrofitServiceForKakao retrofitServiceForKakao = new RetrofitServiceForKakao();
                 KakaoAPI kakaoInterface = retrofitServiceForKakao.getRetrofit().create(KakaoAPI.class);
                 Call<CoordinateToAddress> call = kakaoInterface.getAddress("WGS84", longitude, latitude);
@@ -494,29 +498,52 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
                             if (!documents.isEmpty()) {
                                 CoordinateToAddress.Document document = documents.get(0);
                                 CoordinateToAddress.RoadAddress roadAddress = document.getRoadAddress();
+                                String address_value = "";
+                                if (roadAddress != null) {
+                                    address_value = roadAddress.getAddressName();
+                                } else {
+                                    // If 'roadAddress' is null, try to get 'address' and its 'address_name'
+                                    CoordinateToAddress.Address address = document.getAddress();
+                                    if (address != null) {
+                                        address_value = address.getAddressName();
+                                    } else {
+                                        Toast.makeText(MainActivity.this, "No address found..", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
 
                                 Call<ResponseBody> call_userAPI_getUserSelfInfo = userAPI.getUserSelfInfo();
+                                String finalAddress_value = address_value;
+
+                                intent.putExtra("markerId_value", selectedMarkerId);
+                                intent.putExtra("latitude_value", latitude);
+                                intent.putExtra("longitude_value", longitude);
+                                intent.putExtra("placeName_value", selectedPlaceName);
+                                intent.putExtra("detailAddress_value", selectedDetailAddress);
+                                intent.putExtra("placeId_value", selectedPlaceId);
+                                intent.putExtra("markerId_value", selectedMarkerId);
+                                intent.putExtra("address_value", finalAddress_value);
+
                                 call_userAPI_getUserSelfInfo.enqueue(new Callback<ResponseBody>() {
                                     @Override
                                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                                         if (response.isSuccessful()) {
-                                            try {
-                                                JSONObject jsonObject = new JSONObject(response.body().string());
-                                                tokenManager.saveUserInfo(jsonObject);
-
-                                                if (addedPlaceInfoState.equals("0")) {
-                                                    final Intent intent = new Intent(MainActivity.this, AddPlaceGuideActivity.class);
-                                                    startActivity(intent);
-                                                    return;
-                                                }
-
-                                                // 이곳에 카메라 촬영으로 이어지는 코드가 추가하면 됩니다.
-                                                finish();
-                                                final Intent intent = new Intent(MainActivity.this, ObjectDetectionActivity.class);
+                                            if (addedPlaceInfoState.equals("0")) {
+                                                final Intent intent = new Intent(MainActivity.this, AddPlaceGuideActivity.class);
+                                                intent.putExtra("markerId_value", selectedMarkerId);
+                                                intent.putExtra("latitude_value", latitude);
+                                                intent.putExtra("longitude_value", longitude);
+                                                intent.putExtra("placeName_value", selectedPlaceName);
+                                                intent.putExtra("detailAddress_value", selectedDetailAddress);
+                                                intent.putExtra("placeId_value", selectedPlaceId);
+                                                intent.putExtra("markerId_value", selectedMarkerId);
+                                                intent.putExtra("address_value", finalAddress_value);
                                                 startActivity(intent);
-                                            } catch (JSONException | IOException e) {
-                                                e.printStackTrace();
+                                                return;
                                             }
+
+                                            // 이곳에 카메라 촬영으로 이어지는 코드가 추가하면 됩니다.
+                                            finish();
+                                            startActivity(intent);
                                         } else {
                                             switch (response.code()) {
                                                 case 401:
@@ -611,13 +638,7 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
                                     @Override
                                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                                         if (response.isSuccessful()) {
-                                            try {
-                                                JSONObject jsonObject = new JSONObject(response.body().string());
-                                                tokenManager.saveUserInfo(jsonObject);
-                                                startActivity(intent);
-                                            } catch (JSONException | IOException e) {
-                                                e.printStackTrace();
-                                            }
+                                            startActivity(intent);
                                         } else {
                                             switch (response.code()) {
                                                 case 401:
@@ -681,19 +702,41 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
                                 CoordinateToAddress.Document document = documents.get(0);
                                 CoordinateToAddress.RoadAddress roadAddress = document.getRoadAddress();
 
+                                String address_value = "";
+                                if (roadAddress != null) {
+                                    address_value = roadAddress.getAddressName();
+                                } else {
+                                    // If 'roadAddress' is null, try to get 'address' and its 'address_name'
+                                    CoordinateToAddress.Address address = document.getAddress();
+                                    if (address != null) {
+                                        address_value = address.getAddressName();
+                                    } else {
+                                        Toast.makeText(MainActivity.this, "No address found..", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+
+                                String finalAddress_value = address_value;
+
                                 Call<ResponseBody> call_userAPI_getUserSelfInfo = userAPI.getUserSelfInfo();
                                 call_userAPI_getUserSelfInfo.enqueue(new Callback<ResponseBody>() {
                                     @Override
                                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                                         if (response.isSuccessful()) {
-                                            try {
-                                                JSONObject jsonObject = new JSONObject(response.body().string());
-                                                tokenManager.saveUserInfo(jsonObject);
-
-                                                showDialog_ask_add_or_delete_bookmark();
-                                            } catch (JSONException | IOException e) {
-                                                e.printStackTrace();
+                                            if (addedPlaceInfoState.equals("0")) {
+                                                final Intent intent = new Intent(MainActivity.this, AddPlaceGuideActivity.class);
+                                                intent.putExtra("markerId_value", selectedMarkerId);
+                                                intent.putExtra("latitude_value", latitude);
+                                                intent.putExtra("longitude_value", longitude);
+                                                intent.putExtra("placeName_value", selectedPlaceName);
+                                                intent.putExtra("detailAddress_value", selectedDetailAddress);
+                                                intent.putExtra("placeId_value", selectedPlaceId);
+                                                intent.putExtra("markerId_value", selectedMarkerId);
+                                                intent.putExtra("address_value", finalAddress_value);
+                                                startActivity(intent);
+                                                return;
                                             }
+
+                                            showDialog_ask_add_or_delete_bookmark();
                                         } else {
                                             switch (response.code()) {
                                                 case 401:
@@ -762,14 +805,7 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
                                     @Override
                                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                                         if (response.isSuccessful()) {
-                                            try {
-                                                JSONObject jsonObject = new JSONObject(response.body().string());
-                                                tokenManager.saveUserInfo(jsonObject);
-
-                                                showDialog_ask_add_or_delete_bookmark();
-                                            } catch (JSONException | IOException e) {
-                                                e.printStackTrace();
-                                            }
+                                            showDialog_ask_add_or_delete_bookmark();
                                         } else {
                                             switch (response.code()) {
                                                 case 401:
@@ -807,11 +843,11 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
 
     public void updateBookmarkBtnState(Boolean bookmarked) {
         if (bookmarked) {
-            bookmarkEmpty_btn.setVisibility(View.GONE);
             bookmarkFilled_btn.setVisibility(View.VISIBLE);
+            bookmarkEmpty_btn.setVisibility(View.GONE);
         } else {
-            bookmarkEmpty_btn.setVisibility(View.VISIBLE);
             bookmarkFilled_btn.setVisibility(View.GONE);
+            bookmarkEmpty_btn.setVisibility(View.VISIBLE);
         }
     }
 
@@ -850,11 +886,11 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
                 ask_add_or_cancel_bookmark_dialog.dismiss(); // 다이얼로그 닫기
                 if (bookmarked) {
                     final Intent intent = new Intent(getApplicationContext(), RemoveBookmarkFromListActivity.class);
-                    intent.putExtra("fromMainActivity", true);
+                    intent.putExtra("placeId", selectedPlaceId);
                     startActivity(intent);
                 } else {
                     final Intent intent = new Intent(getApplicationContext(), AddBookmarkToListActivity.class);
-                    intent.putExtra("fromMainActivity", true);
+                    intent.putExtra("placeId", selectedPlaceId);
                     startActivity(intent);
                 }
             }
@@ -1094,7 +1130,7 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
             markers.remove(markers.size() - 1);
         }
 
-        marker.setItemName("새로운 장소");
+        marker.setItemName("정보 없음");
         marker.setTag(markers.size());
         marker.setMapPoint(mapPoint);
         selectedLatitude = mapPoint.getMapPointGeoCoord().latitude;
@@ -1109,10 +1145,12 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         detailAddress_tv.setText("상세 주소");
         addedPlaceInfoState = "0";
 
-        String markerInfo = "-1" + "/" + "새로운 장소" + "/" + "상세 주소" + "/" + "-1/null/null/0";
+        String markerInfo = "-1" + "/" + "장소명(새로운 장소)" + "/" + "상세 주소" + "/" + "-1/null/null/0";
         marker.setUserObject(markerInfo);
         mapView.addPOIItem(marker);
         markers.add(marker);
+
+        updateBookmarkBtnState(false);
 
         bottomSheetBehavior.setPeekHeight(85);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
@@ -1145,7 +1183,9 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
     @Override
     public void onPOIItemSelected(MapView mapView, MapPOIItem mapPOIItem) {
         Object userObject = mapPOIItem.getUserObject();
+        Log.d("데이터", "" + userObject.toString());
         String[] splittedStrings = userObject.toString().split("/");
+
         String peopleCount_str = Integer.parseInt(splittedStrings[0]) == -1 ? "?" : "" + splittedStrings[0];
         peopleCount_tv.setText(peopleCount_str);
         if (peopleCount_str.equals("?")) headcountUnit_tv.setVisibility(View.GONE);
@@ -1156,8 +1196,6 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         String updateElapsedTime_str;
         if (updateElapsedTime == -1) {
             updateElapsedTime_str = "정보 없음";
-        } else if (updateElapsedTime < 60) {
-            updateElapsedTime_str = "약 " + updateElapsedTime + "초 전";
         } else if (updateElapsedTime < 3600) {
             updateElapsedTime_str = updateElapsedTime / 60 + "분 전";
         } else if (updateElapsedTime < 86400) {
@@ -1165,7 +1203,7 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         } else if (updateElapsedTime < 86400 * 365) {
             updateElapsedTime_str = updateElapsedTime / 86400 + "일 전";
         } else {
-            updateElapsedTime_str = updateElapsedTime / 86400 * 365 + "일 전";
+            updateElapsedTime_str = updateElapsedTime / 86400 * 365 + "년 전";
         }
         updateElapsedTime_tv.setText(updateElapsedTime_str);
         addedPlaceInfoState = splittedStrings[6];
@@ -1180,6 +1218,26 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         selectedLongitude = mapPOIItem.getMapPoint().getMapPointGeoCoord().longitude;
 
         selectedMarker = mapPOIItem;
+
+        updateBookmarkBtnState(false);
+
+        if (Integer.parseInt(addedPlaceInfoState) == 1) {
+            Call<List<Bookmark>> call_bookmarksAPI_getBookmarkedListsForPlace = bookmarksAPI.getBookmarkedListsForPlace(selectedPlaceId);
+            call_bookmarksAPI_getBookmarkedListsForPlace.enqueue(new Callback<List<Bookmark>>() {
+                @Override
+                public void onResponse(Call<List<Bookmark>> call, Response<List<Bookmark>> response) {
+                    if (response.isSuccessful()) {
+                        updateBookmarkBtnState(true);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<Bookmark>> call, Throwable t) {
+                    // 서버 코드 및 네트워크 오류 등의 이유로 요청 실패
+                    new ToastWarning(getResources().getString(R.string.toast_server_error), MainActivity.this);
+                }
+            });
+        }
 
         bottomSheetBehavior.setPeekHeight(85);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
