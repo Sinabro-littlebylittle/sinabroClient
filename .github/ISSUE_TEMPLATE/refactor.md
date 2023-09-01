@@ -1,9 +1,9 @@
 ---
 name: REFACTOR
-about: 코드 구조 재조정(개선)
-title: "[REFACTOR]"
-labels: "⛓ REFACTOR"
-assignees: ""
+about: 코드 구조 재조정
+title: '[REFACTOR]'
+labels: '⛓ REFACTOR'
+assignees: ''
 ---
 
 ## 🧐 리팩토링 사유
