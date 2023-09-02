@@ -19,7 +19,7 @@
         android:layout_marginTop="5dp"
         android:scaleType="centerCrop"
         android:src="@drawable/bottom_sheet_minus_bar"
-        app:tint="#e6e7ea" />
+        app:tint="#d2d3d6" />
 
     <!-- 장소명 -->
     <TextView
@@ -47,26 +47,47 @@
         android:textColor="@color/dark_grey"
         android:textSize="20sp" />
 
-    <!-- 인원수 -->
-    <TextView
-        android:id="@+id/peopleCount_tv"
+    <RelativeLayout
+        android:id="@+id/headcount_relativeLayout"
         android:layout_width="110dp"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:layout_alignParentRight="true"
         android:layout_marginTop="40dp"
         android:layout_marginEnd="5dp"
-        android:gravity="center"
-        android:text="?"
-        android:textSize="50sp" />
+        android:gravity="center">
+
+        <!-- 인원수 -->
+        <TextView
+            android:id="@+id/peopleCount_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="?"
+            android:layout_centerHorizontal="true"
+            android:textSize="50sp" />
+
+        <!-- '명'수 텍스트 -->
+        <TextView
+            android:id="@+id/headcountUnit_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="명"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="1dp"
+            android:visibility="gone"
+            android:layout_toRightOf="@+id/peopleCount_tv"
+            android:textSize="20sp" />
+    </RelativeLayout>
+
+
 
     <!-- 인원수 정보 갱신 경과 시간(미등록 시: 정보 없음) -->
     <TextView
         android:id="@+id/updateElapsedTime_tv"
-        android:layout_width="wrap_content"
+        android:layout_width="110dp"
         android:layout_height="30dp"
-        android:layout_below="@+id/peopleCount_tv"
+        android:layout_below="@+id/headcount_relativeLayout"
         android:layout_alignParentRight="true"
-        android:layout_marginEnd="29.5dp"
+        android:layout_marginEnd="5dp"
         android:gravity="center"
         android:text="정보 없음"
         android:textStyle="bold" />
