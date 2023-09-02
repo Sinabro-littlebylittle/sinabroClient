@@ -11,7 +11,7 @@ import android.view.View;
 import com.project.sinabro.R;
 import com.project.sinabro.databinding.ActivityCheckPasswordBinding;
 import com.project.sinabro.models.requests.LoginRequest;
-import com.project.sinabro.retrofit.AuthAPI;
+import com.project.sinabro.retrofit.interfaceAPIs.AuthAPI;
 import com.project.sinabro.retrofit.RetrofitService;
 import com.project.sinabro.sideBarMenu.authentication.SignInActivity;
 import com.project.sinabro.textWatcher.PasswordWatcher;
