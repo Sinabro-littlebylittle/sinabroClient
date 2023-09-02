@@ -5,7 +5,6 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,12 +12,10 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.project.sinabro.MainActivity;
 import com.project.sinabro.R;
 import com.project.sinabro.retrofit.RetrofitService;
-import com.project.sinabro.retrofit.UserAPI;
+import com.project.sinabro.retrofit.interfaceAPIs.UserAPI;
 import com.project.sinabro.sideBarMenu.authentication.SignInActivity;
-import com.project.sinabro.sideBarMenu.devInfo.OpenSourceLicenseActivity;
 import com.project.sinabro.toast.ToastWarning;
 import com.project.sinabro.utils.TokenManager;
 
