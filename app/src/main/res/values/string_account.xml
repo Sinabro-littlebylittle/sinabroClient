@@ -60,9 +60,12 @@
     <string name="toast_agree_required_failed">필수 동의가 필요해요</string>
     <string name="toast_modify_password_success">비밀번호를 변경했어요</string>
     <string name="toast_withdrawal_success">회원탈퇴를 완료했어요</string>
+    <string name="toast_none_place">등록된 장소가 없어요🥺</string>
     <string name="toast_remove_place_info_success">장소정보를 제거했어요</string>
     <string name="toast_remove_list_success">리스트를 제거했어요</string>
+    <string name="toast_cannot_remove_list">제거할 리스트가 없어요</string>
     <string name="toast_add_bookmark_to_list_success">리스트에 추가했어요</string>
+    <string name="toast_remove_bookmark_from_lists">리스트에서 제거했어요</string>
     <string name="toast_remove_list_failed">선택된 리스트가 없어요</string>
     <string name="toast_add_list_success">리스트를 추가했어요</string>
     <string name="toast_modify_list_success">정보를 수정했어요</string>
@@ -76,6 +79,7 @@
     <string name="toast_exist_email">이미 존재하는 이메일이에요</string>
     <string name="toast_login_time_exceed">로그인 시간이 만료되었어요</string>
     <string name="toast_bad_request">입력 데이터 형식에 문제가 있어요</string>
+    <string name="toast_add_headcount_success">인원수가 등록됐어요</string>
 
     <!-- Strings related to (our_policies_activity) -->
     <string name="our_policies_rule_title_1">제 1조, 총칙</string>
