@@ -1,4 +1,4 @@
-package com.project.sinabro;
+package com.project.sinabro.bottomSheet.headcount;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
+
+import com.project.sinabro.R;
 
 public class ALoadingDialog extends Dialog {
     public ALoadingDialog(@NonNull Context context) {
