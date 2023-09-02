@@ -1,4 +1,4 @@
-package com.project.sinabro;
+package com.project.sinabro.bottomSheet.headcount;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,6 +6,8 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.project.sinabro.R;
 
 public class PlayActivity extends AppCompatActivity {
     //인원수 확인 및 수정 (
