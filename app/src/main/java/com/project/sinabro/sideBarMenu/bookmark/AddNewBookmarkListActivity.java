@@ -1,32 +1,34 @@
 package com.project.sinabro.sideBarMenu.bookmark;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
-import android.widget.TextView;
 
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.project.sinabro.R;
 import com.project.sinabro.bottomSheet.place.AddBookmarkToListActivity;
-import com.project.sinabro.bottomSheet.place.PlaceListActivity;
 import com.project.sinabro.databinding.ActivityAddNewListBinding;
-import com.project.sinabro.sideBarMenu.authentication.SignUpStep2Activity;
-import com.project.sinabro.sideBarMenu.settings.ModifyMyInfoActivity;
+import com.project.sinabro.models.Bookmark;
+import com.project.sinabro.retrofit.RetrofitService;
+import com.project.sinabro.retrofit.interfaceAPIs.BookmarksAPI;
+import com.project.sinabro.sideBarMenu.authentication.SignInActivity;
 import com.project.sinabro.textWatcher.ListNameWatcher;
-import com.project.sinabro.textWatcher.NicknameWatcher;
 import com.project.sinabro.toast.ToastSuccess;
 import com.project.sinabro.toast.ToastWarning;
+import com.project.sinabro.utils.TokenManager;
 
-public class AddNewListActivity extends AppCompatActivity {
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+public class AddNewBookmarkListActivity extends AppCompatActivity {
 
     private ActivityAddNewListBinding binding;
 
@@ -49,14 +51,29 @@ public class AddNewListActivity extends AppCompatActivity {
 
     final Boolean[] colorChecked = {false};
 
+    private Bundle args = new Bundle();
+
+    private String listName;
+
+    private TokenManager tokenManager;
+    private RetrofitService retrofitService;
+    BookmarksAPI bookmarksAPI;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityAddNewListBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        tokenManager = TokenManager.getInstance(getApplicationContext());
+        retrofitService = new RetrofitService(tokenManager);
+        bookmarksAPI = retrofitService.getRetrofit().create(BookmarksAPI.class);
+
+        final Intent intent = getIntent();
+        Boolean modify_clicked = intent.getBooleanExtra("modify_clicked", false);
+
         /** "리스트 제거 확인 안내" 다이얼로그 변수 초기화 및 설정 */
-        selectListIconColor_dialog = new Dialog(AddNewListActivity.this);  // Dialog 초기화
+        selectListIconColor_dialog = new Dialog(AddNewBookmarkListActivity.this);  // Dialog 초기화
         selectListIconColor_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE); // 타이틀 제거
         selectListIconColor_dialog.setContentView(R.layout.dialog_select_list_icon_color); // xml 레이아웃 파일과 연결
         // dialog 창의 root 레이아웃을 투명하게 조절 모서리(코너)를 둥글게 보이게 하기 위해
@@ -83,9 +100,6 @@ public class AddNewListActivity extends AppCompatActivity {
             }
         });
 
-        final Intent intent = getIntent();
-        Boolean modify_clicked = intent.getBooleanExtra("modify_clicked", false);
-
         /** TextInputLayout helper 생성 관련 코드 */
         binding.listNameTextInputLayout.getEditText().addTextChangedListener(new ListNameWatcher(binding.listNameTextInputLayout, getResources().getString(R.string.add_list_name_failed)));
 
@@ -106,46 +120,77 @@ public class AddNewListActivity extends AppCompatActivity {
                     binding.listNameTextInputLayout.setErrorEnabled(true);
                     binding.listNameTextInputLayout.setBackgroundResource(R.drawable.edt_bg_only_helper_selected);
                 } else if (colorChecked[0] != true) {
-                    new ToastWarning(getResources().getString(R.string.toast_add_list_failed), AddNewListActivity.this);
+                    new ToastWarning(getResources().getString(R.string.toast_add_list_failed), AddNewBookmarkListActivity.this);
                 } else {
                     Boolean forModify = intent.getBooleanExtra("forModify", false);
+                    Bookmark bookmark = new Bookmark();
+                    bookmark.setBookmarkName(binding.listNameEditText.getText().toString());
+                    bookmark.setIconColor(checkedColorInfo[0]);
+
+                    // 북마크 리스트 정보 수정 시
                     if (forModify) {
-                        new ToastSuccess(getResources().getString(R.string.toast_modify_list_success), AddNewListActivity.this);
-                        finish();
+                        String bookmarkId = intent.getStringExtra("bookmarkId");
+                        Call<ResponseBody> call_bookmarksAPI_updateBookmarkList = bookmarksAPI.updateBookmarkList(bookmarkId, bookmark);
+                        call_bookmarksAPI_updateBookmarkList.enqueue(new Callback<ResponseBody>() {
+
+                            @Override
+                            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                                if (response.isSuccessful()) {
+                                    new ToastSuccess(getResources().getString(R.string.toast_modify_list_success), AddNewBookmarkListActivity.this);
+                                    finish();
+                                } else {
+                                    switch (response.code()) {
+                                        case 401:
+                                            new ToastWarning(getResources().getString(R.string.toast_login_time_exceed), AddNewBookmarkListActivity.this);
+                                            final Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
+                                            startActivity(intent);
+                                            break;
+                                        default:
+                                            new ToastWarning(getResources().getString(R.string.toast_none_status_code), AddNewBookmarkListActivity.this);
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                                // 서버 코드 및 네트워크 오류 등의 이유로 요청 실패
+                                new ToastWarning(getResources().getString(R.string.toast_server_error), AddNewBookmarkListActivity.this);
+                            }
+                        });
+
                         return;
                     }
 
-                    new ToastSuccess(getResources().getString(R.string.toast_add_list_success), AddNewListActivity.this);
-                    Boolean calledView = intent.getBooleanExtra("fromBottomSheetDialog", false);
-                    Boolean calledView2 = intent.getBooleanExtra("fromPlaceListActivity", false);
-                    if (calledView) {
-                        final Intent intent = new Intent(getApplicationContext(), AddBookmarkToListActivity.class);
-                        intent.putExtra("fromMainActivity", !calledView2);
-                        intent.putExtra("newListIconColor", checkedColorInfo[0]);
-                        intent.putExtra("newListName", String.valueOf(binding.listNameEditText.getText()));
-                        startActivity(intent);
-                        finish(); // 현재 액티비티 종료
-                    } else {
-                        Bundle args = new Bundle();
-                        args.putInt("newListIconColor", checkedColorInfo[0]);
-                        args.putString("newListName", String.valueOf(binding.listNameEditText.getText()));
-                        BookmarkFragment bookmarkFragment = new BookmarkFragment();
-                        bookmarkFragment.setArguments(args);
-                        bookmarkFragment.updateScreen();
-                        finish(); // 현재 액티비티 종료
-                    }
+                    Call<Bookmark> call_bookmarksAPI_addBookmarkList = bookmarksAPI.addBookmarkList(bookmark);
+                    call_bookmarksAPI_addBookmarkList.enqueue(new Callback<Bookmark>() {
+                        @Override
+                        public void onResponse(Call<Bookmark> call, Response<Bookmark> response) {
+                            if (response.isSuccessful()) {
+                                new ToastSuccess(getResources().getString(R.string.toast_add_list_success), AddNewBookmarkListActivity.this);
+                                finish(); // 현재 액티비티 종료
+                            } else {
+
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Bookmark> call, Throwable t) {
+                            // 서버 코드 및 네트워크 오류 등의 이유로 요청 실패
+                            new ToastWarning(getResources().getString(R.string.toast_server_error), AddNewBookmarkListActivity.this);
+                        }
+                    });
                 }
             }
         });
 
         if (modify_clicked) {
-            int newListIconColor = intent.getIntExtra("newListIconColor", -1);
-            String newListName = intent.getStringExtra("newListName");
+            checkedColorInfo[0] = intent.getIntExtra("listIconColor", -1);
+            listName = intent.getStringExtra("listName");
             colorChecked[0] = true;
             binding.myPageFragmentTitleTv.setText("리스트 수정");
             binding.addNewListBtn.setText("수정하기");
-            binding.selectedColorRoundedImageView.setImageResource(newListIconColor);
-            binding.listNameEditText.setText(newListName);
+            binding.selectedColorRoundedImageView.setImageResource(checkedColorInfo[0]);
+            binding.listNameEditText.setText(listName);
         }
     }
 
@@ -297,7 +342,7 @@ public class AddNewListActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (checkedColorInfo[0] == 0) {
-                    new ToastWarning(getResources().getString(R.string.toast_select_color_failed), AddNewListActivity.this);
+                    new ToastWarning(getResources().getString(R.string.toast_select_color_failed), AddNewBookmarkListActivity.this);
                     return;
                 }
 
