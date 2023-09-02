@@ -1,4 +1,4 @@
-package com.project.sinabro.retrofit;
+package com.project.sinabro.retrofit.interfaceAPIs;
 
 import com.project.sinabro.models.Place;
 
@@ -21,9 +21,9 @@ public interface PlacesAPI {
     @POST("/api/places/private")
     Call<Place> addPlaceInformation(@Body Place place);
 
-    @PUT("/api/places/private/{id}")
-    Call<Place> updatePlace(@Path("id") String id, @Body Place place);
+    @PUT("/api/places/private/places/{placeId}")
+    Call<Place> updatePlace(@Path("placeId") String placeId, @Body Place place);
 
-    @DELETE("/api/places/private/{id}")
-    Call<ResponseBody> deletePlace(@Path("id") String id);
+    @DELETE("/api/places/private/places/{placeId}")
+    Call<ResponseBody> deletePlace(@Path("placeId") String placeId);
 }
