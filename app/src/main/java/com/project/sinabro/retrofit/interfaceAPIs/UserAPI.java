@@ -1,4 +1,4 @@
-package com.project.sinabro.retrofit;
+package com.project.sinabro.retrofit.interfaceAPIs;
 
 import com.project.sinabro.models.UserInfo;
 import com.project.sinabro.models.requests.ChangePasswordRequest;

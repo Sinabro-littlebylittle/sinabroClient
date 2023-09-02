@@ -1,4 +1,4 @@
-package com.project.sinabro
+package com.project.sinabro.bottomSheet.headcount
 
 import android.Manifest
 import android.content.ContentValues
@@ -18,8 +18,9 @@ import androidx.camera.video.Recorder
 import androidx.camera.video.VideoCapture
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.project.sinabro.R
 import com.project.sinabro.databinding.ActivityObjectDetectionBinding
-import com.project.sinabro.retrofit.ModelAPI
+import com.project.sinabro.retrofit.interfaceAPIs.ModelAPI
 import com.project.sinabro.retrofit.RetrofitServiceForHeadCount
 import okhttp3.MediaType
 import okhttp3.MultipartBody
@@ -135,7 +136,10 @@ class ObjectDetectionActivity : AppCompatActivity() {
                             Log.d(TAG, msg)
 
                             // play loading animation
-                            aLoadingDialog = ALoadingDialog(this)
+                            aLoadingDialog =
+                                ALoadingDialog(
+                                    this
+                                )
                             aLoadingDialog.show()
 
 
@@ -280,7 +284,6 @@ class ObjectDetectionActivity : AppCompatActivity() {
         private val REQUIRED_PERMISSIONS =
             mutableListOf(
                 Manifest.permission.CAMERA,
-                Manifest.permission.RECORD_AUDIO
             ).apply {
                 if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
                     add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
