@@ -8,7 +8,7 @@
 
     <!-- activity (header) RelativeLayout -->
     <RelativeLayout
-        android:id="@+id/fragment_header_relativeLayout"
+        android:id="@+id/activity_header_relativeLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -54,11 +54,11 @@
 
     <!-- fragment (body) RelativeLayout -->
     <RelativeLayout
-        android:id="@+id/fragment_body_relativeLayout"
+        android:id="@+id/activity_body_relativeLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/remove_list_btn"
-        android:layout_below="@+id/fragment_header_relativeLayout">
+        android:layout_below="@+id/activity_header_relativeLayout">
 
         <!-- 로딩 메시지 -->
         <TextView
