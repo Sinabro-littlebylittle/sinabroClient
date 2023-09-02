@@ -9,12 +9,10 @@ import android.view.View;
 import com.project.sinabro.R;
 import com.project.sinabro.databinding.ActivityModifyMyInfoBinding;
 import com.project.sinabro.models.UserInfo;
-import com.project.sinabro.models.requests.ChangePasswordRequest;
-import com.project.sinabro.retrofit.AuthAPI;
+import com.project.sinabro.retrofit.interfaceAPIs.AuthAPI;
 import com.project.sinabro.retrofit.RetrofitService;
-import com.project.sinabro.retrofit.UserAPI;
+import com.project.sinabro.retrofit.interfaceAPIs.UserAPI;
 import com.project.sinabro.sideBarMenu.authentication.SignInActivity;
-import com.project.sinabro.sideBarMenu.authentication.SignUpStep1Activity;
 import com.project.sinabro.textWatcher.EmailWatcher;
 import com.project.sinabro.textWatcher.NicknameWatcher;
 import com.project.sinabro.toast.ToastSuccess;
@@ -39,6 +37,8 @@ public class ModifyMyInfoActivity extends AppCompatActivity {
     private AuthAPI authAPI;
     UserAPI userAPI;
 
+    private Intent intent;
+
     @Override
     public void onBackPressed() {
         // 프로그래머가 원하는 액티비티로 이동
@@ -58,6 +58,9 @@ public class ModifyMyInfoActivity extends AppCompatActivity {
         authAPI = retrofitService.getRetrofit().create(AuthAPI.class);
         userAPI = retrofitService.getRetrofit().create(UserAPI.class);
 
+        intent = getIntent();
+        String departActivityName = intent.getStringExtra("departActivityName");
+
         emailConfirm = true;
 
         final Intent intent = getIntent();
@@ -72,6 +75,7 @@ public class ModifyMyInfoActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), MyPageActivity.class);
+                intent.putExtra("departActivityName", departActivityName);
                 startActivity(intent);
                 finish(); // 현재 액티비티 종료
             }
@@ -163,7 +167,9 @@ public class ModifyMyInfoActivity extends AppCompatActivity {
                         public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                             if (response.isSuccessful()) {
                                 new ToastSuccess(getResources().getString(R.string.toast_modify_my_info_success), ModifyMyInfoActivity.this);
-                                onBackPressed(); // 뒤로가기 기능 수행
+                                Intent intent = new Intent(getApplicationContext(), MyPageActivity.class);
+                                intent.putExtra("departActivityName", departActivityName);
+                                startActivity(intent);
                                 finish(); // 현재 액티비티 종료
                             } else {
                                 switch (response.code()) {

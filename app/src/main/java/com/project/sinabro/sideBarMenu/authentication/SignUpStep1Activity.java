@@ -4,8 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.project.sinabro.R;
 import com.project.sinabro.databinding.ActivitySignUpStep1Binding;
-import com.project.sinabro.models.UserInfo;
-import com.project.sinabro.retrofit.AuthAPI;
+import com.project.sinabro.retrofit.interfaceAPIs.AuthAPI;
 import com.project.sinabro.retrofit.RetrofitService;
 import com.project.sinabro.textWatcher.EmailWatcher;
 import com.project.sinabro.textWatcher.PasswordConfirmWatcher;
@@ -16,7 +15,6 @@ import com.project.sinabro.utils.TokenManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.method.PasswordTransformationMethod;
-import android.util.Log;
 import android.view.View;
 
 import java.util.regex.Matcher;

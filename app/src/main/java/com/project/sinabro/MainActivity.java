@@ -53,6 +53,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.navigation.NavigationView;
+import com.project.sinabro.bottomSheet.headcount.ObjectDetectionActivity;
 import com.project.sinabro.bottomSheet.place.AddBookmarkToListActivity;
 import com.project.sinabro.bottomSheet.place.AddLocationInfoActivity;
 import com.project.sinabro.bottomSheet.place.AddPlaceGuideActivity;
@@ -78,18 +79,12 @@ import net.daum.mf.map.api.MapView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.pytorch.IValue;
-import org.pytorch.LiteModuleLoader;
 import org.pytorch.Module;
-import org.pytorch.Tensor;
-import org.pytorch.torchvision.TensorImageUtils;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -326,9 +321,106 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         placeList_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final Intent intent = new Intent(getApplicationContext(), PlaceListActivity.class);
-                intent.putExtra("markerId_value", selectedMarkerId);
-                startActivity(intent);
+                Double latitude = Double.parseDouble("" + selectedLatitude);
+                Double longitude = Double.parseDouble("" + selectedLongitude);
+
+                // 위도와 경도가 한국 범위를 벗어났을 때
+                if (latitude <= 33.0 || latitude >= 38.0 || longitude <= 124.0 || longitude >= 132.0) {
+                    new ToastWarning(getResources().getString(R.string.toast_cannot_access_area), MainActivity.this);
+                    return;
+                }
+
+                final Intent intent = new Intent(MainActivity.this, ObjectDetectionActivity.class);
+
+                RetrofitServiceForKakao retrofitServiceForKakao = new RetrofitServiceForKakao();
+                KakaoAPI kakaoInterface = retrofitServiceForKakao.getRetrofit().create(KakaoAPI.class);
+                Call<CoordinateToAddress> call = kakaoInterface.getAddress("WGS84", longitude, latitude);
+                call.enqueue(new Callback<CoordinateToAddress>() {
+                    @Override
+                    public void onResponse(Call<CoordinateToAddress> call, Response<CoordinateToAddress> response) {
+                        if (response.isSuccessful()) {
+                            CoordinateToAddress responseData = response.body();
+                            List<CoordinateToAddress.Document> documents = responseData.getDocuments();
+                            if (!documents.isEmpty()) {
+                                CoordinateToAddress.Document document = documents.get(0);
+                                CoordinateToAddress.RoadAddress roadAddress = document.getRoadAddress();
+                                String address_value = "";
+                                if (roadAddress != null) {
+                                    address_value = roadAddress.getAddressName();
+                                } else {
+                                    // If 'roadAddress' is null, try to get 'address' and its 'address_name'
+                                    CoordinateToAddress.Address address = document.getAddress();
+                                    if (address != null) {
+                                        address_value = address.getAddressName();
+                                    } else {
+                                        Toast.makeText(MainActivity.this, "No address found..", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+
+                                Call<ResponseBody> call_userAPI_getUserSelfInfo = userAPI.getUserSelfInfo();
+                                String finalAddress_value = address_value;
+
+                                intent.putExtra("markerId_value", selectedMarkerId);
+                                intent.putExtra("latitude_value", latitude);
+                                intent.putExtra("longitude_value", longitude);
+                                intent.putExtra("placeName_value", selectedPlaceName);
+                                intent.putExtra("detailAddress_value", selectedDetailAddress);
+                                intent.putExtra("placeId_value", selectedPlaceId);
+                                intent.putExtra("markerId_value", selectedMarkerId);
+                                intent.putExtra("address_value", finalAddress_value);
+
+                                call_userAPI_getUserSelfInfo.enqueue(new Callback<ResponseBody>() {
+                                    @Override
+                                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                                        if (response.isSuccessful()) {
+                                            if (addedPlaceInfoState.equals("0")) {
+                                                final Intent intent = new Intent(MainActivity.this, AddPlaceGuideActivity.class);
+                                                intent.putExtra("markerId_value", selectedMarkerId);
+                                                intent.putExtra("latitude_value", latitude);
+                                                intent.putExtra("longitude_value", longitude);
+                                                intent.putExtra("placeName_value", selectedPlaceName);
+                                                intent.putExtra("detailAddress_value", selectedDetailAddress);
+                                                intent.putExtra("placeId_value", selectedPlaceId);
+                                                intent.putExtra("markerId_value", selectedMarkerId);
+                                                intent.putExtra("address_value", finalAddress_value);
+                                                startActivity(intent);
+                                                return;
+                                            }
+
+                                            final Intent intent = new Intent(getApplicationContext(), PlaceListActivity.class);
+                                            intent.putExtra("markerId_value", selectedMarkerId);
+                                            startActivity(intent);
+                                        } else {
+                                            switch (response.code()) {
+                                                case 401:
+                                                    final Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
+                                                    startActivity(intent);
+                                                    break;
+                                                default:
+                                                    new ToastWarning(getResources().getString(R.string.toast_none_status_code), MainActivity.this);
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                                        // 서버 코드 및 네트워크 오류 등의 이유로 요청 실패
+                                        new ToastWarning(getResources().getString(R.string.toast_server_error), MainActivity.this);
+                                    }
+                                });
+                            } else {
+                                new ToastWarning(getResources().getString(R.string.toast_cannot_access_area), MainActivity.this);
+                                return;
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<CoordinateToAddress> call, Throwable t) {
+                        // 서버 코드 및 네트워크 오류 등의 이유로 요청 실패
+                        new ToastWarning(getResources().getString(R.string.toast_server_error), MainActivity.this);
+                    }
+                });
             }
         });
 
@@ -459,6 +551,10 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         peopleCount_tv =
 
                 findViewById(R.id.peopleCount_tv);
+
+        headcountUnit_tv =
+
+                findViewById(R.id.headcountUnit_tv);
 
         updateElapsedTime_tv =
 
@@ -839,6 +935,8 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
                 });
             }
         });
+
+        mapView.setPOIItemEventListener(this);
     }
 
     public void updateBookmarkBtnState(Boolean bookmarked) {
@@ -1161,7 +1259,6 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
      */
     @Override
     public void onMapViewDoubleTapped(MapView mapView, MapPoint mapPoint) {
-        mapView.zoomIn(true);
     }
 
     @Override

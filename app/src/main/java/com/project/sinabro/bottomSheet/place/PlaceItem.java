@@ -8,6 +8,7 @@ public class PlaceItem {
     private int peopleCnt;
     private long updateElapsedTime;
     private String placeId;
+    private Boolean bookmarked = true;
 
     public PlaceItem(String address, String placeName, String detailAddress, int peopleCnt, long updateElapsedTime, String placeId) {
         this.address = address;
@@ -64,5 +65,11 @@ public class PlaceItem {
 
     public void setPlaceId(int peopleCnt) {
         this.placeId = placeId;
+    }
+
+    public Boolean getBookmarked() { return bookmarked; }
+
+    public void setBookmarked(Boolean bookmarked) {
+        this.bookmarked = bookmarked;
     }
 }
