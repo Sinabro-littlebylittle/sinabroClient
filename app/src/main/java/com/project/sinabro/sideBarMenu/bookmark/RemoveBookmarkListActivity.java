@@ -17,8 +17,7 @@ import android.widget.TextView;
 
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.project.sinabro.R;
-import com.project.sinabro.databinding.ActivityRemoveBookmarkFromListBinding;
-import com.project.sinabro.databinding.ActivityRemoveListBinding;
+import com.project.sinabro.databinding.ActivityRemoveBookmarkListBinding;
 import com.project.sinabro.models.Bookmark;
 import com.project.sinabro.retrofit.RetrofitService;
 import com.project.sinabro.retrofit.interfaceAPIs.BookmarksAPI;
@@ -38,7 +37,7 @@ import retrofit2.Response;
 
 public class RemoveBookmarkListActivity extends AppCompatActivity {
 
-    private ActivityRemoveListBinding binding;
+    private ActivityRemoveBookmarkListBinding binding;
 
     private ListViewAdapter adapter;
 
@@ -53,7 +52,7 @@ public class RemoveBookmarkListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityRemoveListBinding.inflate(getLayoutInflater());
+        binding = ActivityRemoveBookmarkListBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         tokenManager = TokenManager.getInstance(getApplicationContext());
