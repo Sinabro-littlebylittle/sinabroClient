@@ -1,4 +1,4 @@
-package com.project.sinabro.retrofit;
+package com.project.sinabro.retrofit.interfaceAPIs;
 
 import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
