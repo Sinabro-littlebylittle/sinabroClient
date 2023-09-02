@@ -20,9 +20,8 @@ import com.daimajia.androidanimations.library.YoYo;
 import com.project.sinabro.MainActivity;
 import com.project.sinabro.R;
 import com.project.sinabro.databinding.ActivityMyPageBinding;
-import com.project.sinabro.retrofit.AuthAPI;
 import com.project.sinabro.retrofit.RetrofitService;
-import com.project.sinabro.retrofit.UserAPI;
+import com.project.sinabro.retrofit.interfaceAPIs.UserAPI;
 import com.project.sinabro.sideBarMenu.authentication.SignInActivity;
 import com.project.sinabro.toast.ToastSuccess;
 import com.project.sinabro.toast.ToastWarning;
@@ -78,6 +77,9 @@ public class MyPageActivity extends AppCompatActivity {
         retrofitService = new RetrofitService(tokenManager);
         userAPI = retrofitService.getRetrofit().create(UserAPI.class);
 
+        intent = getIntent();
+        String departActivityName = intent.getStringExtra("departActivityName");
+
         Call<ResponseBody> call_userAPI_getUserSelfInfo = userAPI.getUserSelfInfo();
         call_userAPI_getUserSelfInfo.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -122,8 +124,6 @@ public class MyPageActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // 원하는 액티비티로 이동
-                intent = getIntent();
-                String departActivityName = intent.getStringExtra("departActivityName");
                 if (departActivityName.equals("MainActivity")) {
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     startActivity(intent);
@@ -145,7 +145,9 @@ public class MyPageActivity extends AppCompatActivity {
                 final Intent intent = new Intent(getApplicationContext(), ModifyMyInfoActivity.class);
                 intent.putExtra("username", binding.usernameTv.getText().toString());
                 intent.putExtra("email", binding.emailTv.getText().toString());
+                intent.putExtra("departActivityName", departActivityName);
                 startActivity(intent);
+                finish();
             }
         });
 
