@@ -5,13 +5,11 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -19,10 +17,9 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.project.sinabro.MainActivity;
 import com.project.sinabro.R;
 import com.project.sinabro.models.Place;
-import com.project.sinabro.retrofit.PlacesAPI;
+import com.project.sinabro.retrofit.interfaceAPIs.PlacesAPI;
 import com.project.sinabro.retrofit.RetrofitService;
 import com.project.sinabro.sideBarMenu.authentication.SignInActivity;
-import com.project.sinabro.sideBarMenu.settings.MyPageActivity;
 import com.project.sinabro.toast.ToastSuccess;
 import com.project.sinabro.toast.ToastWarning;
 import com.project.sinabro.utils.TokenManager;
@@ -31,8 +28,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
