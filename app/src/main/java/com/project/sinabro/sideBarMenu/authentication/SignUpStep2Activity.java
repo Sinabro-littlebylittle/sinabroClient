@@ -15,7 +15,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -23,7 +22,7 @@ import android.widget.Button;
 import com.project.sinabro.R;
 import com.project.sinabro.databinding.ActivitySignUpStep2Binding;
 import com.project.sinabro.models.UserInfo;
-import com.project.sinabro.retrofit.AuthAPI;
+import com.project.sinabro.retrofit.interfaceAPIs.AuthAPI;
 import com.project.sinabro.retrofit.RetrofitService;
 import com.project.sinabro.textWatcher.NicknameWatcher;
 import com.project.sinabro.toast.ToastWarning;
@@ -31,7 +30,6 @@ import com.project.sinabro.utils.TokenManager;
 
 import java.io.InputStream;
 
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
