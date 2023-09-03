@@ -21,6 +21,7 @@ import com.project.sinabro.MainActivity;
 import com.project.sinabro.R;
 import com.project.sinabro.databinding.ActivityRemoveBookmarkFromListBinding;
 import com.project.sinabro.models.Bookmark;
+import com.project.sinabro.models.Place;
 import com.project.sinabro.retrofit.RetrofitService;
 import com.project.sinabro.retrofit.interfaceAPIs.BookmarksAPI;
 import com.project.sinabro.sideBarMenu.authentication.SignInActivity;
@@ -55,7 +56,7 @@ public class RemoveBookmarkFromListActivity extends AppCompatActivity {
 
     private Intent intent;
 
-    private String placeId;
+    private String placeId, departActivity;
 
     List<Bookmark> bookmarkList = new ArrayList<>();
 
@@ -71,6 +72,7 @@ public class RemoveBookmarkFromListActivity extends AppCompatActivity {
 
         final Intent intent = getIntent();
         placeId = intent.getStringExtra("placeId");
+        departActivity = intent.getStringExtra("departActivity");
 
         /** "리스트 제거 확인 안내" 다이얼로그 변수 초기화 및 설정 */
         ask_add_or_cancel_bookmark_dialog = new Dialog(RemoveBookmarkFromListActivity.this);  // Dialog 초기화
@@ -222,8 +224,13 @@ public class RemoveBookmarkFromListActivity extends AppCompatActivity {
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         if (response.isSuccessful()) {
                             if (bookmarkList.size() == bookmarkIds.size()) {
-                                MainActivity mainActivity = new MainActivity();
-                                mainActivity.updateBookmarkBtnState(false);
+                                if (departActivity.equals("PlaceListActivity")) {
+                                    PlaceListActivity placeListActivity = new PlaceListActivity();
+                                    placeListActivity.updateBookmarkBtnState(false);
+                                } else {
+                                    MainActivity mainActivity = new MainActivity();
+                                    mainActivity.updateBookmarkBtnState(false);
+                                }
                             }
                             new ToastSuccess(getResources().getString(R.string.toast_remove_bookmark_from_lists), RemoveBookmarkFromListActivity.this);
                             finish(); // 현재 액티비티 종료
@@ -275,14 +282,22 @@ public class RemoveBookmarkFromListActivity extends AppCompatActivity {
                     }
                 } else {
                     switch (response.code()) {
+
                         case 401:
                             new ToastWarning(getResources().getString(R.string.toast_login_time_exceed), RemoveBookmarkFromListActivity.this);
                             final Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
                             startActivity(intent);
                             break;
                         case 404:
-                            MainActivity mainActivity = new MainActivity();
-                            mainActivity.updateBookmarkBtnState(false);
+                            if (departActivity.equals("departActivity")) {
+                                PlaceListActivity placeListActivity = new PlaceListActivity();
+                                placeListActivity.updateBookmarkBtnState(false);
+                            } else {
+                                MainActivity mainActivity = new MainActivity();
+                                mainActivity.updateBookmarkBtnState(false);
+                            }
+                            PlaceListActivity placeListActivity = new PlaceListActivity();
+                            placeListActivity.updateBookmarkBtnState(false);
                             binding.removeListListView.setVisibility(View.GONE);
                             binding.loadingTv.setVisibility(View.VISIBLE);
                             binding.loadingTv.setText("정보 없음");

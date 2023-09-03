@@ -369,48 +369,24 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
                                 intent.putExtra("markerId_value", selectedMarkerId);
                                 intent.putExtra("address_value", finalAddress_value);
 
-                                call_userAPI_getUserSelfInfo.enqueue(new Callback<ResponseBody>() {
-                                    @Override
-                                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                                        if (response.isSuccessful()) {
-                                            if (addedPlaceInfoState.equals("0")) {
-                                                final Intent intent = new Intent(MainActivity.this, AddPlaceGuideActivity.class);
-                                                intent.putExtra("markerId_value", selectedMarkerId);
-                                                intent.putExtra("latitude_value", latitude);
-                                                intent.putExtra("longitude_value", longitude);
-                                                intent.putExtra("placeName_value", selectedPlaceName);
-                                                intent.putExtra("detailAddress_value", selectedDetailAddress);
-                                                intent.putExtra("placeId_value", selectedPlaceId);
-                                                intent.putExtra("markerId_value", selectedMarkerId);
-                                                intent.putExtra("address_value", finalAddress_value);
-                                                startActivity(intent);
-                                                return;
-                                            }
+                                if (addedPlaceInfoState.equals("0")) {
+                                    final Intent intent = new Intent(MainActivity.this, AddPlaceGuideActivity.class);
+                                    intent.putExtra("markerId_value", selectedMarkerId);
+                                    intent.putExtra("latitude_value", latitude);
+                                    intent.putExtra("longitude_value", longitude);
+                                    intent.putExtra("placeName_value", selectedPlaceName);
+                                    intent.putExtra("detailAddress_value", selectedDetailAddress);
+                                    intent.putExtra("placeId_value", selectedPlaceId);
+                                    intent.putExtra("markerId_value", selectedMarkerId);
+                                    intent.putExtra("address_value", finalAddress_value);
+                                    startActivity(intent);
+                                }
 
-                                            final Intent intent = new Intent(getApplicationContext(), PlaceListActivity.class);
-                                            intent.putExtra("markerId_value", selectedMarkerId);
-                                            startActivity(intent);
-                                        } else {
-                                            switch (response.code()) {
-                                                case 401:
-                                                    final Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
-                                                    startActivity(intent);
-                                                    break;
-                                                default:
-                                                    new ToastWarning(getResources().getString(R.string.toast_none_status_code), MainActivity.this);
-                                            }
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onFailure(Call<ResponseBody> call, Throwable t) {
-                                        // 서버 코드 및 네트워크 오류 등의 이유로 요청 실패
-                                        new ToastWarning(getResources().getString(R.string.toast_server_error), MainActivity.this);
-                                    }
-                                });
+                                final Intent intent = new Intent(getApplicationContext(), PlaceListActivity.class);
+                                intent.putExtra("markerId_value", selectedMarkerId);
+                                startActivity(intent);
                             } else {
                                 new ToastWarning(getResources().getString(R.string.toast_cannot_access_area), MainActivity.this);
-                                return;
                             }
                         }
                     }
@@ -957,7 +933,6 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         // 다이얼로그 창이 나타나면서 외부 액티비티가 어두워지는데, 그 정도를 조절함
         ask_add_or_cancel_bookmark_dialog.getWindow().setDimAmount(0.35f);
 
-        Button bookmarkFilled_btn = findViewById(R.id.bookmarkFilled_btn);
         TextView dialog_tv = ask_add_or_cancel_bookmark_dialog.findViewById(R.id.dialog_tv);
         if (bookmarkFilled_btn.getVisibility() == View.VISIBLE) {
             dialog_tv.setText(getResources().getString(R.string.dialog_cancel_bookmark));
@@ -982,15 +957,14 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
             @Override
             public void onClick(View view) {
                 ask_add_or_cancel_bookmark_dialog.dismiss(); // 다이얼로그 닫기
+                final Intent intent;
                 if (bookmarked) {
-                    final Intent intent = new Intent(getApplicationContext(), RemoveBookmarkFromListActivity.class);
-                    intent.putExtra("placeId", selectedPlaceId);
-                    startActivity(intent);
+                    intent = new Intent(getApplicationContext(), RemoveBookmarkFromListActivity.class);
                 } else {
-                    final Intent intent = new Intent(getApplicationContext(), AddBookmarkToListActivity.class);
-                    intent.putExtra("placeId", selectedPlaceId);
-                    startActivity(intent);
+                    intent = new Intent(getApplicationContext(), AddBookmarkToListActivity.class);
                 }
+                intent.putExtra("placeId", selectedPlaceId);
+                startActivity(intent);
             }
         });
     }

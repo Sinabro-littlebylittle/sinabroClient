@@ -23,6 +23,7 @@ import com.project.sinabro.MainActivity;
 import com.project.sinabro.R;
 import com.project.sinabro.databinding.ActivityAddBookmarkToListBinding;
 import com.project.sinabro.models.Bookmark;
+import com.project.sinabro.models.Place;
 import com.project.sinabro.retrofit.RetrofitService;
 import com.project.sinabro.retrofit.interfaceAPIs.BookmarksAPI;
 import com.project.sinabro.sideBarMenu.authentication.SignInActivity;
@@ -59,7 +60,7 @@ public class AddBookmarkToListActivity extends AppCompatActivity {
 
     private Intent intent;
 
-    private String placeId;
+    private String placeId, departActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +74,7 @@ public class AddBookmarkToListActivity extends AppCompatActivity {
 
         intent = getIntent();
         placeId = intent.getStringExtra("placeId");
+        departActivity = intent.getStringExtra("departActivity");
 
         /** "즐겨찾기 추가/취소 확인" 다이얼로그 변수 초기화 및 설정 */
         ask_add_or_cancel_bookmark_dialog = new Dialog(AddBookmarkToListActivity.this);  // Dialog 초기화
@@ -225,8 +227,15 @@ public class AddBookmarkToListActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         if (response.isSuccessful()) {
-                            MainActivity mainActivity = new MainActivity();
-                            mainActivity.updateBookmarkBtnState(true);
+                            if (departActivity.equals("PlaceListActivity")) {
+                                PlaceListActivity placeListActivity = new PlaceListActivity();
+                                placeListActivity.updateBookmarkBtnState(true);
+                                new ToastSuccess(getResources().getString(R.string.toast_add_bookmark_to_list_success), AddBookmarkToListActivity.this);
+                                finish(); // 현재 액티비티 종료
+                            } else {
+                                MainActivity mainActivity = new MainActivity();
+                                mainActivity.updateBookmarkBtnState(true);
+                            }
                             new ToastSuccess(getResources().getString(R.string.toast_add_bookmark_to_list_success), AddBookmarkToListActivity.this);
                             finish(); // 현재 액티비티 종료
                         } else {
