@@ -18,6 +18,6 @@ public interface HeadcountsAPI {
     @GET("/api/headcounts/public/placeInformations/markers/{markerId}")
     Call<List<Headcount>> getPlaceInformationsById(@Path("markerId") String markerId);
 
-    @POST("/api/headcounts/private")
-    Call<Place> addPeopleNumber(@Body Headcount peopleNumber);
+    @POST("/api/headcounts/private/places/{placeId}")
+    Call<Place> addPeopleNumber(@Path("placeId") String placeId, @Body Headcount peopleNumber);
 }

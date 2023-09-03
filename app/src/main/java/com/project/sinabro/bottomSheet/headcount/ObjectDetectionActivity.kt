@@ -9,19 +9,22 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.video.*
-import androidx.camera.video.Recorder
 import androidx.camera.video.VideoCapture
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.project.sinabro.R
 import com.project.sinabro.databinding.ActivityObjectDetectionBinding
-import com.project.sinabro.retrofit.interfaceAPIs.ModelAPI
 import com.project.sinabro.retrofit.RetrofitServiceForHeadCount
+import com.project.sinabro.retrofit.interfaceAPIs.ModelAPI
+import com.project.sinabro.toast.ToastSuccess
+import com.project.sinabro.toast.ToastWarning
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -49,6 +52,8 @@ class ObjectDetectionActivity : AppCompatActivity() {
 
     private lateinit var aLoadingDialog: ALoadingDialog
 
+    private lateinit var placeId: String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewBinding = ActivityObjectDetectionBinding.inflate(layoutInflater)
@@ -64,7 +69,7 @@ class ObjectDetectionActivity : AppCompatActivity() {
         }
 
         // Set up the listeners for take photo and video capture buttons
-        viewBinding.scanbutton.setOnClickListener { captureVideo() }
+        viewBinding.peopleScanBtn.setOnClickListener { captureVideo() }
 
         cameraExecutor = Executors.newSingleThreadExecutor()
     }
@@ -89,7 +94,7 @@ class ObjectDetectionActivity : AppCompatActivity() {
     private fun captureVideo() {
         val videoCapture = this.videoCapture ?: return
 
-        viewBinding.scanbutton.isEnabled = false
+        viewBinding.peopleScanBtn.isEnabled = false
 
         val curRecording = recording
         if (curRecording != null) {
@@ -121,7 +126,7 @@ class ObjectDetectionActivity : AppCompatActivity() {
                 when(recordEvent) {
                     //스캔
                     is VideoRecordEvent.Start -> {
-                        viewBinding.scanbutton.apply {
+                        viewBinding.peopleScanBtn.apply {
                             text = getString(R.string.stop_capture)
                             isEnabled = true
                         }
@@ -129,6 +134,10 @@ class ObjectDetectionActivity : AppCompatActivity() {
                     //스캔 완료
                     is VideoRecordEvent.Finalize -> {
                         if (!recordEvent.hasError()) {
+                            ToastWarning(
+                                resources.getString(R.string.toast_loading_server_value),
+                                this@ObjectDetectionActivity
+                            )
                             val msg = "Video capture succeeded: " +
                                     "${recordEvent.outputResults.outputUri}"
                             Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT)
@@ -141,13 +150,6 @@ class ObjectDetectionActivity : AppCompatActivity() {
                                     this
                                 )
                             aLoadingDialog.show()
-
-
-                            //해당 비디오 재생
-//                            Toast.makeText(this, "i will out", Toast.LENGTH_SHORT).show()
-//                            val myIntent = Intent(this, PlayActivity::class.java)
-//                            myIntent.putExtra("path", path)
-//                            startActivity(myIntent)
 
                             //서버에 파일 전송
                             val path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES).absolutePath +
@@ -173,8 +175,13 @@ class ObjectDetectionActivity : AppCompatActivity() {
                                             try {
                                                 val serverValue: Int = responseBody.toInt()
                                                 // 인원수 계수 확인 및 등록 페이지로 이동
-                                                val intent = Intent(this@ObjectDetectionActivity, PlayActivity::class.java)
+                                                val intent = Intent(this@ObjectDetectionActivity, AddHeadcount::class.java)
                                                 intent.putExtra("serverValue", serverValue)
+                                                intent.putExtra("placeId", placeId);
+                                                ToastSuccess(
+                                                    resources.getString(R.string.toast_complete_server_value),
+                                                    this@ObjectDetectionActivity
+                                                )
                                                 startActivity(intent)
                                             } catch (e: NumberFormatException) {
                                                 Log.e("MyApp", "Error parsing integer from response body: $responseBody")
@@ -198,7 +205,7 @@ class ObjectDetectionActivity : AppCompatActivity() {
                                     "${recordEvent.error}")
                         }
                         //스캔
-                        viewBinding.scanbutton.apply {
+                        viewBinding.peopleScanBtn.apply {
                             text = getString(R.string.start_capture)
                             isEnabled = true
                         }
@@ -208,6 +215,12 @@ class ObjectDetectionActivity : AppCompatActivity() {
     }
 
     private fun startCamera() {
+        placeId = intent.getStringExtra("placeId_value") ?: ""
+
+        val animation: Animation =
+            AnimationUtils.loadAnimation(this, R.anim.ripple_animation)
+        viewBinding.peopleScanBtn.startAnimation(animation)
+
         val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
 
         cameraProviderFuture.addListener({
