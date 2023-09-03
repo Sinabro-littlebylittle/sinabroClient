@@ -252,7 +252,7 @@ public class PlaceListActivity extends AppCompatActivity {
 
             placeName_tv.setText(placeItem.getPlaceName());
             placeInfo_tv.setText(placeItem.getDetailAddress());
-            if (placeItem.getPeopleCnt() > 0) {
+            if (placeItem.getPeopleCnt() >= 0) {
                 peopleCount_tv.setText("" + placeItem.getPeopleCnt());
             } else {
                 peopleCount_tv.setText("?");
@@ -294,7 +294,7 @@ public class PlaceListActivity extends AppCompatActivity {
         updateElapsedTime_tv_inDialog = placeInfo_dialog.findViewById(R.id.updateElapsedTime_tv);
 
         placeName_tv_inDialog.setText(placeItem.getPlaceName());
-        if (placeItem.getPeopleCnt() > 0) {
+        if (placeItem.getPeopleCnt() >= 0) {
             peopleCount_tv_inDialog.setText("" + placeItem.getPeopleCnt());
         } else {
             peopleCount_tv_inDialog.setText("?");
