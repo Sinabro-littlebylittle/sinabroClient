@@ -81,7 +81,7 @@
     <string name="toast_bad_request">입력 데이터 형식에 문제가 있어요</string>
     <string name="toast_add_headcount_success">인원수가 등록됐어요</string>
     <string name="toast_loading_server_value">영상을 처리 중이에요</string>
-    <string name="toast_complete_server_value">처리가 완료됐어요</string>
+    <string name="toast_complete_server_value">처리를 완료했어요</string>
     <string name="toast_success_add_headcount">인원수 정보를 추가했어요</string>
 
     <!-- Strings related to (our_policies_activity) -->
