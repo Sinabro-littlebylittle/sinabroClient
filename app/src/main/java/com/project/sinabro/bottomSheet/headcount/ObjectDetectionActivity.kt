@@ -9,6 +9,8 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.*
@@ -67,7 +69,7 @@ class ObjectDetectionActivity : AppCompatActivity() {
         }
 
         // Set up the listeners for take photo and video capture buttons
-        viewBinding.scanbutton.setOnClickListener { captureVideo() }
+        viewBinding.peopleScanBtn.setOnClickListener { captureVideo() }
 
         cameraExecutor = Executors.newSingleThreadExecutor()
     }
@@ -92,7 +94,7 @@ class ObjectDetectionActivity : AppCompatActivity() {
     private fun captureVideo() {
         val videoCapture = this.videoCapture ?: return
 
-        viewBinding.scanbutton.isEnabled = false
+        viewBinding.peopleScanBtn.isEnabled = false
 
         val curRecording = recording
         if (curRecording != null) {
@@ -124,7 +126,7 @@ class ObjectDetectionActivity : AppCompatActivity() {
                 when(recordEvent) {
                     //스캔
                     is VideoRecordEvent.Start -> {
-                        viewBinding.scanbutton.apply {
+                        viewBinding.peopleScanBtn.apply {
                             text = getString(R.string.stop_capture)
                             isEnabled = true
                         }
@@ -203,7 +205,7 @@ class ObjectDetectionActivity : AppCompatActivity() {
                                     "${recordEvent.error}")
                         }
                         //스캔
-                        viewBinding.scanbutton.apply {
+                        viewBinding.peopleScanBtn.apply {
                             text = getString(R.string.start_capture)
                             isEnabled = true
                         }
@@ -214,6 +216,10 @@ class ObjectDetectionActivity : AppCompatActivity() {
 
     private fun startCamera() {
         placeId = intent.getStringExtra("placeId_value") ?: ""
+
+        val animation: Animation =
+            AnimationUtils.loadAnimation(this, R.anim.ripple_animation)
+        viewBinding.peopleScanBtn.startAnimation(animation)
 
         val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
 
