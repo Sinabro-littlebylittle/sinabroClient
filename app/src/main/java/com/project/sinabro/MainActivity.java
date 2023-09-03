@@ -964,6 +964,7 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
                     intent = new Intent(getApplicationContext(), AddBookmarkToListActivity.class);
                 }
                 intent.putExtra("placeId", selectedPlaceId);
+                intent.putExtra("departActivity", "MainActivity");
                 startActivity(intent);
             }
         });
