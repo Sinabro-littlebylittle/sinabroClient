@@ -21,15 +21,22 @@ import android.widget.TextView;
 
 import com.project.sinabro.MainActivity;
 import com.project.sinabro.R;
+import com.project.sinabro.bottomSheet.headcount.ObjectDetectionActivity;
+import com.project.sinabro.models.Bookmark;
 import com.project.sinabro.models.Headcount;
-import com.project.sinabro.retrofit.headcountsAPI;
+import com.project.sinabro.retrofit.interfaceAPIs.BookmarksAPI;
+import com.project.sinabro.retrofit.interfaceAPIs.HeadcountsAPI;
 import com.project.sinabro.retrofit.RetrofitService;
+import com.project.sinabro.retrofit.interfaceAPIs.UserAPI;
+import com.project.sinabro.sideBarMenu.authentication.SignInActivity;
+import com.project.sinabro.sideBarMenu.settings.CheckPasswordActivity;
 import com.project.sinabro.toast.ToastWarning;
 import com.project.sinabro.utils.TokenManager;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -49,7 +56,13 @@ public class PlaceListActivity extends AppCompatActivity {
     private String markerId, address;
     private Double latitude, longitude;
 
-    Boolean bookmarked = true;
+    private Boolean bookmarked = true;
+
+    private TokenManager tokenManager;
+    private RetrofitService retrofitService;
+    private UserAPI userAPI;
+    private HeadcountsAPI peopleNumbersAPI;
+    private BookmarksAPI bookmarksAPI;
 
     @Override
     public void onBackPressed() {
@@ -64,9 +77,11 @@ public class PlaceListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_place_list);
 
-        TokenManager tokenManager = TokenManager.getInstance(this);
-        RetrofitService retrofitService = new RetrofitService(tokenManager);
-        headcountsAPI peopleNumbersAPI = retrofitService.getRetrofit().create(headcountsAPI.class);
+        tokenManager = TokenManager.getInstance(this);
+        retrofitService = new RetrofitService(tokenManager);
+        userAPI = retrofitService.getRetrofit().create(UserAPI.class);
+        peopleNumbersAPI = retrofitService.getRetrofit().create(HeadcountsAPI.class);
+        bookmarksAPI = retrofitService.getRetrofit().create(BookmarksAPI.class);
 
         /** "장소정보 확인" 다이얼로그 변수 초기화 및 설정 */
         placeInfo_dialog = new Dialog(PlaceListActivity.this);  // Dialog 초기화
@@ -102,12 +117,53 @@ public class PlaceListActivity extends AppCompatActivity {
         goAddPlace_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final Intent intent = new Intent(getApplicationContext(), AddLocationInfoActivity.class);
-                intent.putExtra("markerId_value", markerId);
-                intent.putExtra("address_value", address);
-                intent.putExtra("latitude_value", latitude);
-                intent.putExtra("longitude_value", longitude);
-                startActivity(intent);
+                Call<ResponseBody> call_userAPI_getUserSelfInfo = userAPI.getUserSelfInfo();
+                call_userAPI_getUserSelfInfo.enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        if (response.isSuccessful()) {
+                            final Intent intent = new Intent(getApplicationContext(), AddLocationInfoActivity.class);
+                            intent.putExtra("markerId_value", markerId);
+                            intent.putExtra("address_value", address);
+                            intent.putExtra("latitude_value", latitude);
+                            intent.putExtra("longitude_value", longitude);
+                            startActivity(intent);
+                        } else {
+                            switch (response.code()) {
+                                case 401:
+                                    final Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
+                                    startActivity(intent);
+                                    break;
+                                default:
+                                    new ToastWarning(getResources().getString(R.string.toast_none_status_code), PlaceListActivity.this);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        // 서버 코드 및 네트워크 오류 등의 이유로 요청 실패
+                        new ToastWarning(getResources().getString(R.string.toast_server_error), PlaceListActivity.this);
+                    }
+                });
+            }
+        });
+
+        /** "북마크 등록" 버튼 */
+        bookmarkEmpty_btn = placeInfo_dialog.findViewById(R.id.bookmarkEmpty_btn);
+        bookmarkEmpty_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDialog_ask_add_or_delete_bookmark();
+            }
+        });
+
+        /** "북마크 제거" 버튼 */
+        bookmarkFilled_btn = placeInfo_dialog.findViewById(R.id.bookmarkFilled_btn);
+        bookmarkFilled_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDialog_ask_add_or_delete_bookmark();
             }
         });
 
@@ -118,7 +174,7 @@ public class PlaceListActivity extends AppCompatActivity {
         call.enqueue(new Callback<List<Headcount>>() {
             @Override
             public void onResponse(Call<List<Headcount>> call, Response<List<Headcount>> response) {
-                if (response.isSuccessful() && response.body() != null) {
+                if (response.isSuccessful()) {
                     List<Headcount> placeInformations = response.body();
                     if (!placeInformations.isEmpty()) {
                         address = placeInformations.get(0).getPlaceId().getAddress();
@@ -276,7 +332,33 @@ public class PlaceListActivity extends AppCompatActivity {
         peopleScan_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                placeInfo_dialog.dismiss(); // 다이얼로그 닫기
+                placeInfo_dialog.dismiss(); // 다이얼로그 닫기
+                Call<ResponseBody> call_userAPI_getUserSelfInfo = userAPI.getUserSelfInfo();
+                call_userAPI_getUserSelfInfo.enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        if (response.isSuccessful()) {
+                            final Intent intent = new Intent(PlaceListActivity.this, ObjectDetectionActivity.class);
+                            intent.putExtra("placeId_value", placeItem.getPlaceId());
+                            startActivity(intent);
+                        } else {
+                            switch (response.code()) {
+                                case 401:
+                                    final Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
+                                    startActivity(intent);
+                                    break;
+                                default:
+                                    new ToastWarning(getResources().getString(R.string.toast_none_status_code), PlaceListActivity.this);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        // 서버 코드 및 네트워크 오류 등의 이유로 요청 실패
+                        new ToastWarning(getResources().getString(R.string.toast_server_error), PlaceListActivity.this);
+                    }
+                });
             }
         });
 
@@ -286,32 +368,55 @@ public class PlaceListActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 placeInfo_dialog.dismiss(); // 다이얼로그 닫기
-                final Intent intent = new Intent(getApplicationContext(), AddLocationInfoActivity.class);
-                intent.putExtra("forModify", true);
-                intent.putExtra("markerId_value", markerId);
-                intent.putExtra("placeId_value", placeItem.getPlaceId());
-                intent.putExtra("address_value", placeItem.getAddress());
-                intent.putExtra("placeName_value", placeName_tv_inDialog.getText().toString());
-                intent.putExtra("detailAddress_value", detailAddress_tv_inDialog.getText().toString());
-                startActivity(intent);
+                Call<ResponseBody> call_userAPI_getUserSelfInfo = userAPI.getUserSelfInfo();
+                call_userAPI_getUserSelfInfo.enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        if (response.isSuccessful()) {
+                            final Intent intent = new Intent(getApplicationContext(), AddLocationInfoActivity.class);
+                            intent.putExtra("forModify", true);
+                            intent.putExtra("markerId_value", markerId);
+                            intent.putExtra("placeId_value", placeItem.getPlaceId());
+                            intent.putExtra("address_value", placeItem.getAddress());
+                            intent.putExtra("placeName_value", placeName_tv_inDialog.getText().toString());
+                            intent.putExtra("detailAddress_value", detailAddress_tv_inDialog.getText().toString());
+                            startActivity(intent);
+                        } else {
+                            switch (response.code()) {
+                                case 401:
+                                    final Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
+                                    startActivity(intent);
+                                    break;
+                                default:
+                                    new ToastWarning(getResources().getString(R.string.toast_none_status_code), PlaceListActivity.this);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        // 서버 코드 및 네트워크 오류 등의 이유로 요청 실패
+                        new ToastWarning(getResources().getString(R.string.toast_server_error), PlaceListActivity.this);
+                    }
+                });
             }
         });
 
-        /** "북마크 등록" 버튼 */
-        bookmarkEmpty_btn = placeInfo_dialog.findViewById(R.id.bookmarkEmpty_btn);
-        bookmarkEmpty_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showDialog_ask_add_or_delete_bookmark();
-            }
-        });
+        updateBookmarkBtnState(false);
 
-        /** "북마크 제거" 버튼 */
-        bookmarkFilled_btn = placeInfo_dialog.findViewById(R.id.bookmarkFilled_btn);
-        bookmarkFilled_btn.setOnClickListener(new View.OnClickListener() {
+        Call<List<Bookmark>> call_bookmarksAPI_getBookmarkedListsForPlace = bookmarksAPI.getBookmarkedListsForPlace(placeItem.getPlaceId());
+        call_bookmarksAPI_getBookmarkedListsForPlace.enqueue(new Callback<List<Bookmark>>() {
             @Override
-            public void onClick(View view) {
-                showDialog_ask_add_or_delete_bookmark();
+            public void onResponse(Call<List<Bookmark>> call, Response<List<Bookmark>> response) {
+                if (response.isSuccessful()) {
+                    updateBookmarkBtnState(true);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Bookmark>> call, Throwable t) {
+                // 서버 코드 및 네트워크 오류 등의 이유로 요청 실패
+                new ToastWarning(getResources().getString(R.string.toast_server_error), PlaceListActivity.this);
             }
         });
     }
@@ -320,46 +425,71 @@ public class PlaceListActivity extends AppCompatActivity {
      * (dialog_ask_add_or_cancel_bookmark) 다이얼로그를 디자인하는 함수
      */
     public void showDialog_ask_add_or_delete_bookmark() {
-        placeInfo_dialog.dismiss();
-        ask_add_or_cancel_bookmark_dialog.show(); // 다이얼로그 띄우기
-        // 다이얼로그 창이 나타나면서 외부 액티비티가 어두워지는데, 그 정도를 조절함
-        ask_add_or_cancel_bookmark_dialog.getWindow().setDimAmount(0.35f);
-
-        Button bookmarkFilled_btn = placeInfo_dialog.findViewById(R.id.bookmarkFilled_btn);
-        TextView dialog_tv = ask_add_or_cancel_bookmark_dialog.findViewById(R.id.dialog_tv);
-        if (bookmarkFilled_btn.getVisibility() == View.VISIBLE) {
-            dialog_tv.setText(getResources().getString(R.string.dialog_cancel_bookmark));
-            bookmarked = true;
-        } else {
-            dialog_tv.setText(getResources().getString(R.string.dialog_add_bookmark));
-            bookmarked = false;
-        }
-
-        // "아니오" 버튼
-        Button noBtn = ask_add_or_cancel_bookmark_dialog.findViewById(R.id.noBtn);
-        noBtn.setOnClickListener(new View.OnClickListener() {
+        Call<ResponseBody> call_userAPI_getUserSelfInfo = userAPI.getUserSelfInfo();
+        call_userAPI_getUserSelfInfo.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onClick(View view) {
-                ask_add_or_cancel_bookmark_dialog.dismiss(); // 다이얼로그 닫기
-                showDialog_placeInfo(clickedPlaceItem);
-            }
-        });
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    placeInfo_dialog.dismiss();
+                    ask_add_or_cancel_bookmark_dialog.show(); // 다이얼로그 띄우기
+                    // 다이얼로그 창이 나타나면서 외부 액티비티가 어두워지는데, 그 정도를 조절함
+                    ask_add_or_cancel_bookmark_dialog.getWindow().setDimAmount(0.35f);
 
-        // "확인" 버튼
-        Button yesBtn = ask_add_or_cancel_bookmark_dialog.findViewById(R.id.yesBtn);
-        yesBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ask_add_or_cancel_bookmark_dialog.dismiss(); // 다이얼로그 닫기
-                if (bookmarked) {
-                    final Intent intent = new Intent(getApplicationContext(), RemoveBookmarkFromListActivity.class);
-                    startActivity(intent);
+                    Button bookmarkFilled_btn = placeInfo_dialog.findViewById(R.id.bookmarkFilled_btn);
+                    TextView dialog_tv = ask_add_or_cancel_bookmark_dialog.findViewById(R.id.dialog_tv);
+
+                    if (bookmarkFilled_btn.getVisibility() == View.VISIBLE) {
+                        dialog_tv.setText(getResources().getString(R.string.dialog_cancel_bookmark));
+                        bookmarked = true;
+                    } else {
+                        dialog_tv.setText(getResources().getString(R.string.dialog_add_bookmark));
+                        bookmarked = false;
+                    }
+
+                    // "아니오" 버튼
+                    Button noBtn = ask_add_or_cancel_bookmark_dialog.findViewById(R.id.noBtn);
+                    noBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            ask_add_or_cancel_bookmark_dialog.dismiss(); // 다이얼로그 닫기
+                            showDialog_placeInfo(clickedPlaceItem);
+                        }
+                    });
+
+                    // "확인" 버튼
+                    Button yesBtn = ask_add_or_cancel_bookmark_dialog.findViewById(R.id.yesBtn);
+                    yesBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            ask_add_or_cancel_bookmark_dialog.dismiss(); // 다이얼로그 닫기
+                            final Intent intent;
+                            if (bookmarked) {
+                                intent = new Intent(getApplicationContext(), RemoveBookmarkFromListActivity.class);
+                            } else {
+                                intent = new Intent(getApplicationContext(), AddBookmarkToListActivity.class);
+                            }
+                            intent.putExtra("placeId", clickedPlaceItem.getPlaceId());
+                            intent.putExtra("departActivity", "PlaceListActivity");
+                            startActivity(intent);
+                            showDialog_placeInfo(clickedPlaceItem);
+                        }
+                    });
                 } else {
-                    final Intent intent = new Intent(getApplicationContext(), AddBookmarkToListActivity.class);
-                    intent.putExtra("fromPlaceListActivity", true);
-                    startActivity(intent);
+                    switch (response.code()) {
+                        case 401:
+                            final Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
+                            startActivity(intent);
+                            break;
+                        default:
+                            new ToastWarning(getResources().getString(R.string.toast_none_status_code), PlaceListActivity.this);
+                    }
                 }
-                showDialog_placeInfo(clickedPlaceItem);
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                // 서버 코드 및 네트워크 오류 등의 이유로 요청 실패
+                new ToastWarning(getResources().getString(R.string.toast_server_error), PlaceListActivity.this);
             }
         });
     }
