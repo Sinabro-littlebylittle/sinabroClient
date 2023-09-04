@@ -163,12 +163,38 @@
                             android:textSize="16.5sp" />
                     </RelativeLayout>
 
+                    <RelativeLayout
+                        android:id="@+id/point_relativeLayout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/email_relativeLayout"
+                        android:paddingStart="25dp"
+                        android:paddingTop="20dp"
+                        android:paddingEnd="25dp"
+                        android:paddingBottom="20dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="포인트"
+                            android:textColor="@color/text_blue"
+                            android:textSize="16.5sp" />
+
+                        <TextView
+                            android:id="@+id/point_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:text="100"
+                            android:textSize="16.5sp" />
+                    </RelativeLayout>
+
                     <!-- 가로 구분선 -->
                     <RelativeLayout
                         android:id="@+id/dividing_line_relativeLayout"
                         android:layout_width="match_parent"
                         android:layout_height="17.5dp"
-                        android:layout_below="@+id/email_relativeLayout"
+                        android:layout_below="@+id/point_relativeLayout"
                         android:layout_marginTop="5dp"
                         android:layout_marginBottom="5dp"
                         android:background="@color/bg_grey" />
