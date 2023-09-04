@@ -12,8 +12,7 @@ import android.view.Window;
 
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.project.sinabro.R;
-import com.project.sinabro.bottomSheet.place.AddBookmarkToListActivity;
-import com.project.sinabro.databinding.ActivityAddNewListBinding;
+import com.project.sinabro.databinding.ActivityAddNewBookmarkListBinding;
 import com.project.sinabro.models.Bookmark;
 import com.project.sinabro.retrofit.RetrofitService;
 import com.project.sinabro.retrofit.interfaceAPIs.BookmarksAPI;
@@ -30,7 +29,7 @@ import retrofit2.Response;
 
 public class AddNewBookmarkListActivity extends AppCompatActivity {
 
-    private ActivityAddNewListBinding binding;
+    private ActivityAddNewBookmarkListBinding binding;
 
     private Dialog selectListIconColor_dialog;
 
@@ -62,7 +61,7 @@ public class AddNewBookmarkListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityAddNewListBinding.inflate(getLayoutInflater());
+        binding = ActivityAddNewBookmarkListBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         tokenManager = TokenManager.getInstance(getApplicationContext());
@@ -119,67 +118,69 @@ public class AddNewBookmarkListActivity extends AppCompatActivity {
                     binding.listNameTextInputLayout.setError(getResources().getString(R.string.add_list_name_failed));
                     binding.listNameTextInputLayout.setErrorEnabled(true);
                     binding.listNameTextInputLayout.setBackgroundResource(R.drawable.edt_bg_only_helper_selected);
+                    return;
                 } else if (colorChecked[0] != true) {
                     new ToastWarning(getResources().getString(R.string.toast_add_list_failed), AddNewBookmarkListActivity.this);
-                } else {
-                    Boolean forModify = intent.getBooleanExtra("forModify", false);
-                    Bookmark bookmark = new Bookmark();
-                    bookmark.setBookmarkName(binding.listNameEditText.getText().toString());
-                    bookmark.setIconColor(checkedColorInfo[0]);
+                    return;
+                }
 
-                    // 북마크 리스트 정보 수정 시
-                    if (forModify) {
-                        String bookmarkId = intent.getStringExtra("bookmarkId");
-                        Call<ResponseBody> call_bookmarksAPI_updateBookmarkList = bookmarksAPI.updateBookmarkList(bookmarkId, bookmark);
-                        call_bookmarksAPI_updateBookmarkList.enqueue(new Callback<ResponseBody>() {
+                Boolean forModify = intent.getBooleanExtra("forModify", false);
+                Bookmark bookmark = new Bookmark();
+                bookmark.setBookmarkName(binding.listNameEditText.getText().toString());
+                bookmark.setIconColor(checkedColorInfo[0]);
 
-                            @Override
-                            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                                if (response.isSuccessful()) {
-                                    new ToastSuccess(getResources().getString(R.string.toast_modify_list_success), AddNewBookmarkListActivity.this);
-                                    finish();
-                                } else {
-                                    switch (response.code()) {
-                                        case 401:
-                                            new ToastWarning(getResources().getString(R.string.toast_login_time_exceed), AddNewBookmarkListActivity.this);
-                                            final Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
-                                            startActivity(intent);
-                                            break;
-                                        default:
-                                            new ToastWarning(getResources().getString(R.string.toast_none_status_code), AddNewBookmarkListActivity.this);
-                                    }
-                                }
-                            }
+                // 북마크 리스트 정보 수정 시
+                if (forModify) {
+                    String bookmarkId = intent.getStringExtra("bookmarkId");
+                    Call<ResponseBody> call_bookmarksAPI_updateBookmarkList = bookmarksAPI.updateBookmarkList(bookmarkId, bookmark);
+                    call_bookmarksAPI_updateBookmarkList.enqueue(new Callback<ResponseBody>() {
 
-                            @Override
-                            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                                // 서버 코드 및 네트워크 오류 등의 이유로 요청 실패
-                                new ToastWarning(getResources().getString(R.string.toast_server_error), AddNewBookmarkListActivity.this);
-                            }
-                        });
-
-                        return;
-                    }
-
-                    Call<Bookmark> call_bookmarksAPI_addBookmarkList = bookmarksAPI.addBookmarkList(bookmark);
-                    call_bookmarksAPI_addBookmarkList.enqueue(new Callback<Bookmark>() {
                         @Override
-                        public void onResponse(Call<Bookmark> call, Response<Bookmark> response) {
+                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                             if (response.isSuccessful()) {
-                                new ToastSuccess(getResources().getString(R.string.toast_add_list_success), AddNewBookmarkListActivity.this);
-                                finish(); // 현재 액티비티 종료
+                                new ToastSuccess(getResources().getString(R.string.toast_modify_list_success), AddNewBookmarkListActivity.this);
+                                finish();
                             } else {
-
+                                switch (response.code()) {
+                                    case 401:
+                                        new ToastWarning(getResources().getString(R.string.toast_login_time_exceed), AddNewBookmarkListActivity.this);
+                                        final Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
+                                        startActivity(intent);
+                                        break;
+                                    default:
+                                        new ToastWarning(getResources().getString(R.string.toast_none_status_code), AddNewBookmarkListActivity.this);
+                                }
                             }
                         }
 
                         @Override
-                        public void onFailure(Call<Bookmark> call, Throwable t) {
+                        public void onFailure(Call<ResponseBody> call, Throwable t) {
                             // 서버 코드 및 네트워크 오류 등의 이유로 요청 실패
                             new ToastWarning(getResources().getString(R.string.toast_server_error), AddNewBookmarkListActivity.this);
                         }
                     });
+
+                    return;
                 }
+
+                Call<Bookmark> call_bookmarksAPI_addBookmarkList = bookmarksAPI.addBookmarkList(bookmark);
+                call_bookmarksAPI_addBookmarkList.enqueue(new Callback<Bookmark>() {
+                    @Override
+                    public void onResponse(Call<Bookmark> call, Response<Bookmark> response) {
+                        if (response.isSuccessful()) {
+                            new ToastSuccess(getResources().getString(R.string.toast_add_list_success), AddNewBookmarkListActivity.this);
+                            finish(); // 현재 액티비티 종료
+                        } else {
+
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Bookmark> call, Throwable t) {
+                        // 서버 코드 및 네트워크 오류 등의 이유로 요청 실패
+                        new ToastWarning(getResources().getString(R.string.toast_server_error), AddNewBookmarkListActivity.this);
+                    }
+                });
             }
         });
 
@@ -192,6 +193,7 @@ public class AddNewBookmarkListActivity extends AppCompatActivity {
             binding.selectedColorRoundedImageView.setImageResource(checkedColorInfo[0]);
             binding.listNameEditText.setText(listName);
         }
+
     }
 
     /**
