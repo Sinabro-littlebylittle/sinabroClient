@@ -31,6 +31,9 @@
     <string name="sign_in_success">환영합니다</string>
     <string name="sign_in_failed">이메일 또는 비밀번호를 잘못 입력했습니다.\n입력하신 내용을 다시 확인해 주세요.</string>
 
+    <!-- Strings related to (Headcount) -->
+    <string name="headcount_editText_valid_failed">올바른 인원수 값을 입력해 주세요</string>
+
     <string name="find_email">가입하신 이메일은 다음과 같습니다</string>
     <string name="find_email_failed">입력하신 이메일 정보를 찾을 수 없습니다</string>
     <string name="input_error">오류가 발생하였습니다. 다시 시도해주세요</string>
@@ -43,6 +46,7 @@
     <!-- String related to (Bookmark) -->
     <string name="add_list_name_failed">2~14자 이내의 한/영 및 숫자만 가능합니다</string>
 
+
     <!-- Strings related to (Dialog) -->
     <string name="dialog_place_remove">장소를 삭제할까요?</string>
     <string name="dialog_ask_user_default_profile_image">기본 프로필 이미지를\n사용하시겠습니까? 😀</string>
@@ -53,6 +57,7 @@
     <string name="dialog_modify_password_successs">비밀번호가 정상적으로\n변경되었습니다</string>
     <string name="dialog_cancel_bookmark">즐겨찾기를 취소하시겠습니까?</string>
     <string name="dialog_add_bookmark">즐겨찾기로 추가하시겠습니까?</string>
+    <string name="dialog_add_headcount_success">100 포인트가 적립되었습니다 💰</string>
 
     <!-- Strings related to (Toast) -->
     <string name="toast_modify_user_image_success">이미지를 변경했어요 😀</string>
@@ -83,6 +88,7 @@
     <string name="toast_loading_server_value">영상을 처리 중이에요</string>
     <string name="toast_complete_server_value">처리를 완료했어요</string>
     <string name="toast_success_add_headcount">인원수 정보를 추가했어요</string>
+    <string name="toast_headcount_editText_valid_failed">값을 입력해 주세요</string>
 
     <!-- Strings related to (our_policies_activity) -->
     <string name="our_policies_rule_title_1">제 1조, 총칙</string>

@@ -90,9 +90,11 @@ public class MyPageActivity extends AppCompatActivity {
                         tokenManager.saveUserInfo(jsonObject);
                         String username = tokenManager.getUsername();
                         String email = tokenManager.getEmail();
+                        int point = tokenManager.getPoint();
                         binding.myPageFragmentTitleTv.setText(username + "님의 정보");
                         binding.usernameTv.setText(username);
                         binding.emailTv.setText(email);
+                        binding.pointTv.setText("" + point);
                     } catch (JSONException | IOException e) {
                         e.printStackTrace();
                     }

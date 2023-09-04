@@ -35,12 +35,14 @@ public class TokenManager {
         String email = jsonObject.optString("email");
         String username = jsonObject.optString("username");
         String role = jsonObject.optString("role");
+        int point = jsonObject.optInt("point");
 
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString("userId`", userId);
         editor.putString("email", email);
         editor.putString("username", username);
         editor.putString("role", role);
+        editor.putInt("point", point);
         editor.apply();
     }
 
@@ -59,4 +61,6 @@ public class TokenManager {
     public String getRole() {
         return prefs.getString("role", null);
     }
+
+    public int getPoint() { return prefs.getInt("point", 0); }
 }
