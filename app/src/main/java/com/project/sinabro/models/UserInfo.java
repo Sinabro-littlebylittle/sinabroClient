@@ -15,6 +15,9 @@ public class UserInfo {
     @SerializedName("role")
     private String role;
 
+    @SerializedName("point")
+    private int point;
+
     public String getEmail() {
         return email;
     }
@@ -46,4 +49,8 @@ public class UserInfo {
     public void setRole(String role) {
         this.role = role;
     }
+
+    public int getPoint() { return point; }
+
+    public void setPoint(int point) { this.point = point; }
 }
