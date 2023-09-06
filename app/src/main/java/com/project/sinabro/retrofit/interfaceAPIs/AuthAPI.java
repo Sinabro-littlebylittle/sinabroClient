@@ -17,6 +17,6 @@ public interface AuthAPI {
     @POST("/api/auth/public/login")
     Call<ResponseBody> login(@Body LoginRequest loginRequest);
 
-    @POST("/api/auth/public/signup")
+    @POST("/api/auth/public/sign-up")
     Call<UserInfo> signUp(@Body UserInfo userinfo);
 }

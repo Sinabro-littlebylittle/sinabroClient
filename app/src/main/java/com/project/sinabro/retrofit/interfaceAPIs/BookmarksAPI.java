@@ -22,23 +22,23 @@ public interface BookmarksAPI {
     @GET("/api/bookmarks/private")
     Call<List<Bookmark>> getBookmarkList();
 
-    @GET("/api/bookmarks/private/bookmarkedPlace/bookmarks/{bookmarkId}")
+    @GET("/api/bookmarks/private/bookmarked-place/bookmarks/{bookmarkId}")
     Call<List<Headcount>> getBookmarkedPlaceInformations(@Path("bookmarkId") String bookmarkId);
 
-    @GET("/api/bookmarks/private/bookmarkedPlace/places/{placeId}")
+    @GET("/api/bookmarks/private/bookmarked-place/places/{placeId}")
     Call<List<Bookmark>> getBookmarkedListsForPlace(@Path("placeId") String placeId);
 
     @POST("/api/bookmarks/private")
     Call<Bookmark> addBookmarkList(@Body Bookmark bookmark);
 
-    @POST("/api/bookmarks/private/bookmarkedPlace/places/{placeId}")
+    @POST("/api/bookmarks/private/bookmarked-place/places/{placeId}")
     Call<ResponseBody> addBookmarkedPlaceInBookmarkList(@Path("placeId") String placeId,
                                                         @Body List<String> bookmarkIds);
 
     @HTTP(method = "DELETE", path = "/api/bookmarks/private", hasBody = true)
     Call<ResponseBody> deleteBookmarkLists(@Body List<String> bookmarkIds);
 
-    @HTTP(method = "DELETE", path = "/api/bookmarks/private/bookmarkedPlace/places/{placeId}", hasBody = true)
+    @HTTP(method = "DELETE", path = "/api/bookmarks/private/bookmarked-place/places/{placeId}", hasBody = true)
     Call<ResponseBody> deleteBookmarkedPlaceInBookmarkListForPlace(@Path("placeId") String placeId, @Body List<String> bookmarkIds);
 
     @PATCH("/api/bookmarks/private/bookmarks/{bookmarkId}")

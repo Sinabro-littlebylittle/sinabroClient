@@ -12,10 +12,10 @@ import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 public interface HeadcountsAPI {
-    @GET("/api/headcounts/public/placeInformations")
+    @GET("/api/headcounts/public/place-informations")
     Call<List<Headcount>> getPlaceInformations();
 
-    @GET("/api/headcounts/public/placeInformations/markers/{markerId}")
+    @GET("/api/headcounts/public/place-informations/markers/{markerId}")
     Call<List<Headcount>> getPlaceInformationsById(@Path("markerId") String markerId);
 
     @POST("/api/headcounts/private/places/{placeId}")
