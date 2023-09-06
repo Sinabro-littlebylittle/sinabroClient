@@ -64,7 +64,7 @@ public class PasswordWatcher implements TextWatcher {
     }
 
     public boolean validatePassword(String s) {
-        String passwordPattern = "^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[$@$!%*#?&]).{7,20}.$";
+        String passwordPattern = "^.{8,20}$";
         return s.matches(passwordPattern);
     }
 }
