@@ -179,6 +179,7 @@ public class MyPageActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 tokenManager.logout();
+                new ToastSuccess(getResources().getString(R.string.toast_logout_success), MyPageActivity.this);
                 // UI 업데이트 또는 리다이렉트를 수행합니다.
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class); // or LoginActivity.class
                 startActivity(intent);
