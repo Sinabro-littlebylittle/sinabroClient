@@ -89,6 +89,7 @@
     <string name="toast_complete_server_value">처리를 완료했어요</string>
     <string name="toast_success_add_headcount">인원수 정보를 추가했어요</string>
     <string name="toast_headcount_editText_valid_failed">값을 입력해 주세요</string>
+    <string name="toast_logout_success">로그아웃 되었어요</string>
 
     <!-- Strings related to (our_policies_activity) -->
     <string name="our_policies_rule_title_1">제 1조, 총칙</string>
