@@ -46,6 +46,19 @@ public class TokenManager {
         editor.apply();
     }
 
+    public void logout() {
+        SharedPreferences.Editor editor = prefs.edit();
+        // 토큰 제거
+        editor.remove("JWT_TOKEN");
+        // 사용자 정보 제거
+        editor.remove("userId");
+        editor.remove("email");
+        editor.remove("username");
+        editor.remove("role");
+        editor.remove("point");
+        editor.apply();
+    }
+
     public String getUserId() {
         return prefs.getString("userId", null);
     }

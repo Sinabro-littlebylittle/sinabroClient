@@ -164,13 +164,26 @@ public class MyPageActivity extends AppCompatActivity {
             }
         });
 
-        /** "마이페이지(fragment)"에서 "비밀번호 변경(activity)"로 화면 전환r 코드 추가 */
+        /** "마이페이지(activity)"에서 "비밀번호 변경(activity)"로 화면 전환 코드 추가 */
         binding.passwordRelativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // "비밀번호 변경" 액티비티로 이동
                 final Intent intent = new Intent(getApplicationContext(), ModifyPasswordActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        /** 로그아웃 기능 수행 */
+        binding.logoutRelativeLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                tokenManager.logout();
+                new ToastSuccess(getResources().getString(R.string.toast_logout_success), MyPageActivity.this);
+                // UI 업데이트 또는 리다이렉트를 수행합니다.
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class); // or LoginActivity.class
+                startActivity(intent);
+                finish();
             }
         });
 

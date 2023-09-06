@@ -229,6 +229,37 @@
                             android:foregroundTint="@color/white"
                             android:src="@drawable/arrow_right_grey" />
                     </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/logout_relativeLayout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/password_relativeLayout"
+                        android:paddingStart="25dp"
+                        android:paddingTop="15dp"
+                        android:paddingEnd="12.5dp"
+                        android:paddingBottom="15dp">
+
+                        <TextView
+                            android:id="@+id/logout_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:text="로그아웃"
+                            android:textColor="@color/text_blue"
+                            android:textSize="16.5sp" />
+
+                        <!-- 우측 화살표 버튼 -->
+                        <ImageButton
+                            android:id="@+id/arrow_right_iBtn2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:backgroundTint="@color/transparent"
+                            android:foregroundTint="@color/white"
+                            android:src="@drawable/arrow_right_grey" />
+                    </RelativeLayout>
                 </RelativeLayout>
             </RelativeLayout>
         </ScrollView>
