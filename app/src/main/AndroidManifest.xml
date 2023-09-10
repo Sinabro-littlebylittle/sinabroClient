@@ -32,6 +32,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity" />
+        <activity android:name=".search.SearchKeywordActivity" />
         <activity android:name=".bottomSheet.headcount.ObjectDetectionActivity" />
         <activity android:name=".bottomSheet.headcount.AddHeadcount" />
         <activity android:name=".bottomSheet.place.AddLocationInfoActivity" />
