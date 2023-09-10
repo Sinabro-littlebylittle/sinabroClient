@@ -2,7 +2,6 @@ package com.project.sinabro.retrofit.interfaceAPIs;
 
 import com.project.sinabro.models.Bookmark;
 import com.project.sinabro.models.Headcount;
-import com.project.sinabro.models.requests.PlaceIdRequest;
 
 import java.util.List;
 
