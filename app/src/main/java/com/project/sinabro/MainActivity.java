@@ -444,6 +444,7 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
                                     intent.putExtra("placeId_value", selectedPlaceId);
                                     intent.putExtra("address_value", finalAddress_value);
                                     startActivity(intent);
+                                    return;
                                 }
 
                                 final Intent intent = new Intent(getApplicationContext(), PlaceListActivity.class);
