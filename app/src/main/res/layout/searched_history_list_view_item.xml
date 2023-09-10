@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="72.5dp">
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/search_roundedImageView"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="20dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/search"
+        app:riv_oval="true" />
+
+    <RelativeLayout
+        android:id="@+id/placeName_relativeLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/search_roundedImageView">
+
+        <!-- 검색된 장소명 -->
+        <TextView
+            android:id="@+id/placeName_tv"
+            android:layout_width="225dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="충북대학교"
+            android:textColor="@color/black"
+            android:textSize="17.5sp" />
+    </RelativeLayout>
+
+    <!-- 검색 일자 -->
+    <TextView
+        android:id="@+id/searchDate_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:maxWidth="250dp"
+        android:text="08. 04."
+        android:layout_marginEnd="60dp"
+        android:textColor="@color/normal_grey"
+        android:textSize="13sp" />
+
+        <!-- 검색 기록 지우기 버튼 -->
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/close_thin_roundedImageView"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="20dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/close_thin"
+            app:riv_oval="true" />
+
+    <!-- 가로 구분선 -->
+    <RelativeLayout
+        android:id="@+id/dividing_line_relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/bg_grey" />
+
+</RelativeLayout>
