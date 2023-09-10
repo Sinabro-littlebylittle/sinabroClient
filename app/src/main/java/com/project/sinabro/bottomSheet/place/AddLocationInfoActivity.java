@@ -38,7 +38,7 @@ public class AddLocationInfoActivity extends AppCompatActivity {
 
     private Button addPlace_btn;
     private ImageButton back_iBtn;
-    private TextView placeRemove_tv, address_tv;
+    private TextView activityTitle_tv, placeRemove_tv, address_tv;
     private TextInputEditText placeName_editText, detailAddress_editText;
     private Dialog placeRemove_dialog;
 
@@ -71,6 +71,8 @@ public class AddLocationInfoActivity extends AppCompatActivity {
         markerId = intent.getStringExtra("markerId_value");
         placeId = intent.getStringExtra("placeId_value");
 
+        activityTitle_tv = findViewById(R.id.activityTitle_tv);
+
         placeRemove_dialog = new Dialog(AddLocationInfoActivity.this);  // Dialog 초기화
         placeRemove_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE); // 타이틀 제거
         placeRemove_dialog.setContentView(R.layout.dialog_place_remove); // xml 레이아웃 파일과 연결
@@ -78,7 +80,10 @@ public class AddLocationInfoActivity extends AppCompatActivity {
         placeRemove_dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         placeRemove_tv = findViewById(R.id.placeRemove_tv);
-        if (forModify) placeRemove_tv.setVisibility(View.VISIBLE);
+        if (forModify) {
+            placeRemove_tv.setVisibility(View.VISIBLE);
+            activityTitle_tv.setText("장소 수정");
+        }
         placeRemove_tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -93,6 +98,9 @@ public class AddLocationInfoActivity extends AppCompatActivity {
         address_tv.setText(address);
 
         placeName_editText = findViewById(R.id.placeName_editText);
+        String searchedPlaceName = intent.getStringExtra("searchedPlaceName_value");
+        placeName_editText.setText(searchedPlaceName);
+
         detailAddress_editText = findViewById(R.id.detailAddress_editText);
         addPlace_btn = findViewById(R.id.addPlace_btn);
         addPlace_btn.setOnClickListener(new View.OnClickListener() {

@@ -30,6 +30,8 @@
         android:layout_marginTop="50dp"
         android:lineSpacingExtra="-7dp"
         android:maxHeight="80dp"
+        android:ellipsize="end"
+        android:maxLines="1"
         android:text="장소명(새로운 장소)"
         android:textColor="@color/deep_blue"
         android:textSize="25sp" />
@@ -43,6 +45,8 @@
         android:layout_marginStart="30dp"
         android:layout_marginTop="5dp"
         android:minHeight="55dp"
+        android:ellipsize="end"
+        android:maxLines="2"
         android:text="상세 주소"
         android:textColor="@color/dark_grey"
         android:textSize="20sp" />
@@ -61,9 +65,11 @@
             android:id="@+id/peopleCount_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="123"
             android:text="?"
             android:layout_centerHorizontal="true"
-            android:textSize="50sp" />
+            android:textSize="45sp" />
 
         <!-- '명'수 텍스트 -->
         <TextView
@@ -72,7 +78,7 @@
             android:layout_height="wrap_content"
             android:text="명"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="1dp"
+            android:layout_marginBottom="5dp"
             android:visibility="gone"
             android:layout_toRightOf="@+id/peopleCount_tv"
             android:textSize="20sp" />

@@ -23,7 +23,6 @@ import com.project.sinabro.bottomSheet.place.AddLocationInfoActivity;
 import com.project.sinabro.bottomSheet.place.PlaceItem;
 import com.project.sinabro.databinding.ActivityBookmarkedPlacesInListBinding;
 import com.project.sinabro.models.Headcount;
-import com.project.sinabro.models.requests.PlaceIdRequest;
 import com.project.sinabro.retrofit.RetrofitService;
 import com.project.sinabro.retrofit.interfaceAPIs.BookmarksAPI;
 import com.project.sinabro.sideBarMenu.authentication.SignInActivity;

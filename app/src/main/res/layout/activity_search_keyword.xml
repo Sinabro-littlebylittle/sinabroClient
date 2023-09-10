@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".search.SearchKeywordActivity">
+
+    <!-- activity (header) RelativeLayout -->
+    <RelativeLayout
+        android:id="@+id/activity_header_relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- 뒤로가기 버튼 -->
+        <ImageButton
+            android:id="@+id/back_iBtn"
+            android:layout_width="42.5dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="15dp"
+            android:backgroundTint="@color/transparent"
+            android:src="@drawable/back"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+                <!-- 검색 란 -->
+        <EditText
+            android:id="@+id/search_edt"
+            android:layout_width="315dp"
+            android:layout_height="45dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="23dp"
+            android:background="@drawable/radius"
+            android:hint="장소, 주소 검색"
+            android:imeOptions="actionSearch"
+            android:paddingStart="12.5dp"
+            android:singleLine="true"
+            android:textColorHint="#D4D4D4"
+            android:textCursorDrawable="@drawable/cursor_color" />
+
+        <!-- 입력 내용 지우기 버튼 -->
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/close_circle_roundedImageView"
+            android:layout_width="27.5dp"
+            android:layout_height="27.5dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="30dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/close_circle"
+            android:visibility="gone"
+            app:riv_oval="true" />
+    </RelativeLayout>
+
+    <!-- 가로 구분선 -->
+    <RelativeLayout
+        android:id="@+id/dividing_line_relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:layout_below="@+id/activity_header_relativeLayout"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="-5dp"
+        android:background="@color/bg_grey" />
+
+    <!-- activity (body) RelativeLayout -->
+    <RelativeLayout
+        android:id="@+id/activity_body_relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dividing_line_relativeLayout">
+
+        <ListView
+            android:id="@+id/search_history_listView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:divider="#FFFFFF"
+            android:dividerHeight="0px"
+            android:scrollbars="none" />
+
+        <ListView
+            android:id="@+id/searched_place_listView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:divider="#FFFFFF"
+            android:dividerHeight="0px"
+            android:scrollbars="none"
+            android:visibility="gone" />
+    </RelativeLayout>
+</RelativeLayout>

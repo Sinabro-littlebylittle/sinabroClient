@@ -25,7 +25,9 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -68,6 +70,7 @@ import com.project.sinabro.retrofit.interfaceAPIs.HeadcountsAPI;
 import com.project.sinabro.retrofit.RetrofitService;
 import com.project.sinabro.retrofit.RetrofitServiceForKakao;
 import com.project.sinabro.retrofit.interfaceAPIs.UserAPI;
+import com.project.sinabro.search.SearchKeywordActivity;
 import com.project.sinabro.sideBarMenu.authentication.SignInActivity;
 import com.project.sinabro.sideBarMenu.settings.CheckPasswordActivity;
 import com.project.sinabro.toast.ToastWarning;
@@ -131,9 +134,10 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
     private LocationSettingsRequest mLocationSettingsRequest;
     private Button currentLocation_btn, mapZoomIn_btn, mapZoomOut_btn, peopleScan_btn, editLocation_btn, placeList_btn;
     private TextView placeName_tv, detailAddress_tv, peopleCount_tv, headcountUnit_tv, updateElapsedTime_tv, username_tv;
+    private EditText search_edt;
     private static Button bookmarkEmpty_btn, bookmarkFilled_btn;
 
-    private ImageButton hamburger_ibtn;
+    private ImageButton hamburger_iBtn;
 
     private RelativeLayout layout_navigation_header;
 
@@ -155,9 +159,9 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
      */
     private LocationManager locationManager;
     private static final int REQUEST_CODE_LOCATION = 2;
-    private static double selectedLatitude, selectedLongitude;
+    private static double currLatitude, currLongitude, selectedLatitude, selectedLongitude, searchedLatitude, searchedLongitude;
     private int addedMakerCnt;
-    private String addedPlaceInfoState;
+    private String addedPlaceInfoState, searchedPlaceName;
     static private String selectedPeopleCount, selectedPlaceName, selectedDetailAddress, selectedPlaceId, selectedMarkerId;
 
     //모델관련 변수 선언
@@ -169,11 +173,15 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
 
     private TokenManager tokenManager;
     private RetrofitService retrofitService;
-    private HeadcountsAPI peopleNumbersAPI;
+    private RetrofitServiceForKakao retrofitServiceForKakao;
+    private KakaoAPI kakaoInterface;
+    private HeadcountsAPI headcountsAPI;
     private UserAPI userAPI;
     private BookmarksAPI bookmarksAPI;
 
     Boolean bookmarked = true, isDetected;
+
+    private Intent intent;
 
     //모델 에셋 경로 설정 함수
     public static String assetFilePath(Context context, String assetName) throws IOException {
@@ -202,12 +210,14 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
 
         tokenManager = TokenManager.getInstance(this);
         retrofitService = new RetrofitService(tokenManager);
-        peopleNumbersAPI = retrofitService.getRetrofit().create(HeadcountsAPI.class);
+        retrofitServiceForKakao = new RetrofitServiceForKakao();
+        kakaoInterface = retrofitServiceForKakao.getRetrofit().create(KakaoAPI.class);
+        headcountsAPI = retrofitService.getRetrofit().create(HeadcountsAPI.class);
         userAPI = retrofitService.getRetrofit().create(UserAPI.class);
         bookmarksAPI = retrofitService.getRetrofit().create(BookmarksAPI.class);
 
-        Call<List<Headcount>> call = peopleNumbersAPI.getPlaceInformations();
-        call.enqueue(new Callback<List<Headcount>>() {
+        Call<List<Headcount>> call_headcountsAPI_getPlaceInformations = headcountsAPI.getPlaceInformations();
+        call_headcountsAPI_getPlaceInformations.enqueue(new Callback<List<Headcount>>() {
             @Override
             public void onResponse(Call<List<Headcount>> call, Response<List<Headcount>> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -224,6 +234,53 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
                             String markerId = String.valueOf(placeInformations.get(k).getPlaceId().getMarkerId().getId());
                             Log.d("데이터: ", "" + peopleNum + "/" + latitude + "/" + longitude + "/" + placeName + "/" + detailAddress + "/" + updateElapsedTime);
                             addMakerToMap(peopleNum, latitude, longitude, placeName, detailAddress, updateElapsedTime, placeId, markerId);
+                        }
+
+                        intent = getIntent();
+                        searchedPlaceName = intent.getStringExtra("searchedPlaceName");
+                        String searchedLatitude_str = intent.getStringExtra("searchedLatitude");
+                        String searchedLongitude_str = intent.getStringExtra("searchedLongitude");
+                        if (searchedLatitude_str != null && searchedLongitude_str != null) {
+                            mapView.setZoomLevel(1, true);
+
+                            searchedLatitude = Double.parseDouble(searchedLatitude_str);
+                            searchedLongitude = Double.parseDouble(searchedLongitude_str);
+
+                            MapPoint searchedMapPoint = MapPoint.mapPointWithGeoCoord(searchedLatitude, searchedLongitude);
+                            mapView.setMapCenterPoint(searchedMapPoint, true);
+
+                            for (int k = 0; k < markers.size(); k++) {
+                                MapPOIItem marker = markers.get(k);
+                                String savedMarkerInfo = (String) marker.getUserObject();
+                                String[] splittedSavedMarkerInfo = savedMarkerInfo.split("/");
+                                double savedMarkerLatitude = Double.parseDouble(splittedSavedMarkerInfo[1]);
+                                double savedMarkerLongitude = Double.parseDouble(splittedSavedMarkerInfo[2]);
+
+                                if (searchedLatitude == savedMarkerLatitude && searchedLongitude == savedMarkerLongitude) {
+                                    mapView.selectPOIItem(markers.get(k), true);
+                                    handlePOIItemSelected(markers.get(k));
+                                    return;
+                                }
+                            }
+
+                            MapPOIItem searchedPlaceMarker = new MapPOIItem();
+                            searchedPlaceMarker.setItemName(searchedPlaceName);
+                            searchedPlaceMarker.setMapPoint(MapPoint.mapPointWithGeoCoord(searchedLatitude, searchedLongitude));
+                            searchedPlaceMarker.setMarkerType(MapPOIItem.MarkerType.YellowPin);
+                            searchedPlaceMarker.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin);
+
+                            mapView.selectPOIItem(markers.get(1), true);
+                            handlePOIItemSelected(markers.get(1));
+
+                            String markerInfo = "-1" + "/" + searchedLatitude + "/" + searchedLongitude + "/" + "미등록 장소" + "/" + "" + "/" + "-1/null/null/0";
+                            searchedPlaceMarker.setUserObject(markerInfo);
+
+                            // 마커 추가
+                            mapView.addPOIItem(searchedPlaceMarker);
+
+                            // 추가된 마커 강제 이벤트 발생
+                            mapView.selectPOIItem(searchedPlaceMarker, true);
+                            handlePOIItemSelected(searchedPlaceMarker);
                         }
                     }
                 } else {
@@ -272,10 +329,10 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
             GetMyLocation getMyLocation = new GetMyLocation(this, this);
             Location userLocation = getMyLocation.getMyLocation();
             if (userLocation != null) {
-                double latitude = userLocation.getLatitude();
-                double longitude = userLocation.getLongitude();
-                System.out.println("////////////현재 내 위치값 : " + latitude + "," + longitude);
-                currPoint = MapPoint.mapPointWithGeoCoord(latitude, longitude);
+                currLatitude = userLocation.getLatitude();
+                currLongitude = userLocation.getLongitude();
+                System.out.println("////////////현재 내 위치값 : " + currLatitude + "," + currLongitude);
+                currPoint = MapPoint.mapPointWithGeoCoord(currLatitude, currLongitude);
 
                 // 앱 초기 실행 시에만 현재 위치를 지도 중심점으로 위치시킴
                 if (selectedLongitude == 0) {
@@ -288,6 +345,16 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
 
         /** 위치 설정 기능 수행 */
         init();
+
+        /** 검색창 이벤트 리스너 추가 */
+        search_edt = findViewById(R.id.search_edt);
+        search_edt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Intent intent = new Intent(MainActivity.this, SearchKeywordActivity.class);
+                startActivity(intent);
+            }
+        });
 
         /** 현재 위치 갱신 정의 및 이벤트 리스너 추가 */
         currentLocation_btn = (Button) findViewById(R.id.currentLocation_btn);
@@ -332,8 +399,6 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
 
                 final Intent intent = new Intent(MainActivity.this, ObjectDetectionActivity.class);
 
-                RetrofitServiceForKakao retrofitServiceForKakao = new RetrofitServiceForKakao();
-                KakaoAPI kakaoInterface = retrofitServiceForKakao.getRetrofit().create(KakaoAPI.class);
                 Call<CoordinateToAddress> call = kakaoInterface.getAddress("WGS84", longitude, latitude);
                 call.enqueue(new Callback<CoordinateToAddress>() {
                     @Override
@@ -357,27 +422,26 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
                                     }
                                 }
 
-                                Call<ResponseBody> call_userAPI_getUserSelfInfo = userAPI.getUserSelfInfo();
                                 String finalAddress_value = address_value;
 
                                 intent.putExtra("markerId_value", selectedMarkerId);
+                                intent.putExtra("searchedPlaceName_value", searchedPlaceName);
                                 intent.putExtra("latitude_value", latitude);
                                 intent.putExtra("longitude_value", longitude);
                                 intent.putExtra("placeName_value", selectedPlaceName);
                                 intent.putExtra("detailAddress_value", selectedDetailAddress);
                                 intent.putExtra("placeId_value", selectedPlaceId);
-                                intent.putExtra("markerId_value", selectedMarkerId);
                                 intent.putExtra("address_value", finalAddress_value);
 
                                 if (addedPlaceInfoState.equals("0")) {
                                     final Intent intent = new Intent(MainActivity.this, AddPlaceGuideActivity.class);
                                     intent.putExtra("markerId_value", selectedMarkerId);
+                                    intent.putExtra("searchedPlaceName_value", searchedPlaceName);
                                     intent.putExtra("latitude_value", latitude);
                                     intent.putExtra("longitude_value", longitude);
                                     intent.putExtra("placeName_value", selectedPlaceName);
                                     intent.putExtra("detailAddress_value", selectedDetailAddress);
                                     intent.putExtra("placeId_value", selectedPlaceId);
-                                    intent.putExtra("markerId_value", selectedMarkerId);
                                     intent.putExtra("address_value", finalAddress_value);
                                     startActivity(intent);
                                 }
@@ -410,8 +474,8 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         /** ========================= Sidebar Navigation Drawer(사이드 메뉴바) ========================= */
         drawerlayout = findViewById(R.id.drawer_layout);
         /** 햄버거 버튼 클릭 시 sidebar navigation을 나타나도록 하는 코드 */
-        hamburger_ibtn = (ImageButton) findViewById(R.id.hamburger_ibtn);
-        hamburger_ibtn.setOnClickListener(new View.OnClickListener() {
+        hamburger_iBtn = (ImageButton) findViewById(R.id.hamburger_iBtn);
+        hamburger_iBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Call<ResponseBody> call_userAPI_getUserSelfInfo = userAPI.getUserSelfInfo();
@@ -587,12 +651,12 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
                                 String finalAddress_value = address_value;
 
                                 intent.putExtra("markerId_value", selectedMarkerId);
+                                intent.putExtra("searchedPlaceName_value", searchedPlaceName);
                                 intent.putExtra("latitude_value", latitude);
                                 intent.putExtra("longitude_value", longitude);
                                 intent.putExtra("placeName_value", selectedPlaceName);
                                 intent.putExtra("detailAddress_value", selectedDetailAddress);
                                 intent.putExtra("placeId_value", selectedPlaceId);
-                                intent.putExtra("markerId_value", selectedMarkerId);
                                 intent.putExtra("address_value", finalAddress_value);
 
                                 call_userAPI_getUserSelfInfo.enqueue(new Callback<ResponseBody>() {
@@ -602,12 +666,12 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
                                             if (addedPlaceInfoState.equals("0")) {
                                                 final Intent intent = new Intent(MainActivity.this, AddPlaceGuideActivity.class);
                                                 intent.putExtra("markerId_value", selectedMarkerId);
+                                                intent.putExtra("searchedPlaceName_value", searchedPlaceName);
                                                 intent.putExtra("latitude_value", latitude);
                                                 intent.putExtra("longitude_value", longitude);
                                                 intent.putExtra("placeName_value", selectedPlaceName);
                                                 intent.putExtra("detailAddress_value", selectedDetailAddress);
                                                 intent.putExtra("placeId_value", selectedPlaceId);
-                                                intent.putExtra("markerId_value", selectedMarkerId);
                                                 intent.putExtra("address_value", finalAddress_value);
                                                 startActivity(intent);
                                                 return;
@@ -698,12 +762,12 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
                                 }
 
                                 intent.putExtra("markerId_value", selectedMarkerId);
+                                intent.putExtra("searchedPlaceName_value", searchedPlaceName);
                                 intent.putExtra("latitude_value", latitude);
                                 intent.putExtra("longitude_value", longitude);
                                 intent.putExtra("placeName_value", selectedPlaceName);
                                 intent.putExtra("detailAddress_value", selectedDetailAddress);
                                 intent.putExtra("placeId_value", selectedPlaceId);
-                                intent.putExtra("markerId_value", selectedMarkerId);
 
                                 Call<ResponseBody> call_userAPI_getUserSelfInfo = userAPI.getUserSelfInfo();
                                 call_userAPI_getUserSelfInfo.enqueue(new Callback<ResponseBody>() {
@@ -797,12 +861,12 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
                                             if (addedPlaceInfoState.equals("0")) {
                                                 final Intent intent = new Intent(MainActivity.this, AddPlaceGuideActivity.class);
                                                 intent.putExtra("markerId_value", selectedMarkerId);
+                                                intent.putExtra("searchedPlaceName_value", searchedPlaceName);
                                                 intent.putExtra("latitude_value", latitude);
                                                 intent.putExtra("longitude_value", longitude);
                                                 intent.putExtra("placeName_value", selectedPlaceName);
                                                 intent.putExtra("detailAddress_value", selectedDetailAddress);
                                                 intent.putExtra("placeId_value", selectedPlaceId);
-                                                intent.putExtra("markerId_value", selectedMarkerId);
                                                 intent.putExtra("address_value", finalAddress_value);
                                                 startActivity(intent);
                                                 return;
@@ -1058,8 +1122,8 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
                 GetMyLocation getMyLocation = new GetMyLocation(context, activity);
                 Location userLocation = getMyLocation.getMyLocation();
                 if (userLocation != null) {
-                    double currLatitude = userLocation.getLatitude();
-                    double currLongitude = userLocation.getLongitude();
+                    currLatitude = userLocation.getLatitude();
+                    currLongitude = userLocation.getLongitude();
                     System.out.println("////////////현재 내 위치값 : " + currLatitude + "," + currLongitude);
                     currPoint = MapPoint.mapPointWithGeoCoord(currLatitude, currLongitude);
 
@@ -1143,10 +1207,7 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
     public void addMakerToMap(int peopleNum, double latitude, double longitude, String
             placeName, String detailAddress, long updateElapsedTime, String placeId, String markerId) {
         marker = new MapPOIItem();
-        if (peopleNum == -1)
-            marker.setItemName("정보 없음");
-        else
-            marker.setItemName(peopleNum + "명");
+        marker.setItemName(placeName);
         marker.setTag(markers.size());
         // 원하는 위치에 마커 추가
         MapPoint mapPoint = MapPoint.mapPointWithGeoCoord(latitude, longitude); // 마커의 위도, 경도 설정
@@ -1154,7 +1215,7 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         marker.setMarkerType(MapPOIItem.MarkerType.BluePin); // 기본으로 제공하는 BluePin 마커 모양.
         marker.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin); // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
 
-        String markerInfo = peopleNum + "/" + placeName + "/" + detailAddress + "/" + updateElapsedTime + "/" + placeId + "/" + markerId + "/" + 1;
+        String markerInfo = peopleNum + "/" + latitude + "/" + longitude + "/" + placeName + "/" + detailAddress + "/" + updateElapsedTime + "/" + placeId + "/" + markerId + "/" + 1;
         marker.setUserObject(markerInfo);
         mapView.addPOIItem(marker);
         markers.add(marker);
@@ -1214,16 +1275,78 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         peopleCount_tv.setText("?");
         headcountUnit_tv.setVisibility(View.GONE);
         updateElapsedTime_tv.setText("정보 없음");
-        placeName_tv.setText("장소명(새로운 장소)");
-        detailAddress_tv.setText("상세 주소");
+        placeName_tv.setText("미등록 장소");
+        detailAddress_tv.setText("");
         addedPlaceInfoState = "0";
 
-        String markerInfo = "-1" + "/" + "장소명(새로운 장소)" + "/" + "상세 주소" + "/" + "-1/null/null/0";
+        String markerInfo = "-1" + "/" + "0" + "/" + "0" + "/" + "미등록 장소" + "/" + "" + "/" + "-1/null/null/0";
         marker.setUserObject(markerInfo);
         mapView.addPOIItem(marker);
         markers.add(marker);
 
         updateBookmarkBtnState(false);
+
+        bottomSheetBehavior.setPeekHeight(85);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+    }
+
+    public void handlePOIItemSelected(MapPOIItem mapPOIItem) {
+        Object userObject = mapPOIItem.getUserObject();
+        Log.d("데이터", "" + userObject.toString());
+        String[] splittedStrings = userObject.toString().split("/");
+
+        String peopleCount_str = Integer.parseInt(splittedStrings[0]) == -1 ? "?" : "" + splittedStrings[0];
+        peopleCount_tv.setText(peopleCount_str);
+        if (peopleCount_str.equals("?")) headcountUnit_tv.setVisibility(View.GONE);
+        else headcountUnit_tv.setVisibility(View.VISIBLE);
+        placeName_tv.setText(splittedStrings[3]);
+        detailAddress_tv.setText(splittedStrings[4]);
+        long updateElapsedTime = Integer.parseInt(splittedStrings[5]);
+        String updateElapsedTime_str;
+        if (updateElapsedTime == -1) {
+            updateElapsedTime_str = "정보 없음";
+        } else if (updateElapsedTime < 3600) {
+            updateElapsedTime_str = updateElapsedTime / 60 + "분 전";
+        } else if (updateElapsedTime < 86400) {
+            updateElapsedTime_str = updateElapsedTime / 3600 + "시간 전";
+        } else if (updateElapsedTime < 86400 * 365) {
+            updateElapsedTime_str = updateElapsedTime / 86400 + "일 전";
+        } else {
+            updateElapsedTime_str = updateElapsedTime / 86400 * 365 + "년 전";
+        }
+        updateElapsedTime_tv.setText(updateElapsedTime_str);
+        addedPlaceInfoState = splittedStrings[8];
+
+        selectedPeopleCount = splittedStrings[0];
+        selectedLatitude = Double.parseDouble(splittedStrings[1]);
+        selectedLongitude = Double.parseDouble(splittedStrings[2]);
+
+        selectedPlaceName = splittedStrings[3];
+        selectedDetailAddress = splittedStrings[4];
+        selectedPlaceId = splittedStrings[6];
+        selectedMarkerId = splittedStrings[7];
+
+        selectedMarker = mapPOIItem;
+
+        updateBookmarkBtnState(false);
+
+        if (Integer.parseInt(addedPlaceInfoState) == 1) {
+            Call<List<Bookmark>> call_bookmarksAPI_getBookmarkedListsForPlace = bookmarksAPI.getBookmarkedListsForPlace(selectedPlaceId);
+            call_bookmarksAPI_getBookmarkedListsForPlace.enqueue(new Callback<List<Bookmark>>() {
+                @Override
+                public void onResponse(Call<List<Bookmark>> call, Response<List<Bookmark>> response) {
+                    if (response.isSuccessful()) {
+                        updateBookmarkBtnState(true);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<Bookmark>> call, Throwable t) {
+                    // 서버 코드 및 네트워크 오류 등의 이유로 요청 실패
+                    new ToastWarning(getResources().getString(R.string.toast_server_error), MainActivity.this);
+                }
+            });
+        }
 
         bottomSheetBehavior.setPeekHeight(85);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
@@ -1254,65 +1377,7 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
 
     @Override
     public void onPOIItemSelected(MapView mapView, MapPOIItem mapPOIItem) {
-        Object userObject = mapPOIItem.getUserObject();
-        Log.d("데이터", "" + userObject.toString());
-        String[] splittedStrings = userObject.toString().split("/");
-
-        String peopleCount_str = Integer.parseInt(splittedStrings[0]) == -1 ? "?" : "" + splittedStrings[0];
-        peopleCount_tv.setText(peopleCount_str);
-        if (peopleCount_str.equals("?")) headcountUnit_tv.setVisibility(View.GONE);
-        else headcountUnit_tv.setVisibility(View.VISIBLE);
-        placeName_tv.setText(splittedStrings[1]);
-        detailAddress_tv.setText(splittedStrings[2]);
-        long updateElapsedTime = Integer.parseInt(splittedStrings[3]);
-        String updateElapsedTime_str;
-        if (updateElapsedTime == -1) {
-            updateElapsedTime_str = "정보 없음";
-        } else if (updateElapsedTime < 3600) {
-            updateElapsedTime_str = updateElapsedTime / 60 + "분 전";
-        } else if (updateElapsedTime < 86400) {
-            updateElapsedTime_str = updateElapsedTime / 3600 + "시간 전";
-        } else if (updateElapsedTime < 86400 * 365) {
-            updateElapsedTime_str = updateElapsedTime / 86400 + "일 전";
-        } else {
-            updateElapsedTime_str = updateElapsedTime / 86400 * 365 + "년 전";
-        }
-        updateElapsedTime_tv.setText(updateElapsedTime_str);
-        addedPlaceInfoState = splittedStrings[6];
-
-        selectedPeopleCount = splittedStrings[0];
-        selectedPlaceName = splittedStrings[1];
-        selectedDetailAddress = splittedStrings[2];
-        selectedPlaceId = splittedStrings[4];
-        selectedMarkerId = splittedStrings[5];
-
-        selectedLatitude = mapPOIItem.getMapPoint().getMapPointGeoCoord().latitude;
-        selectedLongitude = mapPOIItem.getMapPoint().getMapPointGeoCoord().longitude;
-
-        selectedMarker = mapPOIItem;
-
-        updateBookmarkBtnState(false);
-
-        if (Integer.parseInt(addedPlaceInfoState) == 1) {
-            Call<List<Bookmark>> call_bookmarksAPI_getBookmarkedListsForPlace = bookmarksAPI.getBookmarkedListsForPlace(selectedPlaceId);
-            call_bookmarksAPI_getBookmarkedListsForPlace.enqueue(new Callback<List<Bookmark>>() {
-                @Override
-                public void onResponse(Call<List<Bookmark>> call, Response<List<Bookmark>> response) {
-                    if (response.isSuccessful()) {
-                        updateBookmarkBtnState(true);
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<List<Bookmark>> call, Throwable t) {
-                    // 서버 코드 및 네트워크 오류 등의 이유로 요청 실패
-                    new ToastWarning(getResources().getString(R.string.toast_server_error), MainActivity.this);
-                }
-            });
-        }
-
-        bottomSheetBehavior.setPeekHeight(85);
-        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+        handlePOIItemSelected(mapPOIItem);
     }
 
     @Override

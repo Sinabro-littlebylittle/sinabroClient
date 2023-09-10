@@ -6,16 +6,17 @@
     android:layout_centerVertical="true"
     android:layout_gravity="center"
     android:background="@drawable/dialog_radius"
-    android:minHeight="260dp">
+    android:minHeight="270dp">
 
     <!-- 등록된 장소명 -->
     <TextView
         android:id="@+id/placeName_tv"
-        android:layout_width="wrap_content"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="29dp"
         android:layout_marginTop="22.5dp"
-        android:maxWidth="250dp"
+        android:ellipsize="end"
+        android:maxLines="1"
         android:text="턱스(TUX)"
         android:textColor="@color/black"
         android:textSize="23.5sp" />
@@ -79,10 +80,10 @@
             android:id="@+id/updateElapsedTime_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
             android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
             android:layout_toRightOf="@+id/peopleCountDisplay_relativeLayout"
-            android:text="경과 시간..."/>
+            android:text="경과 시간..." />
     </RelativeLayout>
 
     <RelativeLayout
@@ -90,7 +91,8 @@
         android:layout_width="wrap_content"
         android:layout_height="70dp"
         android:layout_below="@+id/peopleCount_relativeLayout"
-        android:layout_marginTop="12.5dp">
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp">
 
         <ImageView
             android:id="@+id/location_pin_icon_iv"
@@ -103,13 +105,16 @@
         <!-- (위도, 경도) 기반 도로명 주소 -->
         <TextView
             android:id="@+id/roadNameAddress_tv"
-            android:layout_width="wrap_content"
+            android:layout_width="255dp"
             android:layout_height="wrap_content"
+            android:minHeight="32.5dp"
+            android:maxHeight="40dp"
             android:layout_centerHorizontal="true"
             android:layout_marginLeft="7.5dp"
             android:layout_toRightOf="@+id/location_pin_icon_iv"
+            android:ellipsize="end"
             android:letterSpacing="-0.05"
-            android:maxWidth="255dp"
+            android:maxLines="2"
             android:text="충청북도 청주시 서원구"
             android:textColor="@color/dark_grey"
             android:textSize="15sp" />
@@ -118,8 +123,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/roadNameAddress_tv"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="20dp">
+            android:layout_marginTop="5dp">
 
             <ImageView
                 android:id="@+id/info_icon_iv"
@@ -133,13 +137,14 @@
             <!-- (위도, 경도) 기반 도로명 주소 -->
             <TextView
                 android:id="@+id/detailAddress_tv"
-                android:layout_width="wrap_content"
+                android:layout_width="255dp"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginLeft="7.5dp"
                 android:layout_toRightOf="@+id/info_icon_iv"
+                android:ellipsize="end"
                 android:letterSpacing="-0.05"
-                android:maxWidth="255dp"
+                android:maxLines="1"
                 android:text="1층 108호"
                 android:textColor="@color/dark_grey"
                 android:textSize="15sp" />
@@ -151,7 +156,6 @@
         android:layout_width="wrap_content"
         android:layout_height="80dp"
         android:layout_below="@+id/detailAddress_RelativeLayout"
-        android:layout_marginTop="15dp"
         android:layout_marginBottom="12.5dp">
 
         <!-- 인원수 체크 버튼 -->
@@ -225,11 +229,11 @@
             android:insetBottom="0dp"
             android:onClick="onMapZoomIn"
             android:stateListAnimator="@null"
+            android:visibility="gone"
             app:cornerRadius="15dp"
             app:icon="@drawable/bookmark_fill"
             app:iconGravity="textStart"
             app:iconPadding="0dp"
-            android:visibility="gone"
             app:iconTint="@color/deep_blue" />
     </RelativeLayout>
 </RelativeLayout>
