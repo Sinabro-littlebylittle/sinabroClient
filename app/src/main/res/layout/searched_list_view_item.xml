@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="72.5dp">
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/marker_roundedImageView"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="20dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/marker"
+        app:riv_oval="true" />
+
+    <RelativeLayout
+        android:id="@+id/placeName_relativeLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="15dp"
+        android:layout_toRightOf="@+id/marker_roundedImageView">
+
+        <!-- 검색된 장소명 -->
+        <TextView
+            android:id="@+id/placeName_tv"
+            android:layout_width="225dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="충북대학교"
+            android:textColor="@color/black"
+            android:textSize="17.5sp" />
+    </RelativeLayout>
+
+    <!-- 검색된 도로명 주소 -->
+    <TextView
+        android:id="@+id/address_tv"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/placeName_relativeLayout"
+        android:layout_marginStart="10dp"
+        android:layout_toRightOf="@+id/marker_roundedImageView"
+        android:text="충청북도 청주시 서원구 충대로1 충북대학교"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="@color/grey"
+        android:textSize="13sp" />
+
+    <!-- 장소 카레고리 -->
+    <TextView
+        android:id="@+id/category_name_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="17.5dp"
+        android:layout_alignParentRight="true"
+        android:maxWidth="250dp"
+        android:text="대학교"
+        android:layout_marginEnd="20dp"
+        android:textColor="@color/text_blue"
+        android:textSize="13sp" />
+
+    <!-- 가로 구분선 -->
+    <RelativeLayout
+        android:id="@+id/dividing_line_relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/bg_grey" />
+
+</RelativeLayout>
