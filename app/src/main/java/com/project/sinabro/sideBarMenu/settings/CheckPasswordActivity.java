@@ -5,12 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.method.PasswordTransformationMethod;
-import android.util.Log;
 import android.view.View;
 
 import com.project.sinabro.R;
 import com.project.sinabro.databinding.ActivityCheckPasswordBinding;
-import com.project.sinabro.models.requests.LoginRequest;
+import com.project.sinabro.models.UserInfo;
 import com.project.sinabro.retrofit.interfaceAPIs.AuthAPI;
 import com.project.sinabro.retrofit.RetrofitService;
 import com.project.sinabro.sideBarMenu.authentication.SignInActivity;
@@ -94,8 +93,10 @@ public class CheckPasswordActivity extends AppCompatActivity {
                     return;
                 }
 
-                LoginRequest loginRequest = new LoginRequest(tokenManager.getEmail(), binding.passwordEditText.getText().toString());
-                Call<ResponseBody> call = authAPI.login(loginRequest);
+                UserInfo userInfo = new UserInfo();
+                userInfo.setEmail(tokenManager.getEmail());
+                userInfo.setPassword(binding.passwordEditText.getText().toString());
+                Call<ResponseBody> call = authAPI.login(userInfo);
                 call.enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
