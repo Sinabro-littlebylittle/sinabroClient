@@ -13,8 +13,7 @@ import android.view.Window;
 
 import com.project.sinabro.R;
 import com.project.sinabro.databinding.ActivityModifyPasswordBinding;
-import com.project.sinabro.models.requests.ChangePasswordRequest;
-import com.project.sinabro.models.requests.LoginRequest;
+import com.project.sinabro.models.UserInfo;
 import com.project.sinabro.retrofit.interfaceAPIs.AuthAPI;
 import com.project.sinabro.retrofit.RetrofitService;
 import com.project.sinabro.retrofit.interfaceAPIs.UserAPI;
@@ -149,8 +148,10 @@ public class ModifyPasswordActivity extends AppCompatActivity {
                     binding.passwordConfirmTextInputLayout.setErrorEnabled(true);
                     binding.passwordConfirmTextInputLayout.setBackgroundResource(R.drawable.edt_bg_only_helper_selected);
                 } else {
-                    LoginRequest loginRequest = new LoginRequest(tokenManager.getEmail(), binding.currentPasswordEditText.getText().toString());
-                    Call<ResponseBody> call = authAPI.login(loginRequest);
+                    UserInfo userInfo = new UserInfo();
+                    userInfo.setEmail(tokenManager.getEmail());
+                    userInfo.setPassword(binding.currentPasswordEditText.getText().toString());
+                    Call<ResponseBody> call = authAPI.login(userInfo);
                     call.enqueue(new Callback<ResponseBody>() {
                         @Override
                         public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -161,7 +162,10 @@ public class ModifyPasswordActivity extends AppCompatActivity {
                                     String accessToken = jsonObject.optString("accessToken");
                                     TokenManager.getInstance(getApplicationContext()).saveToken(accessToken);
 
-                                    Call<ResponseBody> call_change_password = userAPI.changePassword(new ChangePasswordRequest(binding.passwordEditText.getText().toString()));
+                                    UserInfo userInfo = new UserInfo();
+                                    userInfo.setPassword(binding.passwordEditText.getText().toString());
+
+                                    Call<ResponseBody> call_change_password = userAPI.changePassword(userInfo);
                                     call_change_password.enqueue(new Callback<ResponseBody>() {
                                         @Override
                                         public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
