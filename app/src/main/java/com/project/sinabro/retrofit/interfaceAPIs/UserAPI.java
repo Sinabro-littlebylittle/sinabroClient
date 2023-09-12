@@ -1,7 +1,6 @@
 package com.project.sinabro.retrofit.interfaceAPIs;
 
 import com.project.sinabro.models.UserInfo;
-import com.project.sinabro.models.requests.ChangePasswordRequest;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -24,5 +23,5 @@ public interface UserAPI {
     Call<ResponseBody> changeUserSelfInfo(@Body UserInfo userInfo);
 
     @PATCH("api/user/private/password")
-    Call<ResponseBody> changePassword(@Body ChangePasswordRequest request);
+    Call<ResponseBody> changePassword(@Body UserInfo userInfo);
 }

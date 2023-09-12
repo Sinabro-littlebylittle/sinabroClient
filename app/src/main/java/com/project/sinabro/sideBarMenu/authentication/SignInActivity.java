@@ -17,7 +17,7 @@ import com.makeramen.roundedimageview.RoundedImageView;
 import com.project.sinabro.MainActivity;
 import com.project.sinabro.R;
 import com.project.sinabro.databinding.ActivitySignInBinding;
-import com.project.sinabro.models.requests.LoginRequest;
+import com.project.sinabro.models.UserInfo;
 import com.project.sinabro.retrofit.interfaceAPIs.AuthAPI;
 import com.project.sinabro.retrofit.RetrofitService;
 import com.project.sinabro.sideBarMenu.settings.HandleUserInformationActivity;
@@ -131,9 +131,11 @@ public class SignInActivity extends AppCompatActivity {
                 } else {
                     String email = binding.emailEditText.getText().toString();
                     String password = binding.passwordEditText.getText().toString();
-                    LoginRequest loginRequest = new LoginRequest(email, password);
+                    UserInfo userInfo = new UserInfo();
+                    userInfo.setEmail(email);
+                    userInfo.setPassword(password);
 
-                    Call<ResponseBody> call = authAPI.login(loginRequest);
+                    Call<ResponseBody> call = authAPI.login(userInfo);
                     call.enqueue(new Callback<ResponseBody>() {
                         @Override
                         public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
