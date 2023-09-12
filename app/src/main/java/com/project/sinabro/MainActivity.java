@@ -269,9 +269,6 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
                             searchedPlaceMarker.setMarkerType(MapPOIItem.MarkerType.YellowPin);
                             searchedPlaceMarker.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin);
 
-                            mapView.selectPOIItem(markers.get(1), true);
-                            handlePOIItemSelected(markers.get(1));
-
                             String markerInfo = "-1" + "/" + searchedLatitude + "/" + searchedLongitude + "/" + "미등록 장소" + "/" + "" + "/" + "-1/null/null/0";
                             searchedPlaceMarker.setUserObject(markerInfo);
 
@@ -1393,5 +1390,10 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
     @Override
     public void onDraggablePOIItemMoved(MapView mapView, MapPOIItem mapPOIItem, MapPoint
             mapPoint) {
+    }
+
+    @Override
+    public void onBackPressed() {
+        System.exit(0);
     }
 }
