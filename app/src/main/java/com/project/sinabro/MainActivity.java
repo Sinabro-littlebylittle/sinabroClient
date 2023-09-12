@@ -73,7 +73,6 @@ import com.project.sinabro.retrofit.interfaceAPIs.UserAPI;
 import com.project.sinabro.search.SearchKeywordActivity;
 import com.project.sinabro.sideBarMenu.authentication.SignInActivity;
 import com.project.sinabro.sideBarMenu.settings.CheckPasswordActivity;
-import com.project.sinabro.sideBarMenu.settings.MyPageActivity;
 import com.project.sinabro.toast.ToastWarning;
 import com.project.sinabro.utils.TokenManager;
 
