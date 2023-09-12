@@ -32,6 +32,7 @@ public class WithdrawalStep1Activity extends AppCompatActivity {
             public void onClick(View view) {
                 // 회원탈퇴 단계(2) 액티비티로 이동
                 final Intent intent = new Intent(getApplicationContext(), WithdrawalStep2Activity.class);
+                intent.putExtra("withdrawalReason", binding.dontUseAppTv.getText().toString());
                 startActivity(intent);
             }
         });
@@ -41,6 +42,7 @@ public class WithdrawalStep1Activity extends AppCompatActivity {
             public void onClick(View view) {
                 // 회원탈퇴 단계(2) 액티비티로 이동
                 final Intent intent = new Intent(getApplicationContext(), WithdrawalStep2Activity.class);
+                intent.putExtra("withdrawalReason", binding.securityConcernTv.getText().toString());
                 startActivity(intent);
             }
         });
@@ -50,6 +52,7 @@ public class WithdrawalStep1Activity extends AppCompatActivity {
             public void onClick(View view) {
                 // 회원탈퇴 단계(2) 액티비티로 이동
                 final Intent intent = new Intent(getApplicationContext(), WithdrawalStep2Activity.class);
+                intent.putExtra("withdrawalReason", binding.etcTv.getText().toString());
                 startActivity(intent);
             }
         });

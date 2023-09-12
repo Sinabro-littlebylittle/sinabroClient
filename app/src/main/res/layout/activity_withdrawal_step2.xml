@@ -58,6 +58,7 @@
                         android:textStyle="bold" />
 
                     <EditText
+                        android:id="@+id/feedback_edt"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/get_personal_information_title_tv"
