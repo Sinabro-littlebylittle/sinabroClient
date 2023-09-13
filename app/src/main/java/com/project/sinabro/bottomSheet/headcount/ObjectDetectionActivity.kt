@@ -21,7 +21,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.project.sinabro.R
 import com.project.sinabro.databinding.ActivityObjectDetectionBinding
-import com.project.sinabro.retrofit.RetrofitServiceForHeadCount
+import com.project.sinabro.retrofit.RetrofitServiceForHeadcount
 import com.project.sinabro.retrofit.interfaceAPIs.ModelAPI
 import com.project.sinabro.toast.ToastSuccess
 import com.project.sinabro.toast.ToastWarning
@@ -155,7 +155,8 @@ class ObjectDetectionActivity : AppCompatActivity() {
                             val path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES).absolutePath +
                                     File.separator + "CameraX-Video" + File.separator + mediaStoreOutputOptions.contentValues.getAsString(MediaStore.MediaColumns.DISPLAY_NAME)+".mp4"
                             val file = File(path)
-                            val retrofitService = RetrofitServiceForHeadCount()
+                            val retrofitService =
+                                RetrofitServiceForHeadcount()
                             val modelAPI = retrofitService.retrofit.create(ModelAPI::class.java)
 
                             val requestFile = RequestBody.create(MediaType.parse("video/mp4"), file)
