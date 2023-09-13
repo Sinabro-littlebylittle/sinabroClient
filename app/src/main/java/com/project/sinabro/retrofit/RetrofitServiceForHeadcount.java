@@ -1,6 +1,7 @@
 package com.project.sinabro.retrofit;
 
 import com.google.gson.Gson;
+import com.project.sinabro.BuildConfig;
 
 import java.util.concurrent.TimeUnit;
 
@@ -9,13 +10,12 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 
-public class RetrofitServiceForHeadCount {
+public class RetrofitServiceForHeadcount {
     private Retrofit retrofit;
 
-    public RetrofitServiceForHeadCount() {
+    public RetrofitServiceForHeadcount() {
         initializeRetrofit();
     }
-
 
 
     private void initializeRetrofit() {
@@ -27,7 +27,7 @@ public class RetrofitServiceForHeadCount {
 
         retrofit = new Retrofit.Builder()
                 .client(client)
-                .baseUrl("enter_your_url")
+                .baseUrl(BuildConfig.RETROFIT_FLASK_SERVER_URL)
                 .addConverterFactory(GsonConverterFactory.create(new Gson()))
                 .build();
     }

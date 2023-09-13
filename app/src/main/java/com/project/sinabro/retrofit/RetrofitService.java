@@ -1,6 +1,7 @@
 package com.project.sinabro.retrofit;
 
 import com.google.gson.Gson;
+import com.project.sinabro.BuildConfig;
 import com.project.sinabro.utils.AuthInterceptor;
 import com.project.sinabro.utils.TokenManager;
 
@@ -23,7 +24,7 @@ public class RetrofitService {
                 .build();
 
         retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:5050")
+                .baseUrl(BuildConfig.RETROFIT_MONGO_DB_SERVER_URL)
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create(new Gson()))
                 .build();

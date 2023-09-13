@@ -16,6 +16,8 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField 'String', 'KAKAO_API_KEY', KAKAO_API_KEY
+        buildConfigField 'String', 'RETROFIT_MONGO_DB_SERVER_URL', RETROFIT_MONGO_DB_SERVER_URL
+        buildConfigField 'String', 'RETROFIT_FLASK_SERVER_URL', RETROFIT_FLASK_SERVER_URL
     }
 
     buildTypes {
