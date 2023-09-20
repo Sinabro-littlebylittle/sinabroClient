@@ -1391,9 +1391,4 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
     public void onDraggablePOIItemMoved(MapView mapView, MapPOIItem mapPOIItem, MapPoint
             mapPoint) {
     }
-
-    @Override
-    public void onBackPressed() {
-        System.exit(0);
-    }
 }
