@@ -18,7 +18,8 @@ buildscript {
 plugins {
     id 'com.android.application' version '7.3.0' apply false
     id 'com.android.library' version '7.3.0' apply false
-    id 'com.google.gms.google-services' version '4.4.0' apply false
+    id 'com.google.gms.google-services' version '4.4.0' apply false     //java
+    //id("com.google.gms.google-services") version "4.4.0" apply false    //kotlin
 }
 
 task clean(type: Delete) {
