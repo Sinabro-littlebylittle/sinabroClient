@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.CAMERA" />
 
     <application
@@ -62,17 +63,15 @@
         <activity android:name=".sideBarMenu.bookmark.AddNewBookmarkListActivity" />
         <activity android:name=".sideBarMenu.bookmark.BookmarkedPlacesInListActivity" />
         <service android:name=".FCM.FirebaseMessagingService"
-            android:exported="true">
+            android:exported="false">
             <intent-filter>
-
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
-
         </service>
 
         <meta-data
             android:name="com.kakao.sdk.AppKey"
             android:value="4507083e30991ba589ab3828da76bcf7" />
     </application>
-    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+
 </manifest>
