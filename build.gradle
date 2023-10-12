@@ -8,7 +8,7 @@ buildscript {
     dependencies {
         classpath "com.android.tools.build:gradle:3.9.0"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.10"
-        classpath 'com.google.gms:google-services:4.4.0' // FCM 푸쉬알림 기능을 위한 디펜더시
+        classpath 'com.google.gms:google-services:4.3.2' // FCM 푸쉬알림 기능을 위한 디펜더시
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -18,7 +18,7 @@ buildscript {
 plugins {
     id 'com.android.application' version '7.3.0' apply false
     id 'com.android.library' version '7.3.0' apply false
-    id 'com.google.gms.google-services' version '4.4.0' apply false     //java
+    id 'com.google.gms.google-services' version '4.3.2' apply false     //java
     //id("com.google.gms.google-services") version "4.4.0" apply false    //kotlin
 }
 
