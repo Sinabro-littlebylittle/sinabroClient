@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "72085065372",
+    "project_id": "sinabro-1f23d",
+    "storage_bucket": "sinabro-1f23d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:72085065372:android:ba4d30344afac5254ee759",
+        "android_client_info": {
+          "package_name": "com.project.sinabro"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCY6lBtWViRikR9XUYMHtu9KpRFW2Vaq9I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
