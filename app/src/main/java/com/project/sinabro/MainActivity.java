@@ -29,6 +29,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,6 +45,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationRequest;
@@ -485,6 +487,15 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
                                 JSONObject jsonObject = new JSONObject(response.body().string());
                                 tokenManager.saveUserInfo(jsonObject);
                                 String username = tokenManager.getUsername();
+                                String profile = tokenManager.getProfilePath();
+                                Log.d("Profile", "onResponse: "+profile);
+                                ImageView imageView = findViewById(R.id.userImage_roundedImageView);
+                                Glide.with(context)
+                                        .load("http://192.168.0.2:5050"+profile)
+//                                        .load("https://sinabro-developersung13.koyeb.app/"+profile)
+                                        .centerCrop()
+                                        .override(50,50)
+                                        .into(imageView);
                                 username_tv.setText(username);
 
 

@@ -9,6 +9,9 @@ public class UserInfo {
     @SerializedName("password")
     private String password;
 
+    @SerializedName("profile")
+    private String profile;
+
     @SerializedName("username")
     private String username;
 
@@ -34,6 +37,13 @@ public class UserInfo {
         this.password = password;
     }
 
+    public String getProfile() {
+        return profile;
+    }
+
+    public void setProfile(String profile) {
+        this.profile = profile;
+    }
     public String getUsername() {
         return username;
     }
