@@ -1,5 +1,7 @@
 package com.project.sinabro.sideBarMenu.authentication;
 
+import static kotlin.io.ByteStreamsKt.readBytes;
+
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -8,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -15,6 +18,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -24,12 +28,23 @@ import com.project.sinabro.databinding.ActivitySignUpStep2Binding;
 import com.project.sinabro.models.UserInfo;
 import com.project.sinabro.retrofit.interfaceAPIs.AuthAPI;
 import com.project.sinabro.retrofit.RetrofitService;
+import com.project.sinabro.retrofit.interfaceAPIs.UserAPI;
 import com.project.sinabro.textWatcher.NicknameWatcher;
 import com.project.sinabro.toast.ToastWarning;
 import com.project.sinabro.utils.TokenManager;
 
-import java.io.InputStream;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Arrays;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -50,6 +65,12 @@ public class SignUpStep2Activity extends AppCompatActivity {
     private TokenManager tokenManager;
     private RetrofitService retrofitService;
     private AuthAPI authAPI;
+
+    private UserAPI userAPI;
+    private String profilePath;
+    private String mImgPath = null;
+    private String mImgTitle = null;
+    private String mImgOrient = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,6 +140,9 @@ public class SignUpStep2Activity extends AppCompatActivity {
                     showDialog_ask_user_use_default_profile_image();
                     return;
                 }
+                else{
+                    signup();
+                }
 
                 // 모든 입력이 정상적으로 완료되었을 때 "회원가입 완료 안내" 다이얼로그 띄우기
                 showDialog_sign_up_success();
@@ -147,6 +171,74 @@ public class SignUpStep2Activity extends AppCompatActivity {
                             inputStream.close();
                             if (bitmap != null) {
                                 binding.userImageRoundedImageView.setImageBitmap(bitmap);
+                                // 이미지 파일을 MultipartBody.Part로 변환
+                                /*File file = new File(result.getData().getDataString());
+                                Log.d("Profile", "onActivityResult: file"+file.toString() +" "+file.getName());
+//                                Uri uri = Uri.parse(file.getPath());
+//                                Log.d("Profile", "onActivityResult: uri"+uri.toString());
+//                                getImageNameToUri(uri);*/
+
+                                // content URI 가져오기
+                                Uri contentUri = result.getData().getData();
+                                // ContentResolver를 사용하여 파일 경로 가져오기
+                                String[] projection = {MediaStore.Images.Media.DATA};
+                                Cursor cursor = getContentResolver().query(contentUri, projection, null, null, null);
+
+                                if (cursor != null && cursor.moveToFirst()) {
+                                    int columnIndex = cursor.getColumnIndex(MediaStore.Images.Media.DATA);
+                                    String filePath = cursor.getString(columnIndex);
+                                    cursor.close();
+
+                                    File file = new File(filePath);
+
+                                    Log.d("Profile", "1: fail"+"1"+result.getData().toString() +"2"+ result.getData().getData().toString() +"path" +result.getData().getData().getPath() +"file "+mImgPath + " t " + mImgTitle + "o "+ mImgOrient);
+                                    RequestBody requestFile = RequestBody.create(MediaType.parse("image/*"), file);
+                                    Log.d("Profile  ", "23: fail");
+                                    MultipartBody.Part imagePart = MultipartBody.Part.createFormData("profile", file.getName(), requestFile);
+                                    userAPI = retrofitService.getRetrofit().create(UserAPI.class);
+                                    Log.d("Profile  ", "234: fail"+imagePart);
+                                    Log.d("Profile  ", "2343: fail"+userAPI+" n "+file);
+                                    Call<ResponseBody> call = userAPI.uploadProfile(imagePart);
+                                    call.enqueue(new Callback<ResponseBody>() {
+                                        @Override
+                                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                                            Log.d("Profile", "3: fail");
+                                            if (response.isSuccessful()) {
+                                                // 이미지 업로드 성공
+                                                // 서버로부터의 응답 처리
+                                                JSONObject jsonObject = null;
+                                                try {
+                                                    jsonObject = new JSONObject(response.body().string());
+                                                } catch (JSONException e) {
+                                                    throw new RuntimeException(e);
+                                                } catch (IOException e) {
+                                                    throw new RuntimeException(e);
+                                                }
+                                                try {
+                                                    profilePath = jsonObject.getString("success");
+                                                } catch (JSONException e) {
+                                                    throw new RuntimeException(e);
+                                                }
+                                                Log.d("Profile", "onResponse: success"+profilePath);
+
+                                            } else {
+                                                // 이미지 업로드 실패
+                                                Log.d("Profile", "onResponse: fail");
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onFailure(Call<ResponseBody> call, Throwable t) {
+                                            // 네트워크 오류 또는 서버 오류
+                                            Log.e("Profile", "Network error:"+t.getMessage());
+                                            Log.d("Profile", "onResponse: fail"+"1"+result.getData().toString() +"2"+ result.getData().getData().toString() +"path" +result.getData().getData().getPath());
+                                        }
+                                    });
+
+                                    // filePath를 이용하여 파일 업로드 등의 작업 수행
+                                } else {
+                                    Log.e("Profile", "Failed to retrieve file path from Content URI");
+                                }
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -187,6 +279,42 @@ public class SignUpStep2Activity extends AppCompatActivity {
             }
         }
         return inSampleSize;
+    }
+
+    public void signup(){
+        UserInfo userInfo = new UserInfo();
+        userInfo.setEmail(email);
+        userInfo.setPassword(password);
+        userInfo.setProfile(profilePath);
+        userInfo.setUsername(binding.nicknameEditText.getText().toString());
+        userInfo.setRole("member");
+
+        Call<UserInfo> call = authAPI.signUp(userInfo);
+        call.enqueue(new Callback<UserInfo>() {
+            @Override
+            public void onResponse(Call<UserInfo> call, Response<UserInfo> response) {
+                if (response.isSuccessful()) {
+                    // "회원가입 완료 안내" 다이얼로그 띄우기
+                    showDialog_sign_up_success();
+                } else {
+                    switch (response.code()) {
+                        case 400:
+                            // 가입하려는 계정의 이메일이 이미 존재하는 경우 서버 측에서 에러 반환
+                            new ToastWarning(getResources().getString(R.string.toast_exist_email), SignUpStep2Activity.this);
+                            break;
+                        default:
+                            new ToastWarning(getResources().getString(R.string.toast_none_status_code), SignUpStep2Activity.this);
+                    }
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserInfo> call, Throwable t) {
+                // 서버 코드 및 네트워크 오류 등의 이유로 요청 실패
+                new ToastWarning(getResources().getString(R.string.toast_server_error), SignUpStep2Activity.this);
+            }
+        });
     }
 
     /**
