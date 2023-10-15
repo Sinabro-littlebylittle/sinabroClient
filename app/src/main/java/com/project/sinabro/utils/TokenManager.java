@@ -34,6 +34,7 @@ public class TokenManager {
         String userId = jsonObject.optString("_id");
         String email = jsonObject.optString("email");
         String username = jsonObject.optString("username");
+        String profile = jsonObject.optString("profile");
         String role = jsonObject.optString("role");
         int point = jsonObject.optInt("point");
 
@@ -41,6 +42,7 @@ public class TokenManager {
         editor.putString("userId`", userId);
         editor.putString("email", email);
         editor.putString("username", username);
+        editor.putString("profile", profile);
         editor.putString("role", role);
         editor.putInt("point", point);
         editor.apply();
@@ -69,6 +71,10 @@ public class TokenManager {
 
     public String getUsername() {
         return prefs.getString("username", null);
+    }
+
+    public String getProfilePath() {
+        return prefs.getString("profile", null);
     }
 
     public String getRole() {
