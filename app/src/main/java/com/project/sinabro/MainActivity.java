@@ -1,5 +1,6 @@
 package com.project.sinabro;
 
+import static com.project.sinabro.BuildConfig.RETROFIT_MONGO_DB_SERVER_URL;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -490,12 +491,15 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
                                 String profile = tokenManager.getProfilePath();
                                 Log.d("Profile", "onResponse: "+profile);
                                 ImageView imageView = findViewById(R.id.userImage_roundedImageView);
-                                Glide.with(context)
-                                        .load("http://192.168.0.2:5050"+profile)
-//                                        .load("https://sinabro-developersung13.koyeb.app/"+profile)
-                                        .centerCrop()
-                                        .override(50,50)
-                                        .into(imageView);
+                                if (profile.isEmpty() ) {
+                                    imageView.setImageResource(R.drawable.default_profile_image);
+                                } else {
+                                    Glide.with(context)
+                                            .load(RETROFIT_MONGO_DB_SERVER_URL+profile)
+                                            .centerCrop()
+                                            .override(50, 50)
+                                            .into(imageView);
+                                }
                                 username_tv.setText(username);
 
 
